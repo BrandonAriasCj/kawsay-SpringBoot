@@ -1,0 +1,6 @@
+QUESTION:
+{input}
+
+DOCUMENTOS:
+{documents}
+
