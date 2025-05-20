@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Chatbot.css';
+import kawsaiLogo from '../assets/kawsai-logo.png';
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
@@ -23,11 +24,15 @@ const Chatbot = () => {
     setInput('');
   };
 
-  return (
+return (
+  <div className="chatbot-wrapper">
     <div className="chatbot-container">
       <div className="chat-header">
-        🌇 KawsAI - Historias Interactivas
-      </div>
+  <img src={kawsaiLogo} alt="KawsAI Logo" className="chat-logo" />
+  KawsAI - Historias Interactivas
+</div>
+
+
       <div className="chat-window">
         {messages.map((msg, idx) => (
           <div key={idx} className={`message ${msg.sender}`}>
@@ -46,7 +51,9 @@ const Chatbot = () => {
         <button onClick={handleSend}>Enviar</button>
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Chatbot;
