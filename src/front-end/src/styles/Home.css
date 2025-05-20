@@ -1,0 +1,7 @@
+.home-container {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(to bottom, #4a148c, #6a1b9a, #ba68c8, #f06292);
+  color: white;
+  min-height: 100vh;
+}
