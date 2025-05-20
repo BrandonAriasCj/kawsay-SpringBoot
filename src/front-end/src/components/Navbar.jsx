@@ -14,6 +14,7 @@ const Navbar = () => {
         <Link to="/">Inicio</Link>
         {!user && <Link to="/login">Login / Registro</Link>}
         {user && <Link to="/profile">Perfil</Link>}
+        <Link to="/chatbot">Chatbot</Link>
       </div>
     </nav>
   );
