@@ -1,0 +1,58 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-kawsay-dev-88427-authRole",
+      "UnauthRoleArn": "arn:aws:iam::221119316416:role/amplify-kawsay-dev-88427-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::221119316416:role/amplify-kawsay-dev-88427-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-kawsay-dev-88427-deployment",
+      "UnauthRoleName": "amplify-kawsay-dev-88427-unauthRole",
+      "StackName": "amplify-kawsay-dev-88427",
+      "StackId": "arn:aws:cloudformation:eu-north-1:221119316416:stack/amplify-kawsay-dev-88427/36635800-34c4-11f0-a53b-06f04ac66c11",
+      "AmplifyAppId": "dxy4sd8jmom2z"
+    }
+  },
+  "auth": {
+    "kawsay4d9608c6": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-kawsay-dev-88427-deployment/amplify-cfn-templates/auth/kawsay4d9608c6-cloudformation-template.json",
+        "logicalId": "authkawsay4d9608c6"
+      },
+      "lastPushTimeStamp": "2025-05-19T15:20:25.794Z",
+      "output": {
+        "UserPoolId": "eu-north-1_MeWfk129x",
+        "AppClientIDWeb": "4rpsqutkve0gg6gn8npfvfk344",
+        "AppClientID": "3flq2cpnfsn35pdrsk7trifh10",
+        "IdentityPoolId": "eu-north-1:8a6be449-5899-423d-a2ea-d326682c0e2b",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-north-1:221119316416:userpool/eu-north-1_MeWfk129x",
+        "IdentityPoolName": "kawsay4d9608c6_identitypool_4d9608c6__dev",
+        "UserPoolName": "kawsay4d9608c6_userpool_4d9608c6"
+      },
+      "lastPushDirHash": "tHQ+V451qwGzuF/7StWsUVRH7GU="
+    }
+  }
+}
