@@ -1,11 +1,15 @@
-// Comando utiles
-DELETE FROM "user";
-TRUNCATE TABLE "user";
-DROP TABLE "user";
+
+CREATE TABLE IF NOT EXISTS public.ai_chat_memory
+(
+    conversation_id character varying(36) COLLATE pg_catalog."default" NOT NULL,
+    content text COLLATE pg_catalog."default" NOT NULL,
+    type character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    "timestamp" timestamp without time zone NOT NULL,
+    CONSTRAINT ai_chat_memory_type_check CHECK (type::text = ANY (ARRAY['USER'::character varying, 'ASSISTANT'::character varying, 'SYSTEM'::character varying, 'TOOL'::character varying]::text[]))
+);
 
 
 
-//Base de datos
 -- Crear tabla de roles
 CREATE TABLE rol (
      id_rol SERIAL PRIMARY KEY,

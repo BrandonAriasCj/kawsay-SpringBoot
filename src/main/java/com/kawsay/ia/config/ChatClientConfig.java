@@ -22,6 +22,9 @@ public class ChatClientConfig {
     @Bean
     public ChatMemory jdbcChatMemory(JdbcTemplate jdbcTemplate) {
         System.out.println("⚙️ Configurando JdbcChatMemory...");
-        return JdbcChatMemory.create(JdbcChatMemoryConfig.builder().jdbcTemplate(jdbcTemplate).build());
+        return JdbcChatMemory.create(
+                JdbcChatMemoryConfig.builder()
+                        .jdbcTemplate(jdbcTemplate)
+                        .build());
     }
 }
