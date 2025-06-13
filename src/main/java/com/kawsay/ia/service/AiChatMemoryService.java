@@ -16,4 +16,8 @@ public class AiChatMemoryService {
     public List<AiChatMemory> findAllService() {
         return aiChatMemoryRepository.findAll();
     }
+
+    public void guardar(AiChatMemory aiChatMemory) {
+        aiChatMemoryRepository.save(aiChatMemory);
+    }
 }

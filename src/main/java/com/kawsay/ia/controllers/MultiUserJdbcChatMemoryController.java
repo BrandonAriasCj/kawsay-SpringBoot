@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.jdbc.core.JdbcTemplate;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class MultiUserJdbcChatMemoryController {
     }
 
     @PostMapping("/{userId}/chat")
-    public String chat(
+    public Flux<String> chat(
             @PathVariable String userId,
             @RequestBody String request) {
 
@@ -38,7 +38,8 @@ public class MultiUserJdbcChatMemoryController {
                 .prompt()
                 .advisors(advisorSpec -> advisorSpec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, userId))
                 .user(request)
-                .call().content();
+                .stream()
+                .content();
     }
 
     @GetMapping("/{userId}/history")
@@ -51,5 +52,15 @@ public class MultiUserJdbcChatMemoryController {
         chatMemory.clear(userId);
 
         return "Conversation history cleared for user: " + userId;
+    }
+
+    @PostMapping("/stream")
+    public Flux<String> chat() {
+
+        return chatClient
+                .prompt()
+                .user("Que es stream en spring ai")
+                .stream()
+                .content();
     }
 }
