@@ -8,7 +8,13 @@ CREATE TABLE IF NOT EXISTS public.ai_chat_memory
     CONSTRAINT ai_chat_memory_type_check CHECK (type::text = ANY (ARRAY['USER'::character varying, 'ASSISTANT'::character varying, 'SYSTEM'::character varying, 'TOOL'::character varying]::text[]))
 );
 
-
+CREATE TABLE IF NOT EXISTS public.ai_chat_memory (
+     id BIGSERIAL PRIMARY KEY,
+     sesion VARCHAR(36) NOT NULL,  -- correlativo a tu campo 'sesion' en la entidad
+     content TEXT NOT NULL,
+     type VARCHAR(10) NOT NULL CHECK (type IN ('USER', 'ASSISTANT', 'SYSTEM', 'TOOL')),
+     timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
 
 -- Crear tabla de roles
 CREATE TABLE rol (

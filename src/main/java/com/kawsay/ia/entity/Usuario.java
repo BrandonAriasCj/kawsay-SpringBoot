@@ -26,5 +26,8 @@ public class Usuario {
     @JoinColumn(name = "user_rol", nullable = false)
     private Rol rol;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<AiChatMemory> conversaciones;
+
     // Getters y setters
 }

@@ -15,8 +15,17 @@ import lombok.Setter;
 public class AiChatMemory {
 
     @Id
-    @Column(name = "conversation_id", length = 36, nullable = false)
-    private String conversationId;
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    //@ManyToOne
+    @Column(name = "sesion", nullable = false)
+    private String sessionId;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario", nullable = false)
+    private Usuario usuario;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;

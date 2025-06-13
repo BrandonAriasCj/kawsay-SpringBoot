@@ -22,26 +22,30 @@ public class TestChatService {
         List<AiChatMemory> listaConversacion= aiChatMemoryService.findAllService();
         System.out.println(listaConversacion);
         for (AiChatMemory memoria : listaConversacion) {
-            System.out.println("ID: " + memoria.getConversationId() + ", Type: " + memoria.getType() + " , Content: " + memoria.getContent());
+            System.out.println("ID: " + memoria.getId() + ", Type: " + memoria.getType() + " , Content: " + memoria.getContent());
         }
     }
 
     @Test
     void insertar(){
 
-        String id_conversación = "2";
+        String id_sesion = "2";
         String contenido = "Otro Mensaje insertado Manualmente";
         AiChatMemory.Type tipo = AiChatMemory.Type.USER;
         AiChatMemory nuevo = new AiChatMemory();
 
-        nuevo.setConversationId(id_conversación);
+        nuevo.setSessionId(id_sesion);
         nuevo.setContent(contenido);
         nuevo.setType(tipo);
         nuevo.setTimestamp(LocalDateTime.now());
 
         aiChatMemoryService.guardar(nuevo);
 
+    }
 
-
+    @Test
+    List<AiChatMemory> filtrado(){
+        List<AiChatMemory> listaConversacion= aiChatMemoryService.findAllService();
+        return listaConversacion;
     }
 }

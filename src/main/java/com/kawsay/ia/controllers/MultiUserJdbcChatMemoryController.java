@@ -1,8 +1,11 @@
 package com.kawsay.ia.controllers;
 
+import com.kawsay.ia.service.AiChatMemoryService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.messages.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,8 @@ public class MultiUserJdbcChatMemoryController {
     private final ChatClient chatClient;
 
     private final ChatMemory chatMemory;
+    @Autowired
+    private AiChatMemoryService chatMemoryService;
 
     public MultiUserJdbcChatMemoryController(ChatClient chatClient, ChatMemory chatMemory) {
         this.chatClient = chatClient;
@@ -30,7 +35,7 @@ public class MultiUserJdbcChatMemoryController {
     }
 
     @PostMapping("/{userId}/chat")
-    public Flux<String> chat(
+    public String chat(
             @PathVariable String userId,
             @RequestBody String request) {
 
@@ -38,7 +43,7 @@ public class MultiUserJdbcChatMemoryController {
                 .prompt()
                 .advisors(advisorSpec -> advisorSpec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, userId))
                 .user(request)
-                .stream()
+                .call()
                 .content();
     }
 
@@ -55,12 +60,12 @@ public class MultiUserJdbcChatMemoryController {
     }
 
     @PostMapping("/stream")
-    public Flux<String> chat() {
+    public String chat() {
 
         return chatClient
                 .prompt()
                 .user("Que es stream en spring ai")
-                .stream()
+                .call()
                 .content();
     }
 }
