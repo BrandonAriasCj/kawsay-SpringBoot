@@ -3,7 +3,10 @@ import jakarta.persistence.*;
 import java.util.List.*;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+
+@Data
 @Entity
 @Table(name = "rol")
 public class Rol {
@@ -19,5 +22,4 @@ public class Rol {
     @Column(nullable = false)
     private boolean estado = true;
 
-    // Getters y setters
 }

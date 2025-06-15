@@ -14,6 +14,11 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public List<Usuario> findAllUsuarios() {
+
         return usuarioRepository.findAll();
+    }
+
+    public void crearUsuario(Usuario usuario) {
+        usuarioRepository.save(usuario);
     }
 }

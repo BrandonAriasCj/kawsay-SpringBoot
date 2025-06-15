@@ -1,13 +1,14 @@
 package com.kawsay.ia.entity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
+
 
 import java.util.List;
 
-@Getter
-@Setter
+
 @Entity
+@Data
 @Table(name = "usuario")
 public class Usuario {
 
@@ -27,7 +28,8 @@ public class Usuario {
     private Rol rol;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<AiChatMemory> conversaciones;
 
-    // Getters y setters
+
 }
