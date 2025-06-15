@@ -1,5 +1,6 @@
 package com.kawsay.ia;
 import com.kawsay.ia.entity.AiChatMemory;
+import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.service.AiChatMemoryService;
 
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ public class TestChatService {
 
     @Test
     void insertar(){
+        //Asegurar la existencia de un primer usuario
+        Usuario usuarioRelacionado = new Usuario();
+        usuarioRelacionado.setId( 1 );
 
         String id_sesion = "2";
         String contenido = "Otro Mensaje insertado Manualmente";
@@ -37,6 +41,7 @@ public class TestChatService {
         nuevo.setSessionId(id_sesion);
         nuevo.setContent(contenido);
         nuevo.setType(tipo);
+        nuevo.setUsuario(usuarioRelacionado);
         nuevo.setTimestamp(LocalDateTime.now());
 
         aiChatMemoryService.guardar(nuevo);

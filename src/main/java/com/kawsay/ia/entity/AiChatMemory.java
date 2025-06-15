@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 
-@Getter
-@Setter
+@Data
 @Entity
+@NoArgsConstructor
 @Table(name = "ai_chat_memory")
 public class AiChatMemory {
 
@@ -41,5 +40,12 @@ public class AiChatMemory {
         USER, ASSISTANT, SYSTEM, TOOL
     }
 
-    // Getters y setters
+    @Builder
+    public AiChatMemory(String sessionId, Usuario usuario, String content, Type type, LocalDateTime timestamp) {
+        this.sessionId = sessionId;
+        this.usuario = usuario;
+        this.content = content;
+        this.type = type;
+        this.timestamp = timestamp;
+    }
 }

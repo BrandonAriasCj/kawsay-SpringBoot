@@ -3,11 +3,14 @@ import jakarta.persistence.*;
 import java.util.List.*;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "rol")
 public class Rol {
 
@@ -21,5 +24,11 @@ public class Rol {
 
     @Column(nullable = false)
     private boolean estado = true;
+
+    @Builder
+    public Rol(String denominacion, boolean estado) {
+        this.denominacion = denominacion;
+        this.estado = estado;
+    }
 
 }

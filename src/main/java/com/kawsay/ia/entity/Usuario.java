@@ -1,6 +1,8 @@
 package com.kawsay.ia.entity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "usuario")
 public class Usuario {
 
@@ -30,6 +33,14 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AiChatMemory> conversaciones;
+
+
+    @Builder
+    public Usuario(String correoInstitucional, String contraseña, Rol rol) {
+        this.correoInstitucional = correoInstitucional;
+        this.contraseña = contraseña;
+        this.rol = rol;
+    }
 
 
 }
