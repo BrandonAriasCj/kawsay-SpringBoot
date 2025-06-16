@@ -9,10 +9,12 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <h1>Kawzay</h1>
+      <h1>KawzAi</h1>
       <div className="links">
         <Link to="/">Inicio</Link>
         <Link to="/chatbot">Chatbot</Link>
+          <Link to="/grupos">Grupos de Apoyo </Link>
+          <Link to="/citas">Agendar Cita</Link>
         {!user && <Link to="/login">Login / Registro</Link>}
         {user && <Link to="/profile">Perfil</Link>}
         

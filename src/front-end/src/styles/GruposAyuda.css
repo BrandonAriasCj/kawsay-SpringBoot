@@ -1,0 +1,111 @@
+/* src/styles/GruposAyuda.css */
+.grupos-wrapper {
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(to bottom, #6a1b9a, #ba68c8, #f06292);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.grupos-container {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    border: 1px solid #ffe0f0;
+}
+
+.grupos-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #4a148c;
+}
+
+.grupos-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.grupos-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.create-group-btn {
+    padding: 12px 25px;
+    background: linear-gradient(to right, #ff6e7f, #ffb347);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.create-group-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 110, 127, 0.4);
+}
+
+.group-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.group-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.group-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.group-card h3 {
+    margin-top: 0;
+    color: #2c0544;
+}
+
+.group-card p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.group-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.group-card-footer span {
+    font-size: 0.9rem;
+    color: #777;
+    font-weight: bold;
+}
+
+.join-btn {
+    padding: 8px 16px;
+    background: #4a148c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.join-btn:hover {
+    background: #d81b60;
+}
