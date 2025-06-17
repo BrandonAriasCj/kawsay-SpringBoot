@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import Chatbot from './pages/Chatbot';
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-
+        <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
     </Router>
   );

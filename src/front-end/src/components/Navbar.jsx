@@ -12,8 +12,10 @@ const Navbar = () => {
       <h1>Kawzay</h1>
       <div className="links">
         <Link to="/">Inicio</Link>
+        <Link to="/chatbot">Chatbot</Link>
         {!user && <Link to="/login">Login / Registro</Link>}
         {user && <Link to="/profile">Perfil</Link>}
+        
       </div>
     </nav>
   );
