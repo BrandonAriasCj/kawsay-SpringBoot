@@ -5,7 +5,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Chatbot from './pages/Chatbot';
-
+import Grupos from './pages/GruposAyuda';
+import Citas from './pages/Citas';
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/grupos" element={<Grupos />} />
+          <Route path="/citas" element={<Citas />} />
       </Routes>
     </Router>
   );
