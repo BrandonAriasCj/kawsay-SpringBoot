@@ -13,7 +13,12 @@
     },
     "categories": {
       "auth": {
-        "kawsay4d9608c6": {}
+        "kawsay1fd9b128": {
+          "userPoolId": "eu-north-1_MeWfk129x",
+          "userPoolName": "kawsay4d9608c6_userpool_4d9608c6-dev",
+          "webClientId": "4kv5i0t94l2e2arkqpeb6b70nq",
+          "nativeClientId": "40r5vqqr2likip1f93vphdiva8"
+        }
       }
     }
   }

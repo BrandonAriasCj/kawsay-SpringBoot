@@ -9,6 +9,7 @@ import org.springframework.ai.chat.memory.jdbc.JdbcChatMemory;
 import javax.sql.DataSource;
 
 @SpringBootApplication
+
 public class IaApplication {
 
 	public static void main(String[] args) {
