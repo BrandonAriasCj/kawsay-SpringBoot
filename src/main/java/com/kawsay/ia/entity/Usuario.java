@@ -1,13 +1,11 @@
 package com.kawsay.ia.entity;
-import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
+import jakarta.persistence.*;
+import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.List;
-
 
 @Entity
 @Data
@@ -32,8 +30,28 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonIgnore
     private List<AiChatMemory> conversaciones;
 
+    @OneToMany(mappedBy = "creador", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Grupo> gruposCreados;
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Publicacion> publicaciones;
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Comentario> comentarios;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Reaccion> reacciones;
 
     @Builder
     public Usuario(String correoInstitucional, String contraseña, Rol rol) {
@@ -41,6 +59,4 @@ public class Usuario {
         this.contraseña = contraseña;
         this.rol = rol;
     }
-
-
 }
