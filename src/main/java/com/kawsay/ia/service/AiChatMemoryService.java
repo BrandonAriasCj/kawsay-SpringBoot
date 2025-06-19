@@ -1,11 +1,8 @@
 package com.kawsay.ia.service;
 import com.kawsay.ia.mapper.AiChatMemoryMapper;
-import com.kawsay.ia.repositoty.AiChatMemoryRepository;
+import com.kawsay.ia.repository.AiChatMemoryRepository;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +10,6 @@ import com.kawsay.ia.entity.AiChatMemory;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service

@@ -3,22 +3,17 @@ package com.kawsay.ia.builder;
 import com.kawsay.ia.entity.AiChatMemory;
 import com.kawsay.ia.entity.Rol;
 import com.kawsay.ia.entity.Usuario;
-import com.kawsay.ia.repositoty.AiChatMemoryRepository;
-import com.kawsay.ia.repositoty.RolRepository;
-import com.kawsay.ia.repositoty.UsuarioRepository;
+import com.kawsay.ia.repository.AiChatMemoryRepository;
+import com.kawsay.ia.repository.RolRepository;
+import com.kawsay.ia.repository.UsuarioRepository;
 import com.kawsay.ia.service.RolService;
 import com.kawsay.ia.service.UsuarioService;
-import org.aspectj.weaver.Lint;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.github.javafaker.Faker;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest

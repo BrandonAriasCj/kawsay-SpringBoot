@@ -1,4 +1,4 @@
-package com.kawsay.ia.repositoty;
+package com.kawsay.ia.repository;
 import com.kawsay.ia.entity.AiChatMemory;
 import org.springframework.data.jpa.repository.JpaRepository;
 

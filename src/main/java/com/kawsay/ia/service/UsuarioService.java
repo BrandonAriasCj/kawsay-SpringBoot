@@ -1,6 +1,6 @@
 package com.kawsay.ia.service;
 import com.kawsay.ia.entity.Usuario;
-import com.kawsay.ia.repositoty.UsuarioRepository;
+import com.kawsay.ia.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

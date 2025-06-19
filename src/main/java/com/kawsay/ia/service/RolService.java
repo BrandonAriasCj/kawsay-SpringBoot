@@ -1,6 +1,6 @@
 package com.kawsay.ia.service;
 import com.kawsay.ia.entity.Rol;
-import com.kawsay.ia.repositoty.RolRepository;
+import com.kawsay.ia.repository.RolRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
