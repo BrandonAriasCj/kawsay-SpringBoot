@@ -1,7 +1,7 @@
 /* src/styles/Citas.css */
 .citas-wrapper {
     min-height: 100vh;
-    padding: 2rem;
+    padding: 30rem;
     background: linear-gradient(to bottom, #4a148c, #6a1b9a, #ba68c8, #f06292);
     display: flex;
     justify-content: center;
