@@ -1,6 +1,7 @@
 package com.kawsay.ia;
 import com.kawsay.ia.entity.AiChatMemory;
 import com.kawsay.ia.entity.Usuario;
+import com.kawsay.ia.repository.AiChatMemoryRepository;
 import com.kawsay.ia.service.AiChatMemoryService;
 
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TestChatService {
     @Autowired
     private AiChatMemoryService aiChatMemoryService;
+    @Autowired
+    private AiChatMemoryRepository aiChatMemoryRepository;
 
     @Test
     void findAll() {
@@ -49,8 +52,16 @@ public class TestChatService {
     }
 
     @Test
-    List<AiChatMemory> filtrado(){
-        List<AiChatMemory> listaConversacion= aiChatMemoryService.findAllService();
-        return listaConversacion;
+    void filtradoPorUsuario(){
+        List<AiChatMemory> listaConversacion= aiChatMemoryService.findSome(1);
+        System.out.println(listaConversacion);
+    }
+    @Test
+    void filtradoPorUsuarioAndTipo(){
+        Usuario usuario = new Usuario();
+        usuario.setId( 1 );
+
+        List<AiChatMemory> listaConversacion= aiChatMemoryRepository.findByUsuarioAndType(usuario, AiChatMemory.Type.ASSISTANT);
+        System.out.println(listaConversacion);
     }
 }

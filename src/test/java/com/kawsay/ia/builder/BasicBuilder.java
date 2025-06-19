@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest
-public class UsuarioBuilder {
+public class BasicBuilder {
 
     @Autowired
     private UsuarioService usuarioService;
