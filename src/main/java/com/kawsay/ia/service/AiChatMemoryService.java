@@ -66,4 +66,90 @@ public class AiChatMemoryService {
         return respuesta;
     }
 
+    public List<AiChatMemory> filtradoPorUsuarioAndTipo(){
+        Usuario usuario = new Usuario();
+        usuario.setId( 2 );
+
+        List<AiChatMemory> listaConversacion = aiChatMemoryRepository.findByUsuarioAndType(usuario, AiChatMemory.Type.USER);
+        return listaConversacion;
+    }
+
+    public List<AiChatMemory> filtrarMensajesUserPorUsuario(Usuario usuario){
+        List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findByUsuarioAndType(usuario, AiChatMemory.Type.USER);
+        return listaMensajesUsuario;
+    }
+
+
+
+    /*
+    * Entrada.- Integer usuarioId
+    * Acción.- Filtra mensajes tipo user de el usuario especificado por id
+    * Salida.- Lista de mensajes con detalles
+     */
+
+    public List<AiChatMemory> filtrarMensajesUserPorUsuarioId(Integer usuarioId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findByUsuarioAndType(usuario, AiChatMemory.Type.USER);
+        return listaMensajesUsuario;
+    }
+
+
+
+
+
+    /*
+     * Entrada.- Integer usuarioId
+     * Acción.- Filtra mensajes tipo user de el usuario especificado por id ordenado de forma ascendente
+     * Salida.- Lista de mensajes con detalles
+     */
+    public List<AiChatMemory> filtrarMensajesUserPorUsuarioIdOrdenadoAsc(Integer usuarioId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findByUsuarioAndTypeOrderByTimestampAsc(usuario, AiChatMemory.Type.USER);
+        return listaMensajesUsuario;
+    }
+
+
+
+
+
+    /*
+     * Entrada.- Integer usuarioId
+     * Acción.- Filtra mensajes tipo user de el usuario especificado por id ordenado de forma descendente
+     * Salida.- Lista de mensajes con detalles
+     */
+    public List<AiChatMemory> filtrarMensajesUserPorUsuarioIdOrdenadoDesc(Integer usuarioId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findByUsuarioAndTypeOrderByTimestampDesc(usuario, AiChatMemory.Type.USER);
+        return listaMensajesUsuario;
+    }
+
+
+
+
+
+    /*
+     * Entrada.- Integer usuarioId
+     * Acción.- Filtra todos los mensajes de la conversacion de un usuario
+     * Salida.- Lista de mensajes ordenado Asc y Desc
+     */
+    public List<AiChatMemory> filtrarMensajesPorUsuarioIdOrdenadoAsc(Integer usuarioId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findByUsuarioOrderByTimestampAsc(usuario);
+        return listaMensajesUsuario;
+    }
+    public List<AiChatMemory> filtrarMensajesPorUsuarioIdOrdenadoDesc(Integer usuarioId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findByUsuarioOrderByTimestampDesc(usuario);
+        return listaMensajesUsuario;
+    }
+
+
+
+
+
+    /*
+
+
+     */
+
 }

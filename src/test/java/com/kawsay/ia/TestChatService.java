@@ -56,12 +56,18 @@ public class TestChatService {
         List<AiChatMemory> listaConversacion= aiChatMemoryService.findSome(1);
         System.out.println(listaConversacion);
     }
-    @Test
-    void filtradoPorUsuarioAndTipo(){
-        Usuario usuario = new Usuario();
-        usuario.setId( 1 );
 
-        List<AiChatMemory> listaConversacion= aiChatMemoryRepository.findByUsuarioAndType(usuario, AiChatMemory.Type.ASSISTANT);
-        System.out.println(listaConversacion);
+
+    @Test
+    public void fintradoUT(){
+        List<AiChatMemory> lista = aiChatMemoryService.filtradoPorUsuarioAndTipo();
+        System.out.println(lista);
+    }
+
+    //Test que filtra mensajes de usuario
+    @Test
+    public void fintradoDeUsuario(){
+        List<AiChatMemory> lista = aiChatMemoryService.filtrarMensajesUserPorUsuarioId(2);
+        System.out.println(lista);
     }
 }
