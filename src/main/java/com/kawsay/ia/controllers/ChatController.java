@@ -86,7 +86,7 @@ public class ChatController {
     private AiChatMemoryService serviceIAChatMemory;
 
     @PostMapping("/request/{userId}/mensaje/")
-    public String request(@PathVariable Integer userId, @RequestBody String mensaje) {
+    public List<AiChatMemory> request(@PathVariable Integer userId, @RequestBody String mensaje) {
         String input = mensaje;
 
         List<AiChatMemory> elementos = aiChatMemoryService.find10UltimosElementos(userId);
@@ -120,7 +120,7 @@ public class ChatController {
         serviceIAChatMemory.insesrtarMensajeAssistantService(userId, newAssistantMensaje);
 
         System.out.println(memoriaCorta);
-        return respuesta;
+        return serviceIAChatMemory.find10UltimosElementos(userId);
     }
 
 
