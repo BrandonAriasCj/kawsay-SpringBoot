@@ -1,0 +1,16 @@
+
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
+.modal-content { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); animation: fadeIn 0.3s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+.modal-title { margin: 0; font-size: 1.5rem; color: #4a148c; }
+.modal-close-btn { background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: #aaa; }
+.modal-close-btn:hover { color: #333; }
+.create-group-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.create-group-form .form-group { display: flex; flex-direction: column; }
+.create-group-form label { margin-bottom: 0.5rem; font-weight: 600; color: #555; }
+.create-group-form input, .create-group-form textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; font-size: 1rem; font-family: inherit; box-sizing: border-box; }
+.create-group-form textarea { min-height: 120px; resize: vertical; }
+.create-group-form button { align-self: flex-end; padding: 12px 24px; background: #4a148c; color: white; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; }
+.create-group-form button:hover { background: #d81b60; }
+.create-group-form button:disabled { background-color: #ccc; cursor: not-allowed; }

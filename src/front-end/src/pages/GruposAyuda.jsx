@@ -1,42 +1,109 @@
 // src/pages/GruposAyuda.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import GroupList from '../components/GroupList';
+import Feed from '../components/Feed';
+import Modal from '../components/Modal';
+import GruposWelcome from '../components/GruposWelcome';
+import { fetchGroups, fetchPostsByGroup, submitNewPost, submitNewGroup } from '../services/api';
 import '../styles/GruposAyuda.css';
-
-// Datos de ejemplo. En el futuro, esto vendrá de tu API backend.
-const mockGroups = [
-    { id: 1, name: 'Manejo de la Ansiedad', description: 'Un espacio para compartir técnicas y experiencias sobre cómo afrontar la ansiedad.', members: 42 },
-    { id: 2, name: 'Viviendo con TDAH', description: 'Grupo para adultos con TDAH. Estrategias, apoyo y comprensión mutua.', members: 28 },
-    { id: 3, name: 'Superando la Depresión', description: 'Juntos es más fácil. Comparte tu viaje y encuentra apoyo en un entorno seguro.', members: 55 },
-    { id: 4, name: 'Crecimiento Personal', description: 'Foro para discutir libros, hábitos y metas para ser nuestra mejor versión.', members: 112 },
-];
+import '../styles/Modal.css';
 
 const GruposAyuda = () => {
+    const [groups, setGroups] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSubmittingGroup, setIsSubmittingGroup] = useState(false);
+    const [newGroupName, setNewGroupName] = useState('');
+    const [newGroupDescription, setNewGroupDescription] = useState('');
+    const [isSubmittingPost, setIsSubmittingPost] = useState(false);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            fetchGroups(searchTerm).then(data => {
+                setGroups(data);
+                if (selectedGroupId && !data.find(g => g.id === selectedGroupId)) {
+                    setSelectedGroupId(null);
+                }
+            }).catch(setError);
+        }, 300);
+        return () => clearTimeout(handler);
+    }, [searchTerm, selectedGroupId]);
+
+    useEffect(() => {
+        if (!selectedGroupId) {
+            setPosts([]);
+            return;
+        }
+        setIsLoading(true);
+        setError(null);
+        fetchPostsByGroup(selectedGroupId).then(setPosts).catch(setError).finally(() => setIsLoading(false));
+    }, [selectedGroupId]);
+
+    const handleCreateGroupSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmittingGroup(true);
+        try {
+            const newGroup = await submitNewGroup({ name: newGroupName, description: newGroupDescription });
+            setSearchTerm('');
+            setGroups(prev => [...prev, newGroup]);
+            setSelectedGroupId(newGroup.id);
+            setIsModalOpen(false);
+            setNewGroupName('');
+            setNewGroupDescription('');
+        } catch (err) { alert("Error al crear el grupo."); }
+        finally { setIsSubmittingGroup(false); }
+    };
+
+    const handleCreatePost = async ({ title, content }) => {
+        setIsSubmittingPost(true);
+        try {
+            const newPost = await submitNewPost({ groupId: selectedGroupId, title, content });
+            setPosts(prev => [newPost, ...prev]);
+        } catch (err) { alert("Error al publicar."); }
+        finally { setIsSubmittingPost(false); }
+    };
+
+    const selectedGroupName = groups.find(g => g.id === selectedGroupId)?.name;
+
     return (
-        <div className="grupos-wrapper">
-            <div className="grupos-container">
-                <header className="grupos-header">
-                    <h2>Encuentra tu Comunidad</h2>
-                    <p>Los grupos de apoyo son espacios seguros para compartir y crecer juntos.</p>
-                </header>
+        <>
+            <div className="page-wrapper-grupos">
+                <div className="layout-container">
+                    <GroupList
+                        groups={groups}
+                        selectedGroupId={selectedGroupId}
+                        onSelectGroup={setSelectedGroupId}
+                        searchTerm={searchTerm}
+                        onSearchChange={setSearchTerm}
+                        onOpenCreateModal={() => setIsModalOpen(true)}
+                    />
+                    <main className="main-content">
+                        <header className="main-content-header">
+                            <h2>{selectedGroupName || 'Grupos de Apoyo'}</h2>
+                        </header>
 
-                <div className="grupos-actions">
-                    <button className="create-group-btn">Crear Nuevo Grupo</button>
-                </div>
-
-                <div className="group-list">
-                    {mockGroups.map(group => (
-                        <div key={group.id} className="group-card">
-                            <h3>{group.name}</h3>
-                            <p>{group.description}</p>
-                            <div className="group-card-footer">
-                                <span>{group.members} miembros</span>
-                                <button className="join-btn">Unirse al Grupo</button>
-                            </div>
-                        </div>
-                    ))}
+                        {}
+                        {selectedGroupId ? (
+                            <Feed posts={posts} isLoading={isLoading} error={error} onCreatePost={handleCreatePost} isSubmittingPost={isSubmittingPost} />
+                        ) : (
+                            <GruposWelcome />
+                        )}
+                    </main>
                 </div>
             </div>
-        </div>
+
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Crear un Nuevo Grupo">
+                <form className="create-group-form" onSubmit={handleCreateGroupSubmit}>
+                    <div className="form-group"><label htmlFor="groupName">Nombre del Grupo</label><input id="groupName" type="text" placeholder="Ej: Técnicas de Mindfulness" value={newGroupName} onChange={(e) => setNewGroupName(e.target.value)} required /></div>
+                    <div className="form-group"><label htmlFor="groupDescription">Descripción</label><textarea id="groupDescription" placeholder="Describe el propósito de este grupo..." value={newGroupDescription} onChange={(e) => setNewGroupDescription(e.target.value)} required /></div>
+                    <button type="submit" disabled={isSubmittingGroup || !newGroupName.trim() || !newGroupDescription.trim()}>{isSubmittingGroup ? "Creando..." : "Crear Grupo"}</button>
+                </form>
+            </Modal>
+        </>
     );
 };
 
