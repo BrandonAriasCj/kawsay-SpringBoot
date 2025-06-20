@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kawsay.ia.entity.AiChatMemory;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -148,8 +150,41 @@ public class AiChatMemoryService {
 
 
     /*
+     * Entrada.- Integer usuarioId
+     * Acción.- Filtra los ultimos 10 mensajes de conversacion usuario
+     * Salida.- Lista de 10 elementos
+     */
+    public List<AiChatMemory> find10UltimosElementos(Integer usuarioId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findTop10ByUsuarioOrderByTimestampDesc(usuario);
+        return listaMensajesUsuario;
+    }
+
+
+
+
+
+    /*
 
 
      */
+    public AiChatMemory insesrtarMensajeUserService(Integer userId, AiChatMemory mensaje) {
+        Usuario usuario = usuarioRepository.getUsuariosById(userId);
+        mensaje.setSessionId("1asdf"+userId);
+        mensaje.setTimestamp(LocalDateTime.now());
+        mensaje.setType(AiChatMemory.Type.USER);
+        mensaje.setUsuario(usuario);
+        return aiChatMemoryRepository.save(mensaje);
+    }
+
+    public AiChatMemory insesrtarMensajeAssistantService(Integer userId, AiChatMemory mensaje) {
+        Usuario usuario = usuarioRepository.getUsuariosById(userId);
+        mensaje.setSessionId("1asdf"+userId);
+        mensaje.setTimestamp(LocalDateTime.now());
+        mensaje.setType(AiChatMemory.Type.ASSISTANT);
+        mensaje.setUsuario(usuario);
+        return aiChatMemoryRepository.save(mensaje);
+    }
+
 
 }

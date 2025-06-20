@@ -13,18 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class ChatClientConfig {
 
     @Bean
-    public ChatClient chatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
-        return chatClientBuilder
-                .defaultAdvisors(new MessageChatMemoryAdvisor(chatMemory))
-                .build();
+    public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
+        return chatClientBuilder.build();
     }
 
-    @Bean
-    public ChatMemory jdbcChatMemory(JdbcTemplate jdbcTemplate) {
-        System.out.println("⚙️ Configurando JdbcChatMemory...");
-        return JdbcChatMemory.create(
-                JdbcChatMemoryConfig.builder()
-                        .jdbcTemplate(jdbcTemplate)
-                        .build());
-    }
 }

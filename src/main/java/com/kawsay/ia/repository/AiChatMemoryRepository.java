@@ -10,6 +10,7 @@ public interface AiChatMemoryRepository extends JpaRepository<AiChatMemory, Long
     List<AiChatMemory> findByUsuario(Usuario usuario);
     List<AiChatMemory> findByUsuarioOrderByTimestampAsc(Usuario usuario);
     List<AiChatMemory> findByUsuarioOrderByTimestampDesc(Usuario usuario);
+    List<AiChatMemory> findTop10ByUsuarioOrderByTimestampDesc(Usuario usuario);
 
     //Solu mensajes user tipo user
     List<AiChatMemory> findByUsuarioAndType(Usuario usuario, AiChatMemory.Type tipo);
