@@ -1,0 +1,99 @@
+/* src/styles/GruposAyuda.css */
+
+.page-wrapper-grupos {
+    padding-top: 100px;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #6a1b9a, #ba68c8, #f06292);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.layout-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+    width: 90%;
+    max-width: 1400px;
+    height: 95%; /* Ocupa el 95% de su contenedor (el page-wrapper) */
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    padding: 1rem;
+    overflow: hidden;
+}
+
+/* --- Sidebar --- */
+.sidebar { padding: 1rem; display: flex; flex-direction: column; }
+.create-new-group-btn { width: 100%; padding: 14px 20px; margin-bottom: 1rem; background: linear-gradient(to right, #ff6e7f, #ffb347); color: white; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-size: 1rem; }
+.create-new-group-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 110, 127, 0.4); }
+.search-container { position: relative; margin-bottom: 1rem; }
+.search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #b0b3b8; }
+.group-search-input { width: 100%; padding: 12px 15px 12px 40px; border-radius: 20px; border: none; font-size: 1rem; background-color: #3a3b3c; color: #e4e6eb; }
+.group-search-input::placeholder { color: #b0b3b8; }
+.group-nav-list { flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; padding-right: 5px; }
+.no-groups-found { padding: 1rem; text-align: center; color: #888; font-style: italic; }
+.group-nav-item { display: flex; align-items: center; gap: 15px; padding: 14px 20px; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; color: #4f555e; font-weight: 600; }
+.group-nav-item:hover { background-color: #f0f2f5; }
+.group-nav-item.active { background-color: #f3e5f5; color: #9c27b0; font-weight: 700; }
+.group-nav-icon { font-size: 1.3rem; }
+.group-nav-new-badge { background-color: #3d5afe; color: white; font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; }
+
+/* --- Main Content --- */
+.main-content { display: flex; flex-direction: column; background-color: #f0f2f5; /* Fondo gris claro como en la imagen */ border-radius: 16px; overflow: hidden; }
+.main-content-header { padding: 1.5rem 2rem; background-color: transparent; border-bottom: 1px solid #ddd; }
+.main-content-header h2 { margin: 0; font-size: 1.75rem; color: #1c1e21; }
+.feed { padding: 1.5rem 2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; }
+.feed-status { text-align: center; padding: 2rem; color: #65676b; font-style: italic; font-size: 1.2rem; }
+
+/* --- Scrollbar personalizado como en la imagen --- */
+.feed::-webkit-scrollbar { width: 8px; }
+.feed::-webkit-scrollbar-track { background: transparent; }
+.feed::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+.feed::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+/* --- Post Card & Create Form --- */
+.post-card, .create-post-container { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+.create-post-container h4 { margin-top: 0; margin-bottom: 1rem; color: #4a148c; font-weight: 600; }
+.create-post-form { display: flex; flex-direction: column; gap: 1rem; }
+.create-post-form input, .create-post-form textarea { width: 100%; box-sizing: border-box; padding: 12px 15px; border-radius: 8px; border: none; font-size: 1rem; background-color: #3a3b3c; color: #e4e6eb; }
+.create-post-form input::placeholder, .create-post-form textarea::placeholder { color: #b0b3b8; }
+.create-post-form textarea { min-height: 80px; resize: vertical; }
+.create-post-form button { align-self: flex-end; padding: 10px 22px; border: none; border-radius: 8px; font-weight: bold; cursor: not-allowed; background-color: #e4e6eb; color: #bcc0c4; transition: background-color 0.2s; }
+.create-post-form button:not(:disabled) { background: #4a148c; color: white; cursor: pointer; }
+.create-post-form button:not(:disabled):hover { background: #d81b60; }
+
+.post-user { font-weight: bold; color: #050505; }
+.post-card h4 { margin: 0.25rem 0 0.5rem 0; color: #050505; }
+.post-card p { color: #65676b; line-height: 1.5; margin: 0; }
+.post-card-footer { display: flex; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e4e6eb; }
+.action-btn { background-color: #f0f2f5; border: none; border-radius: 20px; padding: 8px 16px; color: #65676b; font-weight: 600; }
+.action-btn:hover { background-color: #e4e6eb; }
+
+.grupos-welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 2rem;
+    text-align: center;
+    color: #65676b;
+}
+
+.grupos-welcome h2 {
+    font-size: 1.75rem;
+    color: #1c1e21;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.grupos-welcome p {
+    font-size: 1.1rem;
+    max-width: 400px;
+    line-height: 1.6;
+    margin: 0;
+}

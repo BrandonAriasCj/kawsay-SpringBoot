@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.kawsay.ia", "com.kawsay.user"})
+@ComponentScan(basePackages = {"com.kawsay.ia", "com.kawsay.user" ,  "com.kawsay.groups"  })
 public class IaApplication {
 
 	public static void main(String[] args) {

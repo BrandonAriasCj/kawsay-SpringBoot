@@ -21,10 +21,10 @@ public class UsuarioConnectionTest {
     void guardarUsuarioEnBD() {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(
-                     "INSERT INTO usuario (id_usuario, nombre, correo_institucional) VALUES (?, ?, ?)")) {
+                     "INSERT INTO usuario (id_usuario correo_institucional) VALUES (?, ?, ?)")) {
 
             stmt.setString(1, "test-usr-001");
-            stmt.setString(2, "Test Nombre");
+
             stmt.setString(3, "test@correo.com");
 
             int filas = stmt.executeUpdate();
