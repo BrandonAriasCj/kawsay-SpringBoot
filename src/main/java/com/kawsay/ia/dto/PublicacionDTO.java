@@ -1,8 +1,11 @@
 package com.kawsay.ia.dto;
 
-public class PublicacionDTO {
-    public Integer id;
-    public String contenido;
-    public Integer autorId;
-    public Integer grupoId;
-}
+import java.time.LocalDateTime;
+
+public record PublicacionDTO(
+        Integer id,
+        String contenido,
+        LocalDateTime fechaPublicacion,
+        Integer autorId,
+        Integer grupoId
+) {}

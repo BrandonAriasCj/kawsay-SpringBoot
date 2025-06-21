@@ -11,4 +11,6 @@ import java.util.List;
 public interface UsuarioGrupoRepository extends JpaRepository<UsuarioGrupo, UsuarioGrupoId > {
     List<UsuarioGrupo> findByUsuarioId(Integer usuarioId);
     List<UsuarioGrupo> findByGrupoId(Integer grupoId);
+
+    boolean existsByUsuarioAndGrupo(Usuario usuario, Grupo grupo);
 }

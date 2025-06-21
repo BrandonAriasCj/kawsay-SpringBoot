@@ -25,6 +25,10 @@ public class Grupo {
     @Column(name = "descripcion", length = 255)
     private String descripcion;
 
+    @Column(name = "categoria", nullable = false, length = 100)
+    private String categoria;
+
+
     @CreationTimestamp
     @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaCreacion;
@@ -32,6 +36,10 @@ public class Grupo {
     @ManyToOne
     @JoinColumn(name = "creador_id", nullable = false)
     private Usuario creador;
+
+    @ManyToOne
+    @JoinColumn(name = "moderador_id", nullable = false)
+    private Usuario moderador;
 
     @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -43,9 +51,13 @@ public class Grupo {
 
 
     @Builder
-    public Grupo(String nombre, String descripcion, Usuario creador) {
+    public Grupo(String nombre, String descripcion, String categoria, Usuario creador, Usuario moderador) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.categoria = categoria;
         this.creador = creador;
+        this.moderador = moderador;
     }
+
+
 }

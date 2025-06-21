@@ -45,9 +45,12 @@ public class Publicacion {
     private List<Reaccion> reacciones;
 
     @Builder
-    public Publicacion(String contenido, Usuario autor, Grupo grupo) {
+    public Publicacion(Integer id, String contenido, LocalDateTime fechaPublicacion, Usuario autor, Grupo grupo) {
+        this.id = id;
         this.contenido = contenido;
+        this.fechaPublicacion = fechaPublicacion;
         this.autor = autor;
         this.grupo = grupo;
     }
+
 }

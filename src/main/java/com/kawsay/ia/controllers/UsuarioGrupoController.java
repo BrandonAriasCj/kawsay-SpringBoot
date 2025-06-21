@@ -44,10 +44,10 @@ public class UsuarioGrupoController {
     public List<GrupoDTO> obtenerGruposDelUsuario(@PathVariable Integer usuarioId) {
         return usuarioGrupoService.obtenerGruposDelUsuario(usuarioId).stream().map(grupo -> {
             GrupoDTO dto = new GrupoDTO();
-            dto.id = grupo.getId();
-            dto.nombre = grupo.getNombre();
-            dto.descripcion = grupo.getDescripcion();
-            dto.creadorId = grupo.getCreador().getId();
+            dto.setId(grupo.getId());
+            dto.setNombre(grupo.getNombre());
+            dto.setDescripcion(grupo.getDescripcion());
+            dto.setCreadorId(grupo.getCreador().getId());
             return dto;
         }).toList();
     }

@@ -10,5 +10,5 @@ public record ReaccionDTO(
         String tipo,
         Integer usuarioId,
         Integer publicacionId,
-        LocalDateTime fechaReaccion
+        LocalDateTime fechaCreacion
 ) {}
