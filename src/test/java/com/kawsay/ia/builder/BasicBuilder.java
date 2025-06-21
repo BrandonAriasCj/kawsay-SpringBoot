@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest
-public class UsuarioBuilder {
+public class BasicBuilder {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -107,11 +107,18 @@ public class UsuarioBuilder {
         Integer can = userRepo.findAll().size();
 
         for (int i = 0; i < 10; i++) {
+            AiChatMemory.Type tipo;
+            if(i%2==0){
+                tipo = AiChatMemory.Type.USER;
+            }else{
+                tipo = AiChatMemory.Type.ASSISTANT;
+            }
+
             AiChatMemory aiChatMemory = AiChatMemory.builder()
                     .sessionId(faker.code().ean8())
                     .usuario(userRepo.getById(idRandom(can)))
                     .content(faker.lorem().paragraph())
-                    .type(AiChatMemory.Type.USER)
+                    .type(tipo)
                     .timestamp(LocalDateTime.now())
                     .build();
             memoryRepo.save(aiChatMemory);

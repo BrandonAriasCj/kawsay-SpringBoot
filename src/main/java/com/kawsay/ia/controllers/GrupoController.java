@@ -1,32 +1,44 @@
 package com.kawsay.ia.controllers;
 
-
 import com.kawsay.ia.dto.GrupoDTO;
-import com.kawsay.ia.repository.GrupoRepository;
+import com.kawsay.ia.dto.PublicacionDTO;
+import com.kawsay.ia.service.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/grupos")
-
+@CrossOrigin(origins = "http://localhost:5173")
 public class GrupoController {
+
     @Autowired
-    private GrupoRepository grupoRepository;
+    private GrupoService grupoService;
 
     @GetMapping
-    public List<GrupoDTO> listarGrupos() {
-        return grupoRepository.findAll().stream().map(grupo -> {
-            GrupoDTO dto = new GrupoDTO();
-            dto.id = grupo.getId();
-            dto.nombre = grupo.getNombre();
-            dto.descripcion = grupo.getDescripcion();
-            dto.creadorId = grupo.getCreador().getId();
-            return dto;
-        }).toList();
+    public ResponseEntity<List<GrupoDTO>> obtenerTodosLosGrupos() {
+        return ResponseEntity.ok(grupoService.obtenerTodosLosGrupos());
+    }
+
+    @PostMapping
+    public ResponseEntity<GrupoDTO> crearGrupo(@RequestBody GrupoDTO grupoDTO) {
+        GrupoDTO nuevoGrupo = grupoService.crearGrupo(grupoDTO);
+        return new ResponseEntity<>(nuevoGrupo, HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/{id}/publicaciones")
+    public ResponseEntity<List<PublicacionDTO>> obtenerPublicacionesDeGrupo(@PathVariable Integer id) {
+        return ResponseEntity.ok(grupoService.obtenerPublicacionesDeGrupo(id));
+    }
+
+    @PostMapping("/{id}/publicaciones")
+    public ResponseEntity<PublicacionDTO> crearPublicacionEnGrupo(
+            @PathVariable Integer id, @RequestBody PublicacionDTO publicacionDTO) {
+        PublicacionDTO nuevaPublicacion = grupoService.crearPublicacionEnGrupo(id, publicacionDTO);
+        return new ResponseEntity<>(nuevaPublicacion, HttpStatus.CREATED);
     }
 }

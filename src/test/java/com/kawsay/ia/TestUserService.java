@@ -21,6 +21,7 @@ public class TestUserService {
             System.out.println(usuario.toString());
         }
     }
+
     @Test
     void crear() {
         //Nota: ejecutar luego de que este creado algun rol
