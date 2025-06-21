@@ -8,7 +8,7 @@ const Chatbot = () => {
   
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const idUsuario = 2;
+  const idUsuario = 3;
 
   useEffect(()=>{
           axios.get(`http://localhost:8080/api/${idUsuario}/mensajes10/`)
@@ -67,9 +67,9 @@ return (
   <div className="chatbot-wrapper">
     <div className="chatbot-container">
       <div className="chat-header">
-  <img src={kawsaiLogo} alt="KawsAI Logo" className="chat-logo" />
-  KawsAI - Historias Interactivas
-</div>
+        <img src={kawsaiLogo} alt="KawsAI Logo" className="chat-logo" />
+        KawsAI - Historias Interactivas
+      </div>
 
 
       <div className="chat-window">

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -155,7 +156,8 @@ public class AiChatMemoryService {
      * Salida.- Lista de 10 elementos
      */
     public List<AiChatMemory> find10UltimosElementos(Integer usuarioId){
-        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
+        Usuario usuario = usuarioOpt.get();
         List<AiChatMemory> listaMensajesUsuario = aiChatMemoryRepository.findTop10ByUsuarioOrderByTimestampDesc(usuario);
         return listaMensajesUsuario;
     }
