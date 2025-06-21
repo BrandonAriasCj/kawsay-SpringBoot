@@ -1,6 +1,9 @@
 package com.kawsay.ia.dto;
 
-public class UsuarioDTO {
-    private Integer id;
-    private String correo;
-}
+import com.kawsay.ia.entity.Rol;
+
+public record UsuarioDTO(
+        Integer id,
+        String correo,
+        Integer rolId
+) {}
