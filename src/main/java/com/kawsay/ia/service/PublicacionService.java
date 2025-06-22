@@ -13,6 +13,8 @@ import com.kawsay.ia.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class PublicacionService {
@@ -70,21 +72,26 @@ public class PublicacionService {
         Usuario usuario = usuarioRepository.findById(reaccionDTO.usuarioId())
                 .orElseThrow(() -> new RuntimeException("Autor de la reacción no encontrado"));
 
+        // ✅ Convertir string a enum de forma segura (en mayúsculas)
+        Reaccion.Tipo tipoEnum = Reaccion.Tipo.valueOf(reaccionDTO.tipo().toUpperCase());
+
         Reaccion reaccion = Reaccion.builder()
-                .tipo(reaccionDTO.tipo())
-                .usuario(usuario) // ← CORRECTO: esto sí coincide con tu entidad
+                .tipo(tipoEnum) // ← ya es enum, ahora sí lo acepta el builder
+                .usuario(usuario)
                 .publicacion(publicacion)
+                .fechaReaccion(LocalDateTime.now())
                 .build();
 
         Reaccion reaccionGuardada = reaccionRepository.save(reaccion);
 
         return new ReaccionDTO(
                 reaccionGuardada.getId(),
-                reaccionGuardada.getTipo(),
-                reaccionGuardada.getUsuario().getId(),
-                reaccionGuardada.getPublicacion().getId(),
-                reaccionGuardada.getFechaReaccion() // ← lo mapeas a 'fechaCreacion' del DTO
+                reaccionGuardada.getTipo().name(), // ← enum → string (para el DTO)
+                usuario.getId(),
+                publicacion.getId(),
+                reaccionGuardada.getFechaReaccion()
         );
     }
+
 
 }

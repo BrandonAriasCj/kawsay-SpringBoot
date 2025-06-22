@@ -17,8 +17,8 @@ public class Reaccion {
     @Column(name = "id_reaccion")
     private Integer id;
 
-    @Column(name = "tipo", length = 50, nullable = false)
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
 
     @CreationTimestamp
     @Column(name = "fecha_reaccion", updatable = false)
@@ -32,11 +32,22 @@ public class Reaccion {
     @JoinColumn(name = "publicacion_id", referencedColumnName = "id_publicacion")
     private Publicacion publicacion;
 
+    @ManyToOne
+    @JoinColumn(name = "comentario_id")
+    private Comentario comentario;
+
+
+    public enum Tipo {
+        LIKE, DISLIKE, LOVE, FIRE, SAD, FUNNY
+    }
+
     @Builder
-    public Reaccion(String tipo, Usuario usuario, Publicacion publicacion) {
+    public Reaccion(Tipo tipo, Usuario usuario, Publicacion publicacion, Comentario comentario, LocalDateTime fechaReaccion) {
         this.tipo = tipo;
         this.usuario = usuario;
         this.publicacion = publicacion;
+        this.comentario = comentario;
+        this.fechaReaccion = fechaReaccion;
     }
 
 

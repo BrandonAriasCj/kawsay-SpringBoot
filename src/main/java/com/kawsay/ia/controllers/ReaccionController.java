@@ -31,7 +31,7 @@ public class ReaccionController {
                 .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
         Reaccion reaccion = Reaccion.builder()
-                .tipo(dto.tipo())
+                .tipo(Reaccion.Tipo.valueOf(dto.tipo().toUpperCase()))
                 .usuario(usuario)
                 .publicacion(publicacion)
                 .build();
@@ -47,7 +47,7 @@ public class ReaccionController {
                 .stream()
                 .map(r -> new ReaccionDTO(
                         r.getId(),
-                        r.getTipo(),
+                        r.getTipo().name(),
                         r.getUsuario().getId(),
                         r.getPublicacion().getId(),
                         r.getFechaReaccion()
