@@ -53,6 +53,10 @@ public class Usuario {
     @JsonIgnore
     private List<Reaccion> reacciones;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<UsuarioGrupo> gruposUnidos;
+
+
     @Builder
     public Usuario(String correoInstitucional, String contraseña, Rol rol) {
         this.correoInstitucional = correoInstitucional;

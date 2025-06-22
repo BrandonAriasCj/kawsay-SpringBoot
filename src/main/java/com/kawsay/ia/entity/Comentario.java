@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -32,10 +33,23 @@ public class Comentario {
     @JoinColumn(name = "publicacion_id", nullable = false)
     private Publicacion publicacion;
 
+    @ManyToOne
+    @JoinColumn(name = "comentario_padre_id")
+    private Comentario comentarioPadre;
+
+    @OneToMany(mappedBy = "comentarioPadre")
+    private List<Comentario> respuestas;
+
+
+
     @Builder
-    public Comentario(String contenido, Usuario autor, Publicacion publicacion) {
+    public Comentario(String contenido, LocalDateTime fechaComentario, Usuario autor, Publicacion publicacion, Comentario comentarioPadre, List<Comentario> respuestas) {
         this.contenido = contenido;
+        this.fechaComentario = fechaComentario;
         this.autor = autor;
         this.publicacion = publicacion;
+        this.comentarioPadre = comentarioPadre;
+        this.respuestas = respuestas;
     }
+
 }

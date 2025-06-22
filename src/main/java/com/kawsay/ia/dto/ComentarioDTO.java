@@ -1,8 +1,11 @@
 package com.kawsay.ia.dto;
 
-public class ComentarioDTO {
-    public Integer id;
-    public String contenido;
-    public Integer autorId;
-    public Integer publicacionId;
-}
+import java.time.LocalDateTime;
+
+public record ComentarioDTO(
+        Integer id,
+        String contenido,
+        Integer autorId,
+        Integer publicacionId,
+        LocalDateTime fechaCreacion
+) {}

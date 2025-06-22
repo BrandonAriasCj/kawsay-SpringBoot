@@ -1,8 +1,14 @@
 package com.kawsay.ia.dto;
 
-public class ReaccionDTO {
-    public Integer id;
-    public String tipo;
-    public Integer usuarioId;
-    public Integer publicacionId;
-}
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+
+public record ReaccionDTO(
+        Integer id,
+        String tipo,
+        Integer usuarioId,
+        Integer publicacionId,
+        LocalDateTime fechaCreacion
+) {}
