@@ -1,6 +1,8 @@
 // src/pages/Login.jsx
 import React, { useContext, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
+import { getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
+
+import { Amplify} from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import awsExports from '../aws-exports';
 import '@aws-amplify/ui-react/styles.css';
@@ -13,40 +15,43 @@ const LoggedInHandler = ({ user, signOut }) => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
- 
+  console.log("🧍 Usuario autenticado:", user);
+  console.log("📧 Email:", user?.attributes?.email);
 useEffect(() => {
-  console.log("📡 useEffect activado: verificando usuario...");
+  const obtenerToken = async () => {
+    try {
+      const currentUser = await getCurrentUser(); // ← esto asegura que hay sesión
+      const session = await fetchAuthSession();   // ← ahora sí, obtenemos los tokens
 
-  const sendTokenToBackEnd = async () => {
-    if (user && user.signInUserSession) {
-      const token = user.signInUserSession.idToken.jwtToken;
-      console.log("🔐 TOKEN capturado desde Cognito:", token); // ← Verifica si aparece en la consola del navegador
+      const token = session.tokens?.idToken?.toString();
+      const email = currentUser.signInDetails?.loginId;
 
-      try {
-        const response = await fetch('http://localhost:8080/api/usuario/token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${token}`,
-          },
-        });
-
-        const responseData = await response.text();
-        console.log("📬 Respuesta del backend:", responseData); // ← ¿Se imprime algo aquí?
-      } catch (error) {
-        console.error("❌ Error en el fetch al backend:", error);
+      if (!token || !email) {
+        console.warn("⚠️ No se pudo extraer email o token.");
+        return;
       }
 
-      setUser(user);
+      console.log("📧 Email:", email);
+      console.log("🔐 ID Token:", token);
+
+      await fetch('http://localhost:8081/api/usuario/registro-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      setUser(currentUser);
       navigate('/profile');
-    } else {
-      console.warn("⚠️ Usuario o sesión aún no disponible.");
+    } catch (err) {
+      console.error("❌ Error al obtener sesión:", err);
     }
   };
 
-  sendTokenToBackEnd();
-}, [user, setUser, navigate]);
-
+  obtenerToken();
+}, [setUser, navigate]);
 
 
   return (
@@ -62,7 +67,10 @@ useEffect(() => {
       </main>
     </div>
   );
+
+
 };
+
 
 const Login = () => {
   return (

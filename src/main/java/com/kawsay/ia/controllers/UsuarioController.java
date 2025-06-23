@@ -8,6 +8,8 @@ import com.kawsay.ia.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,15 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final RolRepository rolRepository;
+
+
+    @PostMapping("/token")
+    public ResponseEntity<String> registrar(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaimAsString("email");
+        String sub = jwt.getSubject(); // ID único del usuario en Cognito
+        System.out.println("Nuevo usuario: " + email + ", ID: " + sub);
+        return ResponseEntity.ok("Usuario registrado correctamente");
+    }
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioDTO dto) {
