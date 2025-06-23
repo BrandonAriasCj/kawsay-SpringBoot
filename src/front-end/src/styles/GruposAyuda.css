@@ -97,3 +97,504 @@
     line-height: 1.6;
     margin: 0;
 }
+
+/* Añade o reemplaza estas reglas en tu src/styles/GruposAyuda.css */
+
+/* ... tus estilos existentes ... */
+
+.group-nav-list {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem; /* Reducir gap entre items */
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.category-section {
+    margin-bottom: 1rem;
+}
+
+.category-header {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #8a2be2; /* Un color violeta */
+    text-transform: uppercase;
+    padding: 0 1rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.group-nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinea el botón de "Unirse" a la derecha */
+    padding: 10px 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.group-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-grow: 1; /* Permite que ocupe el espacio disponible */
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 8px;
+    color: white;
+}
+
+.status-badge.status-creator {
+    background-color: #ffb347; /* Naranja */
+}
+
+.status-badge.status-joined {
+    background-color: #4caf50; /* Verde */
+}
+
+.join-group-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 1px solid #9c27b0;
+    color: #9c27b0;
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Evita que el texto se parta */
+}
+
+.join-group-btn:hover {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.group-meta-info {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: #65676b;
+    margin-top: 0.5rem;
+}
+
+.group-meta-info strong {
+    color: #1c1e21;
+}
+
+.main-content-header-redesigned {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e4e6eb;
+    background-color: #fff;
+}
+
+.group-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+    color: #1c1e21;
+}
+
+.group-category-badge {
+    display: inline-block;
+    background-color: #e7f3ff;
+    color: #1877f2;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.group-description {
+    margin: 0;
+    color: #65676b;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Estilos para PostCard y sus acciones */
+.vote-btn.voted {
+    background-color: #e7f3ff;
+    color: #1877f2;
+    font-weight: bold;
+}
+
+/* Estilos para la sección de comentarios */
+.comment-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e4e6eb;
+}
+
+.comment-section-title {
+    font-size: 1.1rem;
+    color: #1c1e21;
+    margin: 0 0 1rem 0;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border: 1px solid #ccd0d5;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.comment-form button {
+    align-self: flex-end;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #1877f2;
+    color: white;
+}
+
+.comment-form button:disabled {
+    background-color: #e4e6eb;
+    color: #bcc0c4;
+    cursor: not-allowed;
+}
+
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment-card {
+    background-color: #f0f2f5;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.comment-author {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin: 0 0 4px 0;
+    color: #050505;
+}
+
+.comment-content {
+    margin: 0;
+    color: #1c1e21;
+    white-space: pre-wrap; /* Respeta los saltos de línea */
+}
+
+/* ---- AÑADIR ESTO AL FINAL DE src/styles/GruposAyuda.css ---- */
+
+/* ESTILOS PARA LA BARRA LATERAL */
+.category-section { margin-bottom: 1rem; }
+.category-header { font-size: 0.8rem; font-weight: bold; color: #9c27b0; text-transform: uppercase; padding: 0 1rem 4px; margin: 0 0 0.5rem 0; border-bottom: 1px solid #f0e6f6; }
+.group-nav-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; border-radius: 12px; }
+.group-info { display: flex; align-items: center; gap: 12px; flex-grow: 1; }
+.status-badge { font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 8px; color: white; margin-left: auto; margin-right: 10px; }
+.status-badge.status-creator { background-color: #ffb347; }
+.status-badge.status-joined { background-color: #4caf50; }
+.join-group-btn { padding: 6px 12px; font-size: 0.8rem; font-weight: bold; border: 1px solid #9c27b0; color: #9c27b0; background-color: transparent; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.join-group-btn:hover { background-color: #f3e5f5; }
+
+/* NUEVO ENCABEZADO DE GRUPO */
+.main-content-header-redesigned { padding: 1.5rem 2rem; border-bottom: 1px solid #e4e6eb; background-color: #fff; }
+.group-title { margin: 0 0 0.5rem 0; font-size: 2rem; color: #1c1e21; }
+.group-category-badge { display: inline-block; background-color: #e7f3ff; color: #1877f2; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; }
+.group-description { margin: 0; color: #65676b; font-size: 1rem; line-height: 1.5; }
+
+/* ESTILOS PARA POSTCARD Y ACCIONES */
+.vote-btn.voted { background-color: #e7f3ff; color: #1877f2; font-weight: bold; border-color: #1877f2; }
+
+/* ESTILOS PARA LA SECCIÓN DE COMENTARIOS */
+.comment-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e4e6eb; }
+.comment-section-title { font-size: 1.1rem; color: #1c1e21; margin: 0 0 1rem 0; }
+.comment-form { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+.comment-form textarea { width: 100%; min-height: 60px; padding: 10px; border: 1px solid #ccd0d5; border-radius: 8px; resize: vertical; font-family: inherit; font-size: 1rem; }
+.comment-form button { align-self: flex-end; padding: 8px 16px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background-color: #1877f2; color: white; }
+.comment-form button:disabled { background-color: #e4e6eb; color: #bcc0c4; cursor: not-allowed; }
+.comment-list { display: flex; flex-direction: column; gap: 1rem; }
+.comment-card { background-color: #f0f2f5; padding: 12px; border-radius: 12px; }
+.comment-author { font-weight: bold; font-size: 0.9rem; margin: 0 0 4px 0; color: #050505; }
+.comment-content { margin: 0; color: #1c1e21; white-space: pre-wrap; }
+.no-comments-message { color: #65676b; font-style: italic; }
+
+
+/* --- Estructura Principal --- */
+.page-wrapper-grupos { padding-top: 100px; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; background: linear-gradient(to bottom, #6a1b9a, #ba68c8, #f06292); box-sizing: border-box; overflow: hidden; }
+.layout-container { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; width: 90%; max-width: 1400px; height: 95%; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25); padding: 1rem; overflow: hidden; }
+
+/* --- Barra Lateral --- */
+.sidebar { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; overflow: hidden; }
+.create-new-group-btn { width: 100%; padding: 14px 20px; background: linear-gradient(to right, #ff6e7f, #ffb347); color: white; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-size: 1rem; }
+.create-new-group-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 110, 127, 0.4); }
+
+/* Pestañas Horizontales */
+.group-tabs { display: flex; border-bottom: 2px solid #eee; }
+.tab-btn { flex: 1; padding: 12px 0; background: none; border: none; font-weight: 600; color: #65676b; cursor: pointer; position: relative; }
+.tab-btn.active { color: #9c27b0; }
+.tab-btn.active::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background-color: #9c27b0; }
+
+.sidebar-content { flex-grow: 1; overflow-y: hidden; }
+.empty-list-message { text-align: center; color: #888; padding: 2rem; }
+
+/* Contenido de la pestaña "Grupos/Descubrir" */
+.discover-layout { display: grid; grid-template-columns: 120px 1fr; height: 100%; overflow-y: hidden; gap: 1rem; }
+.category-list, .discover-groups-list, .groups-list-simple { overflow-y: auto; padding-top: 1rem; }
+.category-list { border-right: 1px solid #eee; }
+.category-list-item { padding: 10px; border-radius: 8px; font-weight: 500; cursor: pointer; }
+.category-list-item:hover { background-color: #f7f7f7; }
+.category-list-item.active { background-color: #f3e5f5; color: #9c27b0; font-weight: bold; }
+.discover-group-card { background-color: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+.discover-group-card h4 { margin: 0 0 0.5rem 0; }
+.discover-group-card p { margin: 0 0 1rem 0; font-size: 0.9rem; color: #65676b; }
+.join-group-btn-card { width: 100%; padding: 8px; border: 1px solid #9c27b0; color: #9c27b0; background-color: white; border-radius: 8px; cursor: pointer; }
+
+/* Contenido de pestañas "Unidos" y "Creados" */
+.group-list-item { display: flex; align-items: center; gap: 1rem; padding: 12px; border-radius: 8px; cursor: pointer; }
+.group-list-item:hover { background-color: #f7f7f7; }
+.group-list-item.active { background-color: #f3e5f5; }
+.group-list-icon { width: 32px; height: 32px; border-radius: 50%; background-color: #e4e6eb; display: grid; place-items: center; font-weight: bold; }
+.group-list-name { font-weight: 500; }
+
+/* --- Contenido Principal y Feed --- */
+.main-content { display: flex; flex-direction: column; background-color: #f0f2f5; border-radius: 16px; overflow: hidden; }
+.main-content-header-redesigned { padding: 1.5rem 2rem; border-bottom: 1px solid #e4e6eb; background-color: #fff; }
+.group-title { margin: 0 0 0.5rem 0; font-size: 2rem; }
+.group-category-badge { display: inline-block; background-color: #e7f3ff; color: #1877f2; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; }
+.group-description { margin: 0; color: #65676b; }
+.feed { padding: 1.5rem 2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; }
+.feed-status { text-align: center; padding: 2rem; color: #65676b; }
+
+/* ... (Aquí van los estilos de PostCard, CreatePostForm, Welcome, Modal, etc. que ya tenías) ... */
+.post-card, .create-post-container { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+.create-post-container h4 { margin-top: 0; margin-bottom: 1rem; color: #4a148c; font-weight: 600; }
+.create-post-form { display: flex; flex-direction: column; gap: 1rem; }
+.create-post-form input, .create-post-form textarea { width: 100%; box-sizing: border-box; padding: 12px 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
+.create-post-form button { align-self: flex-end; padding: 10px 22px; border: none; border-radius: 8px; font-weight: bold; background: #4a148c; color: white; cursor: pointer; }
+.post-card-footer { display: flex; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e4e6eb; }
+.action-btn { background-color: #f0f2f5; border: none; border-radius: 20px; padding: 8px 16px; font-weight: 600; }
+.vote-btn.voted { background-color: #e7f3ff; color: #1877f2; font-weight: bold; }
+/* ... (Y los demás estilos) ... */
+
+/* src/styles/GruposAyuda.css */
+.page-wrapper-grupos {
+    padding-top: 100px; height: 100vh; width: 100vw; display: flex;
+    justify-content: center; align-items: center;
+    background: linear-gradient(to bottom, #6a1b9a, #ba68c8, #f06292);
+    box-sizing: border-box; overflow: hidden;
+}
+
+.layout-container {
+    display: grid; grid-template-columns: 350px 1fr; gap: 1.5rem; width: 90%;
+    max-width: 1400px; height: 95%; background: white; border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25); padding: 1rem; overflow: hidden;
+}
+
+/* --- Redefined Sidebar --- */
+.sidebar-redefined {
+    display: flex; flex-direction: column; overflow: hidden;
+    background-color: #f7f7f8; border-radius: 16px;
+}
+.sidebar-header { padding: 1rem; border-bottom: 1px solid #e4e6eb; }
+.create-new-group-btn {
+    width: 100%; padding: 14px 20px; background: linear-gradient(to right, #ff6e7f, #ffb347);
+    color: white; font-weight: bold; border: none; border-radius: 12px; cursor: pointer;
+    transition: all 0.3s ease; font-size: 1rem;
+}
+.create-new-group-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 110, 127, 0.4); }
+
+/* --- Tabs Component --- */
+.tabs-container { display: flex; padding: 0.5rem; background-color: #e9e9eb; }
+.tab-button {
+    flex-grow: 1; padding: 12px; border: none; background: transparent;
+    font-size: 1rem; font-weight: 600; color: #65676b; cursor: pointer;
+    border-radius: 8px; transition: background-color 0.2s, color 0.2s;
+}
+.tab-button.active { background-color: white; color: #4a148c; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+/* --- Group Sidebar Content --- */
+.group-sidebar-content { flex-grow: 1; overflow-y: auto; padding: 1rem; }
+.empty-message { text-align: center; color: #888; padding: 1rem; font-style: italic; }
+
+/* Simple List (Joined/Created) */
+.simple-group-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.simple-list-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px;
+    border-radius: 8px; cursor: pointer; transition: background-color 0.2s;
+    font-weight: 500;
+}
+.simple-list-item:hover { background-color: #e9e9eb; }
+.simple-list-item.active { background-color: #f3e5f5; color: #9c27b0; font-weight: 700; }
+.group-icon {
+    width: 32px; height: 32px; border-radius: 50%; background-color: #ddd;
+    display: grid; place-items: center; font-weight: bold; color: #333;
+}
+.creator-badge {
+    margin-left: auto; font-size: 0.75rem; font-weight: bold;
+    background-color: #ffb347; color: white; padding: 3px 8px; border-radius: 6px;
+}
+
+/* Discover Tab Layout */
+.discover-layout { display: grid; grid-template-columns: 120px 1fr; gap: 1rem; height: 100%; }
+.category-list { border-right: 1px solid #e4e6eb; padding-right: 1rem; }
+.category-list h4 { margin: 0 0 1rem 0; font-size: 0.9rem; color: #65676b; }
+.category-button {
+    width: 100%; text-align: left; padding: 10px; border-radius: 6px;
+    border: none; background: transparent; cursor: pointer; font-size: 0.9rem;
+}
+.category-button:hover { background-color: #e9e9eb; }
+.category-button.active { background-color: #d1c4e9; color: #4a148c; font-weight: bold; }
+.group-list-panel { overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+.discover-group-card {
+    background: white; border-radius: 8px; padding: 1rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.discover-group-card h5 { margin: 0 0 0.5rem 0; }
+.discover-group-card p { font-size: 0.85rem; color: #65676b; margin: 0 0 1rem 0; }
+.discover-card-footer { display: flex; gap: 0.5rem; }
+.discover-card-footer button {
+    flex-grow: 1; padding: 8px; border-radius: 6px; border: 1px solid #ddd;
+    background-color: #f0f2f5; font-weight: 600; cursor: pointer;
+}
+.discover-card-footer button.join-btn {
+    background-color: #4a148c; color: white; border: none;
+}
+
+/* --- Main Content (Feed) --- */
+.main-content { display: flex; flex-direction: column; background-color: #f0f2f5; border-radius: 16px; overflow: hidden; }
+.main-content-header-redesigned { padding: 1.5rem 2rem; border-bottom: 1px solid #e4e6eb; background-color: #fff; }
+.group-title { margin: 0 0 0.5rem 0; font-size: 2rem; color: #1c1e21; }
+.group-category-badge { display: inline-block; background-color: #e7f3ff; color: #1877f2; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; }
+.group-description { margin: 0; color: #65676b; font-size: 1rem; line-height: 1.5; }
+.feed { padding: 1.5rem 2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; }
+/* ... [Resto de tus estilos para Feed, PostCard, Modal, Comentarios, etc. van aquí] ... */
+/* Asegúrate de incluir los estilos de comentarios y post-card de la respuesta anterior */
+.post-card, .create-post-container { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+.create-post-container h4 { margin-top: 0; margin-bottom: 1rem; color: #4a148c; font-weight: 600; }
+.create-post-form { display: flex; flex-direction: column; gap: 1rem; }
+.create-post-form input, .create-post-form textarea { width: 100%; box-sizing: border-box; padding: 12px 15px; border-radius: 8px; border: none; font-size: 1rem; background-color: #3a3b3c; color: #e4e6eb; }
+.create-post-form input::placeholder, .create-post-form textarea::placeholder { color: #b0b3b8; }
+.create-post-form textarea { min-height: 80px; resize: vertical; }
+.create-post-form button { align-self: flex-end; padding: 10px 22px; border: none; border-radius: 8px; font-weight: bold; cursor: not-allowed; background-color: #e4e6eb; color: #bcc0c4; transition: background-color 0.2s; }
+.create-post-form button:not(:disabled) { background: #4a148c; color: white; cursor: pointer; }
+.post-card-footer { display: flex; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e4e6eb; }
+.action-btn { background-color: #f0f2f5; border: none; border-radius: 20px; padding: 8px 16px; color: #65676b; font-weight: 600; }
+.vote-btn.voted { background-color: #e7f3ff; color: #1877f2; font-weight: bold; }
+.comment-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e4e6eb; }
+.comment-section-title { font-size: 1.1rem; color: #1c1e21; margin: 0 0 1rem 0; }
+.comment-form { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+.comment-form textarea { width: 100%; min-height: 60px; padding: 10px; border: 1px solid #ccd0d5; border-radius: 8px; resize: vertical; font-family: inherit; font-size: 1rem; }
+.comment-form button { align-self: flex-end; padding: 8px 16px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background-color: #1877f2; color: white; }
+.comment-form button:disabled { background-color: #e4e6eb; color: #bcc0c4; cursor: not-allowed; }
+.comment-list { display: flex; flex-direction: column; gap: 1rem; }
+.comment-card { background-color: #f0f2f5; padding: 12px; border-radius: 12px; }
+.comment-author { font-weight: bold; font-size: 0.9rem; margin: 0 0 4px 0; color: #050505; }
+.comment-content { margin: 0; color: #1c1e21; white-space: pre-wrap; }
+.grupos-welcome { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; color: #65676b; }
+
+/* ---- AÑADIR ESTO AL FINAL DE src/styles/GruposAyuda.css ---- */
+
+.no-comments-message {
+    color: #65676b;
+    font-style: italic;
+    padding: 1rem 0;
+}
+
+.comment-card-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-card {
+    background-color: #f0f2f5;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.comment-actions {
+    margin-top: 8px;
+}
+
+.comment-actions button {
+    background: none;
+    border: none;
+    color: #65676b;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+}
+
+.comment-actions button:hover {
+    background-color: #e4e6eb;
+    border-radius: 4px;
+}
+
+.comment-reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-left: 1rem; /* Indentación del formulario de respuesta */
+}
+
+.comment-reply-form textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    resize: vertical;
+}
+
+.comment-reply-form button {
+    align-self: flex-end;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4a148c;
+    color: white;
+    cursor: pointer;
+}
+
+.comment-reply-form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.comment-replies {
+    margin-top: 1rem;
+    padding-left: 2rem; /* Indentación para las respuestas */
+    border-left: 2px solid #e4e6eb;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ---- AÑADIR O REEMPLAZAR ESTOS ESTILOS EN src/styles/GruposAyuda.css ---- */
+
+.no-comments-message { color: #65676b; font-style: italic; padding: 1rem 0; }
+.comment-card-container { display: flex; flex-direction: column; }
+.comment-actions { margin-top: 8px; }
+.comment-actions button { background: none; border: none; color: #65676b; font-weight: bold; cursor: pointer; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; }
+.comment-actions button:hover { background-color: #e4e6eb; }
+.comment-reply-form { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; padding-left: 1rem; }
+.comment-reply-form textarea { width: 100%; min-height: 50px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; resize: vertical; }
+.comment-reply-form button { align-self: flex-end; padding: 6px 12px; border: none; border-radius: 6px; background-color: #4a148c; color: white; cursor: pointer; }
+.comment-reply-form button:disabled { background-color: #ccc; cursor: not-allowed; }
+.comment-replies { margin-top: 1rem; padding-left: 2rem; border-left: 2px solid #e4e6eb; display: flex; flex-direction: column; gap: 1rem; }
