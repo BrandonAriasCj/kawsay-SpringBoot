@@ -70,4 +70,15 @@ public class TestChatService {
         List<AiChatMemory> lista = aiChatMemoryService.filtrarMensajesUserPorUsuarioId(2);
         System.out.println(lista);
     }
+
+    @Autowired
+    AiChatMemoryRepository mensajeRepository;
+    @Test
+    public void contar(){
+        Usuario usuario = new Usuario();
+        usuario.setId( 2 );
+        int cantidad = (int) mensajeRepository.countByUsuario(usuario);
+        System.out.println(cantidad);
+
+    }
 }

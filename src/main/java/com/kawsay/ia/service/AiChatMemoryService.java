@@ -6,6 +6,7 @@ import com.kawsay.ia.repository.UsuarioRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import com.kawsay.ia.entity.AiChatMemory;
@@ -176,7 +177,9 @@ public class AiChatMemoryService {
         mensaje.setTimestamp(LocalDateTime.now());
         mensaje.setType(AiChatMemory.Type.USER);
         mensaje.setUsuario(usuario);
-        return aiChatMemoryRepository.save(mensaje);
+        AiChatMemory memorySafe = aiChatMemoryRepository.save(mensaje);
+        evaluar(memorySafe);
+        return memorySafe;
     }
 
     public AiChatMemory insesrtarMensajeAssistantService(Integer userId, AiChatMemory mensaje) {
@@ -185,8 +188,45 @@ public class AiChatMemoryService {
         mensaje.setTimestamp(LocalDateTime.now());
         mensaje.setType(AiChatMemory.Type.ASSISTANT);
         mensaje.setUsuario(usuario);
-        return aiChatMemoryRepository.save(mensaje);
+        AiChatMemory memorySafe = aiChatMemoryRepository.save(mensaje);
+        evaluar(memorySafe);
+        return memorySafe;
     }
 
+
+    /*  ENTRADA: id de usuario
+     *   Metodo para evaluar evento de procesamiento de un reporte
+     *  SALIDA: Boolean
+     */
+    public boolean isEvento(Integer id){
+        int cadaCuanto = 20;
+        if (id % cadaCuanto == 0){
+            return true;
+        } else
+            return false;
+    }
+
+
+    /*  ENTRADA: id de usuario
+     *   Metodo para evaluar evento de procesamiento de un reporte
+     *  SALIDA: Boolean
+     */
+    @Autowired
+    AiChatMemoryRepository mensajeRepository;
+    public int contar(Usuario usuario){
+        int cantidad = (int) mensajeRepository.countByUsuario(usuario);
+        System.out.println(cantidad);
+        return cantidad;
+    }
+
+
+    public void evaluar(AiChatMemory mensaje){
+        int id = (int) mensaje.getUsuario().getId();
+        int cantidad = contar(mensaje.getUsuario());
+        if (isEvento(cantidad)){
+            System.out.println("Procesar reporte");
+        }
+
+    }
 
 }
