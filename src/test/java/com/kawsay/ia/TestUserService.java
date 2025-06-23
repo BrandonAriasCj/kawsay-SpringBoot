@@ -2,6 +2,7 @@ package com.kawsay.ia;
 import com.kawsay.ia.entity.Rol;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.repository.RolRepository;
+import com.kawsay.ia.repository.UsuarioRepository;
 import com.kawsay.ia.service.UsuarioService;
 
 import org.checkerframework.checker.fenum.qual.SwingTextOrientation;
@@ -49,6 +50,20 @@ public class TestUserService {
             System.out.println("📧 Correo: " + usuario.getCorreoInstitucional());
             System.out.println("🎭 Rol: " + (usuario.getRol() != null ? usuario.getRol().getDenominacion() : "Sin rol"));
             System.out.println("------------");
+        }
+    }
+
+
+    @Autowired
+    UsuarioService userService;
+    @Test
+    void findAllUsersPsicólogos(){
+        List<Usuario> psicologos = userService.findAllUserPsicologos();
+
+        for (Usuario ps: psicologos) {
+            System.out.println("-----------");
+            System.out.println("Correo: " + ps.getCorreoInstitucional());
+            System.out.println("Rol: " + ps.getRol().getDenominacion());
         }
     }
 
