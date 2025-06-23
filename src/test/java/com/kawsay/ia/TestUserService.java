@@ -58,12 +58,24 @@ public class TestUserService {
     UsuarioService userService;
     @Test
     void findAllUsersPsicólogos(){
-        List<Usuario> psicologos = userService.findAllUserPsicologos();
+        List<Usuario> psicologos = userService.findAllPsicologos();
 
         for (Usuario ps: psicologos) {
             System.out.println("-----------");
             System.out.println("Correo: " + ps.getCorreoInstitucional());
             System.out.println("Rol: " + ps.getRol().getDenominacion());
+        }
+    }
+
+
+    @Test
+    void findAllUsersAlumnos(){
+        List<Usuario> alumnos = userService.findAllAlumnos();
+
+        for (Usuario al: alumnos) {
+            System.out.println("-----------");
+            System.out.println("Correo: " + al.getCorreoInstitucional());
+            System.out.println("Rol: " + al.getRol().getDenominacion());
         }
     }
 

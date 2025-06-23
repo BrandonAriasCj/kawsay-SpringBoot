@@ -30,9 +30,16 @@ public class UsuarioService {
     RolRepository roleRepository;
     @Autowired
     UsuarioRepository userRepository;
-    public List<Usuario> findAllUserPsicologos() {
-        Rol psicologo = roleRepository.getRolById((Integer) 2);
-        List<Usuario> psicologos = userRepository.findByRol(psicologo);
+    public List<Usuario> findAllPsicologos() {
+        Rol psicologoRol = roleRepository.getRolById((Integer) 2);
+        List<Usuario> psicologos = userRepository.findByRol(psicologoRol);
+        return psicologos;
+    }
+
+    public List<Usuario> findAllAlumnos() {
+        Rol usuarioRol = roleRepository.getRolById((Integer) 1);
+
+        List<Usuario> psicologos = userRepository.findByRol(usuarioRol);
         return psicologos;
     }
 }
