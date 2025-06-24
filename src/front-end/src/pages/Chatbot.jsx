@@ -11,7 +11,7 @@ const Chatbot = () => {
   const idUsuario = 3;
 
   useEffect(()=>{
-          axios.get(`http://localhost:8080/api/${idUsuario}/mensajes10/`)
+          axios.get(`http://localhost:8081/api/${idUsuario}/mensajes10/`)
           .then(response => {
             setMessages(() => response.data);
             console.log("asdfasd")
@@ -24,7 +24,7 @@ const Chatbot = () => {
 
   async function persistirAndTraer() {
     try {
-      const response = await axios.post(`http://localhost:8080/api/request/${idUsuario}/mensaje/`, `${input}`,
+      const response = await axios.post(`http://localhost:8081/api/request/${idUsuario}/mensaje/`, `${input}`,
         {
           headers: {
             'Content-Type': 'text/plain'
@@ -32,7 +32,7 @@ const Chatbot = () => {
         }
       ).then()
       console.log(response)
-      axios.get(`http://localhost:8080/api/${idUsuario}/mensajes10/`)
+      axios.get(`http://localhost:8081/api/${idUsuario}/mensajes10/`)
           .then(response => {
             setMessages(() => response.data);
             console.log("asdfasd")
