@@ -1,4 +1,5 @@
 package com.kawsay.ia.service;
+import com.kawsay.ia.entity.Reporte;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.mapper.AiChatMemoryMapper;
 import com.kawsay.ia.repository.AiChatMemoryRepository;
@@ -6,11 +7,13 @@ import com.kawsay.ia.repository.UsuarioRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import com.kawsay.ia.entity.AiChatMemory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import com.kawsay.ia.config.AuthUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -176,7 +179,9 @@ public class AiChatMemoryService {
         mensaje.setTimestamp(LocalDateTime.now());
         mensaje.setType(AiChatMemory.Type.USER);
         mensaje.setUsuario(usuario);
-        return aiChatMemoryRepository.save(mensaje);
+        AiChatMemory memorySafe = aiChatMemoryRepository.save(mensaje);
+        evaluar(memorySafe);
+        return memorySafe;
     }
 
     public AiChatMemory insesrtarMensajeAssistantService(Integer userId, AiChatMemory mensaje) {
@@ -185,8 +190,72 @@ public class AiChatMemoryService {
         mensaje.setTimestamp(LocalDateTime.now());
         mensaje.setType(AiChatMemory.Type.ASSISTANT);
         mensaje.setUsuario(usuario);
-        return aiChatMemoryRepository.save(mensaje);
+        AiChatMemory memorySafe = aiChatMemoryRepository.save(mensaje);
+        evaluar(memorySafe);
+        return memorySafe;
     }
+
+
+    /*  ENTRADA: id de usuario
+     *   Metodo para evaluar evento de procesamiento de un reporte
+     *  SALIDA: Boolean
+     */
+    public boolean isEvento(Integer id){
+        int cadaCuanto = 20;
+        if (id % cadaCuanto == 0){
+            return true;
+        } else
+            return false;
+    }
+
+
+    /*  ENTRADA:
+     *   Metodo
+     *  SALIDA:
+     */
+    @Autowired
+    AiChatMemoryRepository mensajeRepository;
+    public int contar(Usuario usuario){
+        int cantidad = (int) mensajeRepository.countByUsuario(usuario);
+        System.out.println("Conteo: "+cantidad);
+        return cantidad;
+    }
+
+    @Autowired
+    AuthUtils authUtils;
+    @Autowired
+    ReporteService ReporteService;
+    @Autowired
+    UsuarioRepository userRepository;
+    @Autowired
+    ReporteService reporteService;
+    public void evaluar(AiChatMemory mensaje){
+        int userId = authUtils.getUsuarioAutenticado().getId();
+        int cantidad = contar(mensaje.getUsuario());
+        if (isEvento(cantidad)){
+
+            new Thread(() -> {
+                System.out.println("---------------------------");
+                System.out.println("Procesar reporte");
+                String reporte = reporteService.generarReporteUsuario(userId);
+
+
+                //Guardar reporte
+                Usuario usuario = usuarioRepository.findById(userId).get();
+                Reporte newReporte = new Reporte();
+                newReporte.setContenido(reporte);
+                newReporte.setTimestamp(LocalDateTime.now());
+                newReporte.setUsuario(usuario);
+                reporteService.insertarReporte(newReporte);
+
+
+                System.out.println("---------------------------");
+            }).start();
+
+        }
+
+    }
+
 
 
 }

@@ -9,6 +9,7 @@ import com.kawsay.ia.repository.RolRepository;
 import com.kawsay.ia.repository.UsuarioRepository;
 import com.kawsay.ia.service.RolService;
 import com.kawsay.ia.service.UsuarioService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest
+@Disabled("Factories de prueba")
 public class BasicBuilder {
 
     @Autowired

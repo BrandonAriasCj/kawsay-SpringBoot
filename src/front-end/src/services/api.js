@@ -28,8 +28,7 @@ export const submitNewGroup = async ({ name, description, category }) => {
             nombre: name,
             descripcion: description,
             categoria: category,
-            creadorId: 1, // Hardcoded: Reemplazar con ID de usuario autenticado
-            moderadorId: 1, // Hardcoded
+
         };
         const response = await apiClient.post('/grupos', grupoData);
         return response.data;

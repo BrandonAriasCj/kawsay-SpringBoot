@@ -5,6 +5,7 @@ import com.kawsay.ia.entity.Rol;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.repository.RolRepository;
 import com.kawsay.ia.repository.UsuarioRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
+@Disabled("metodos manuales de prueba")
 public class LimpiezaDatosTest {
 
     @Autowired

@@ -63,4 +63,8 @@ public class Usuario {
         this.contraseña = contraseña;
         this.rol = rol;
     }
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Perfil perfil;
+
 }

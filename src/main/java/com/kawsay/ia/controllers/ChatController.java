@@ -9,6 +9,7 @@ import org.apache.catalina.User;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.kawsay.ia.config.AuthUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,7 +61,9 @@ public class ChatController {
 
     @GetMapping("/{userId}/mensajes10/")
     public List<AiChatMemory> chat3asdfdgs(@PathVariable Integer userId) {
-        return aiChatMemoryService.find10UltimosElementos(userId);
+        int id = authUtils.getUsuarioAutenticado().getId();
+        System.out.println(id);
+        return aiChatMemoryService.find10UltimosElementos(id);
     }
 
     /*
@@ -86,12 +89,14 @@ public class ChatController {
     private ChatClient chatClient;
     @Autowired
     private AiChatMemoryService serviceIAChatMemory;
+    @Autowired
+    private AuthUtils authUtils;
 
-    @PostMapping("/request/{userId}/mensaje/")
-    public List<AiChatMemory> request(@PathVariable Integer userId, @RequestBody String mensaje) {
+    @PostMapping("/request/{userIdLast}/mensaje/")
+    public List<AiChatMemory> request(@PathVariable Integer userIdLast, @RequestBody String mensaje) {
         String input = mensaje;
-
-        List<AiChatMemory> elementos = aiChatMemoryService.find10UltimosElementos(userId);
+        int userId = authUtils.getUsuarioAutenticado().getId();
+        List<AiChatMemory> elementos = aiChatMemoryService.find10UltimosElementos(authUtils.getUsuarioAutenticado().getId());
 
 
         String memoriaCorta = "Historial de conversacion:";

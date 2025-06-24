@@ -6,6 +6,7 @@ import com.kawsay.ia.entity.Publicacion;
 import com.kawsay.ia.repository.PublicacionRepository;
 import com.kawsay.ia.service.GrupoService;
 import com.kawsay.ia.service.PublicacionService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest
+@Disabled("Factories de prueba")
 public class GruposApoyoBuilder {
     @Autowired
     GrupoService grupoService;

@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Chatbot.css';
 import kawsaiLogo from '../assets/kawsai-logo.png';
 import axios from 'axios';
+import axiosIns from '../services/axiosInstance';
 
 const Chatbot = () => {
-  
   
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const idUsuario = 3;
 
+
   useEffect(()=>{
-          axios.get(`http://localhost:8080/api/${idUsuario}/mensajes10/`)
+          axiosIns.get(`/api/${idUsuario}/mensajes10/`)
           .then(response => {
             setMessages(() => response.data);
             console.log("asdfasd")
@@ -24,7 +25,7 @@ const Chatbot = () => {
 
   async function persistirAndTraer() {
     try {
-      const response = await axios.post(`http://localhost:8080/api/request/${idUsuario}/mensaje/`, `${input}`,
+      const response = await axiosIns.post(`/api/request/${idUsuario}/mensaje/`, `${input}`,
         {
           headers: {
             'Content-Type': 'text/plain'
@@ -32,7 +33,7 @@ const Chatbot = () => {
         }
       ).then()
       console.log(response)
-      axios.get(`http://localhost:8080/api/${idUsuario}/mensajes10/`)
+      axiosIns.get(`/api/${idUsuario}/mensajes10/`)
           .then(response => {
             setMessages(() => response.data);
             console.log("asdfasd")

@@ -2,9 +2,11 @@ package com.kawsay.ia;
 import com.kawsay.ia.entity.Rol;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.repository.RolRepository;
+import com.kawsay.ia.repository.UsuarioRepository;
 import com.kawsay.ia.service.UsuarioService;
 
 import org.checkerframework.checker.fenum.qual.SwingTextOrientation;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
+@Disabled("metodos manuales de prueba")
 public class TestUserService {
 
     @Autowired
@@ -49,6 +52,32 @@ public class TestUserService {
             System.out.println("📧 Correo: " + usuario.getCorreoInstitucional());
             System.out.println("🎭 Rol: " + (usuario.getRol() != null ? usuario.getRol().getDenominacion() : "Sin rol"));
             System.out.println("------------");
+        }
+    }
+
+
+    @Autowired
+    UsuarioService userService;
+    @Test
+    void findAllUsersPsicólogos(){
+        List<Usuario> psicologos = userService.findAllPsicologos();
+
+        for (Usuario ps: psicologos) {
+            System.out.println("-----------");
+            System.out.println("Correo: " + ps.getCorreoInstitucional());
+            System.out.println("Rol: " + ps.getRol().getDenominacion());
+        }
+    }
+
+
+    @Test
+    void findAllUsersAlumnos(){
+        List<Usuario> alumnos = userService.findAllAlumnos();
+
+        for (Usuario al: alumnos) {
+            System.out.println("-----------");
+            System.out.println("Correo: " + al.getCorreoInstitucional());
+            System.out.println("Rol: " + al.getRol().getDenominacion());
         }
     }
 

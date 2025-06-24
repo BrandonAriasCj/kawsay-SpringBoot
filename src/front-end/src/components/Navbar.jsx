@@ -10,7 +10,6 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // Mostrar si el puntero está en los primeros 50px verticales
       if (e.clientY < 80) {
         setIsVisible(true);
       } else {
@@ -37,9 +36,10 @@ const Navbar = () => {
         <Link to="/chatbot">Chatbot</Link>
           <Link to="/grupos">Grupos de Apoyo </Link>
           <Link to="/citas">Agendar Cita</Link>
+        <Link to="/profile">Perfil</Link>
         {!user && <Link to="/login">Login / Registro</Link>}
         {user && <Link to="/profile">Perfil</Link>}
-        
+
       </div>
     </nav>
   );

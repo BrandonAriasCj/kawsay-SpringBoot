@@ -4,6 +4,7 @@ import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.repository.AiChatMemoryRepository;
 import com.kawsay.ia.service.AiChatMemoryService;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
+@Disabled("metodos manuales de prueba")
 public class TestChatService {
     @Autowired
     private AiChatMemoryService aiChatMemoryService;
@@ -69,5 +71,16 @@ public class TestChatService {
     public void fintradoDeUsuario(){
         List<AiChatMemory> lista = aiChatMemoryService.filtrarMensajesUserPorUsuarioId(2);
         System.out.println(lista);
+    }
+
+    @Autowired
+    AiChatMemoryRepository mensajeRepository;
+    @Test
+    public void contar(){
+        Usuario usuario = new Usuario();
+        usuario.setId( 2 );
+        int cantidad = (int) mensajeRepository.countByUsuario(usuario);
+        System.out.println(cantidad);
+
     }
 }

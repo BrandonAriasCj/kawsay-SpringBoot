@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RolRepository extends JpaRepository<Rol, Integer> {
+    Rol getRolById(Integer id);
     Optional<Rol> findByDenominacion(RolTipo denominacion);
     List<Rol> findAllByDenominacion(RolTipo denominacion);
 

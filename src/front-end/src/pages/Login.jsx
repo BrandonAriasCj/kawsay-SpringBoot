@@ -1,6 +1,7 @@
 // src/pages/Login.jsx
 import React, { useContext, useEffect } from 'react';
 import { getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
+import '../styles/Login.css';
 
 import { Amplify} from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -34,8 +35,9 @@ const LoggedInHandler = ({ user, signOut }) => {
           },
           
         });
-    console.log("📦 JWT completo:", token);
-    console.log("🧾 Payload del JWT:", payload);
+        console.log("📦 JWT completo:", token);
+        localStorage.setItem('jwtToken', token);
+        console.log("🧾 Payload del JWT:", payload);
         setUser(user);
         navigate('/profile');
       } catch (err) {
@@ -63,17 +65,18 @@ const LoggedInHandler = ({ user, signOut }) => {
 };
 
 
+
 const Login = () => {
   return (
-    <div className="App">
-      <div className="auth-wrapper">
+      <div className="login-page-container">
+        {}
         <Authenticator>
           {({ signOut, user }) => (
-            <LoggedInHandler user={user} signOut={signOut} />
+
+              <LoggedInHandler user={user} signOut={signOut} />
           )}
         </Authenticator>
       </div>
-    </div>
   );
 };
 

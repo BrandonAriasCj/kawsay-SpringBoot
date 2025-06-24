@@ -21,10 +21,6 @@ import java.util.List;
 public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
-    @Autowired
-    private RolRepository rolRepository;
-    @Autowired
-    private RegistroUsuarioLock registroUsuarioLock;
 
     public List<Usuario> findAllUsuarios() {
 
@@ -36,8 +32,27 @@ public class UsuarioService {
     }
 
 
+    @Autowired
+    RolRepository roleRepository;
+    @Autowired
+    UsuarioRepository userRepository;
+    public List<Usuario> findAllPsicologos() {
+        Rol psicologoRol = roleRepository.getRolById((Integer) 2);
+        List<Usuario> psicologos = userRepository.findByRol(psicologoRol);
+        return psicologos;
+    }
+
+    public List<Usuario> findAllAlumnos() {
+        Rol usuarioRol = roleRepository.getRolById((Integer) 1);
+
+        List<Usuario> psicologos = userRepository.findByRol(usuarioRol);
+        return psicologos;
+    }
 
 
+
+    @Autowired
+    RegistroUsuarioLock registroUsuarioLock;
     @Transactional
     public Usuario registrarSiNoExiste(String correoInstitucional) {
         Object lock = registroUsuarioLock.obtenerLock(correoInstitucional);
@@ -46,7 +61,7 @@ public class UsuarioService {
             try {
                 return usuarioRepository.findByCorreoInstitucional(correoInstitucional)
                         .orElseGet(() -> {
-                            Rol rol = rolRepository.findByDenominacion(RolTipo.ESTUDIANTE)
+                            Rol rol = roleRepository.findByDenominacion(RolTipo.ESTUDIANTE)
                                     .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
                             Usuario nuevo = Usuario.builder()
