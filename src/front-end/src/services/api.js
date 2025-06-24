@@ -1,39 +1,140 @@
+import axios from 'axios';
 
-let mockGroups = [
-    { id: 1, name: 'Manejo de la Ansiedad' }, { id: 2, name: 'Viviendo con TDAH' }, { id: 3, name: 'Superando la Depresión' }, { id: 4, name: 'Crecimiento Personal' }
-];
-let mockPosts = [
-    { id: 101, groupId: 1, user: 'Ana Pérez', question: '¿Técnicas de respiración para ataques de pánico?', content: 'He probado la respiración 4-7-8 pero me gustaría conocer otras...', votes: 12 }, { id: 102, groupId: 1, user: 'Carlos Ruiz', question: 'Recomendaciones de apps de meditación', content: 'Busco una app con meditaciones guiadas para la ansiedad...', votes: 8 }, { id: 201, groupId: 2, user: 'Sofía Lara', question: 'Estrategias para mantener el foco', content: 'Trabajo desde casa y me cuesta mucho mantenerme enfocada...', votes: 25 },
-];
+const API_URL = 'http://localhost:8081/api';
 
-const simulateNetwork = (delay) => new Promise(res => setTimeout(res, delay));
+const apiClient = axios.create({
+    baseURL: API_URL,
+    headers: { 'Content-Type': 'application/json' },
+});
 
-export const fetchGroups = async (searchTerm = '') => {
-    await simulateNetwork(300);
-    if (!searchTerm) return [...mockGroups];
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    return mockGroups.filter(group => group.name.toLowerCase().includes(lowerCaseSearchTerm));
+// --- FUNCIONES DE GRUPOS ---
+export const fetchGroups = async () => {
+    try {
+        const response = await apiClient.get('/grupos');
+        return response.data;
+    } catch (error) { throw error; }
 };
 
+export const fetchUserGroups = async (userId) => {
+    try {
+        const response = await apiClient.get(`/grupos/usuario/${userId}`);
+        return response.data;
+    } catch (error) { throw error; }
+}
+
+export const submitNewGroup = async ({ name, description, category }) => {
+    try {
+        const grupoData = {
+            nombre: name,
+            descripcion: description,
+            categoria: category,
+            creadorId: 1, // Hardcoded: Reemplazar con ID de usuario autenticado
+            moderadorId: 1, // Hardcoded
+        };
+        const response = await apiClient.post('/grupos', grupoData);
+        return response.data;
+    } catch (error) { throw error; }
+};
+
+export const joinGroup = async (groupId) => {
+    try {
+        const requestBody = { usuarioId: 1, grupoId: groupId }; // Hardcoded
+        const response = await apiClient.post('/grupos/unirse', requestBody);
+        return response.data;
+    } catch (error) { throw error; }
+};
+
+// --- FUNCIONES DE PUBLICACIONES ---
 export const fetchPostsByGroup = async (groupId) => {
-    await simulateNetwork(500);
-    return mockPosts.filter(p => p.groupId === groupId).sort((a,b) => b.id - a.id);
+    if (!groupId) return [];
+    try {
+        const response = await apiClient.get(`/grupos/${groupId}/publicaciones`);
+        return response.data.map(post => ({
+            id: post.id,
+            groupId: post.grupoId,
+            user: `Usuario ${post.autorId}`,
+            question: post.contenido.split('\n')[0],
+            content: post.contenido.split('\n').slice(1).join('\n'),
+            votes: 0,
+        }));
+    } catch (error) { throw error; }
 };
 
 export const submitNewPost = async ({ groupId, title, content }) => {
-    await simulateNetwork(700);
-    const newPost = { id: Date.now(), groupId, user: "Tú", question: title, content, votes: 0 };
-    mockPosts.push(newPost);
-    return newPost;
+    try {
+        const postData = {
+            contenido: `${title}\n${content}`,
+            autorId: 1, // Hardcoded
+            grupoId: groupId
+        };
+        const response = await apiClient.post(`/grupos/${groupId}/publicaciones`, postData);
+        const newPost = response.data;
+        return {
+            id: newPost.id,
+            groupId: newPost.grupoId,
+            user: `Usuario ${newPost.autorId}`,
+            question: title,
+            content: content,
+            votes: 0,
+        };
+    } catch (error) { throw error; }
 };
 
-export const submitNewGroup = async ({ name, description }) => {
-    await new Promise(res => setTimeout(res, 800));
-    const newGroup = {
-        id: Date.now(),
-        name,
-        icon: 'NEW',
-    };
-    mockGroups.push(newGroup);
-    return newGroup;
+// --- FUNCIONES DE COMENTARIOS ---
+export const fetchCommentsForPost = async (postId) => {
+    try {
+        // CORREGIDO: Apunta a la ruta unificada en PublicacionController
+        const response = await apiClient.get(`/publicaciones/${postId}/comentarios/tree`);
+        return response.data; // El backend ya devuelve el árbol, el frontend lo usará
+    } catch (error) {
+        console.error(`Error al obtener comentarios de la publicación ${postId}:`, error);
+        throw error;
+    }
 };
+
+export const submitComment = async (postId, { contenido }) => {
+    try {
+        const commentData = { contenido, autorId: 1 };
+        // CORREGIDO: Apunta a la ruta unificada
+        const response = await apiClient.post(`/publicaciones/${postId}/comentarios`, commentData);
+        return response.data;
+    } catch (error) {
+        console.error(`Error al enviar comentario a la publicación ${postId}:`, error);
+        throw error;
+    }
+};
+
+export const submitReplyToComment = async (commentId, { contenido }) => {
+    try {
+        const replyData = { contenido, autorId: 1 };
+        // CORREGIDO: Apunta a la nueva ruta unificada
+        const response = await apiClient.post(`/publicaciones/comentarios/${commentId}/respuestas`, replyData);
+        return response.data;
+    } catch (error) {
+        console.error(`Error al responder al comentario ${commentId}:`, error);
+        throw error;
+    }
+};
+
+// --- FUNCIONES DE REACCIONES ---
+export const submitReaction = async (postId, reactionType = 'LIKE') => {
+    try {
+        const reactionData = {
+            tipo: reactionType,
+            usuarioId: 1, // Hardcoded
+            publicacionId: postId
+        };
+        await apiClient.post('/reacciones', reactionData);
+    } catch (error) { throw error; }
+};
+
+export const fetchReactionsForPost = async (postId) => {
+    try {
+        const response = await apiClient.get(`/reacciones/publicacion/${postId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error al obtener reacciones de la publicación ${postId}:`, error);
+        return []; // Devolver array vacío en caso de error para no romper la UI
+    }
+};
+
