@@ -1,6 +1,8 @@
 // src/pages/Login.jsx
 import React, { useContext, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
+import { getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
+
+import { Amplify} from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import awsExports from '../aws-exports';
 import '@aws-amplify/ui-react/styles.css';
@@ -8,45 +10,39 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 Amplify.configure(awsExports);
-
 const LoggedInHandler = ({ user, signOut }) => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const initialized = React.useRef(false);
 
- 
-useEffect(() => {
-  console.log("📡 useEffect activado: verificando usuario...");
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
 
-  const sendTokenToBackEnd = async () => {
-    if (user && user.signInUserSession) {
-      const token = user.signInUserSession.idToken.jwtToken;
-      console.log("🔐 TOKEN capturado desde Cognito:", token); // ← Verifica si aparece en la consola del navegador
-
+    (async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/usuario/token', {
+        const user = await getCurrentUser();
+        const token = (await fetchAuthSession()).tokens?.idToken?.toString();
+
+        if (!user || !token) return console.warn("⚠️ Falta usuario o token");
+
+        await fetch('http://localhost:8082/api/usuarios/token', {
           method: 'POST',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
-            Authorization: `${token}`,
           },
+          
         });
-
-        const responseData = await response.text();
-        console.log("📬 Respuesta del backend:", responseData); // ← ¿Se imprime algo aquí?
-      } catch (error) {
-        console.error("❌ Error en el fetch al backend:", error);
+    console.log("📦 JWT completo:", token);
+    console.log("🧾 Payload del JWT:", payload);
+        setUser(user);
+        navigate('/profile');
+      } catch (err) {
+        console.error("❌ Falló la sesión:", err);
       }
-
-      setUser(user);
-      navigate('/profile');
-    } else {
-      console.warn("⚠️ Usuario o sesión aún no disponible.");
-    }
-  };
-
-  sendTokenToBackEnd();
-}, [user, setUser, navigate]);
-
+    })();
+  }, [setUser, navigate]);
 
 
   return (
@@ -62,7 +58,10 @@ useEffect(() => {
       </main>
     </div>
   );
+
+
 };
+
 
 const Login = () => {
   return (
