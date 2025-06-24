@@ -207,9 +207,9 @@ public class AiChatMemoryService {
     }
 
 
-    /*  ENTRADA: id de usuario
-     *   Metodo para evaluar evento de procesamiento de un reporte
-     *  SALIDA: Boolean
+    /*  ENTRADA:
+     *   Metodo
+     *  SALIDA:
      */
     @Autowired
     AiChatMemoryRepository mensajeRepository;

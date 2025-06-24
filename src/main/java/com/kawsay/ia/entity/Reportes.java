@@ -1,4 +1,0 @@
-package com.kawsay.ia.entity;
-
-public class Reportes {
-}
