@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReaccionRepository extends JpaRepository<Reaccion, Integer> {
 
@@ -19,5 +20,8 @@ public interface ReaccionRepository extends JpaRepository<Reaccion, Integer> {
     GROUP BY r.tipo
 """)
     List<Object[]> contarReaccionesPorTipoComentario(@Param("comentarioId") Integer comentarioId);
+
+    Optional<Reaccion> findByUsuarioIdAndPublicacionIdAndTipo(Integer usuarioId, Integer publicacionId, Reaccion.Tipo tipo);
+
 
 }

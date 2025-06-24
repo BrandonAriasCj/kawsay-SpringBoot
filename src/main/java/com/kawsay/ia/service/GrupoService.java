@@ -1,5 +1,6 @@
 package com.kawsay.ia.service;
 
+import com.kawsay.ia.config.AuthUtils;
 import com.kawsay.ia.dto.GrupoDTO;
 import com.kawsay.ia.dto.PublicacionDTO;
 import com.kawsay.ia.entity.*;
@@ -23,6 +24,7 @@ public class GrupoService {
     private final PublicacionRepository publicacionRepository;
     private final UsuarioService usuarioService;
     private final UsuarioGrupoRepository usuarioGrupoRepository;
+    private final AuthUtils authUtils;
 
 
     public List<GrupoDTO> obtenerTodosLosGrupos() {
@@ -33,6 +35,7 @@ public class GrupoService {
                     dto.setNombre(grupo.getNombre());
                     dto.setDescripcion(grupo.getDescripcion());
                     dto.setCategoria(grupo.getCategoria());
+                    dto.setEsPrivado(Boolean.TRUE.equals(grupo.getEsPrivado()));
                     dto.setCreadorId(grupo.getCreador().getId());
                     dto.setModeradorId(grupo.getModerador().getId());
                     dto.setFechaCreacion(grupo.getFechaCreacion());
@@ -41,12 +44,15 @@ public class GrupoService {
                 .toList();
     }
 
+    @Transactional
     public GrupoDTO crearGrupo(GrupoDTO dto) {
-        Usuario creador = usuarioRepository.findById(dto.getCreadorId())
-                .orElseThrow(() -> new RuntimeException("Creador no encontrado"));
+        Usuario creador = authUtils.getUsuarioAutenticado();
 
-        Usuario moderador = usuarioRepository.findById(dto.getModeradorId())
-                .orElseThrow(() -> new RuntimeException("Moderador no encontrado"));
+        // Si dto.getModeradorId() es null o igual al creador → el mismo usuario será moderador
+        Usuario moderador = Optional.ofNullable(dto.getModeradorId())
+                .filter(id -> !id.equals(creador.getId()))
+                .flatMap(usuarioRepository::findById)
+                .orElse(creador);
 
         Grupo grupo = Grupo.builder()
                 .nombre(dto.getNombre())
@@ -58,17 +64,18 @@ public class GrupoService {
 
         Grupo guardado = grupoRepository.save(grupo);
 
-        GrupoDTO respuesta = new GrupoDTO();
-        respuesta.setId(guardado.getId());
-        respuesta.setNombre(guardado.getNombre());
-        respuesta.setDescripcion(guardado.getDescripcion());
-        respuesta.setCategoria(guardado.getCategoria());
-        respuesta.setCreadorId(guardado.getCreador().getId());
-        respuesta.setModeradorId(guardado.getModerador().getId());
-        respuesta.setFechaCreacion(guardado.getFechaCreacion());
-
-        return respuesta;
+        return GrupoDTO.builder()
+                .id(guardado.getId())
+                .nombre(guardado.getNombre())
+                .descripcion(guardado.getDescripcion())
+                .categoria(guardado.getCategoria())
+                .creadorId(creador.getId())
+                .moderadorId(moderador.getId())
+                .fechaCreacion(guardado.getFechaCreacion())
+                .build();
     }
+
+
 
     public List<PublicacionDTO> obtenerPublicacionesDeGrupo(Integer idGrupo) {
         Grupo grupo = grupoRepository.findById(idGrupo)
@@ -77,6 +84,7 @@ public class GrupoService {
         return grupo.getPublicaciones().stream()
                 .map(publicacion -> new PublicacionDTO(
                         publicacion.getId(),
+                        publicacion.getTitulo(),
                         publicacion.getContenido(),
                         publicacion.getFechaPublicacion(),
                         publicacion.getAutor().getId(),
@@ -89,8 +97,7 @@ public class GrupoService {
         Grupo grupo = grupoRepository.findById(idGrupo)
                 .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
 
-        Usuario autor = usuarioRepository.findById(dto.autorId())
-                .orElseThrow(() -> new RuntimeException("Autor no encontrado"));
+        Usuario autor = authUtils.getUsuarioAutenticado(); // ✅ autenticado
 
         Publicacion publicacion = Publicacion.builder()
                 .contenido(dto.contenido())
@@ -102,12 +109,14 @@ public class GrupoService {
 
         return new PublicacionDTO(
                 guardada.getId(),
+                guardada.getTitulo(),
                 guardada.getContenido(),
                 guardada.getFechaPublicacion(),
                 autor.getId(),
                 grupo.getId()
         );
     }
+
 
     @Transactional
     public void unirseAGrupo(Usuario usuario, Grupo grupo) {

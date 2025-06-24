@@ -1,5 +1,6 @@
 package com.kawsay.ia.builder;
 
+import com.kawsay.ia.dto.RolTipo;
 import com.kawsay.ia.entity.AiChatMemory;
 import com.kawsay.ia.entity.Rol;
 import com.kawsay.ia.entity.Usuario;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.github.javafaker.Faker;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest
@@ -28,20 +30,19 @@ public class BasicBuilder {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-
     @Test
     public void buildRoles_Y_AlumnosBase() {
-        //Roles base
+        // Roles base usando RolTipo
         Rol rolEstudiante = Rol.builder()
-                .denominacion("ESTUDIANTE")
+                .denominacion(RolTipo.ESTUDIANTE)
                 .estado(true)
                 .build();
         Rol rolPsicologo = Rol.builder()
-                .denominacion("PSICOLOGO")
+                .denominacion(RolTipo.PSICOLOGO)
                 .estado(true)
                 .build();
         Rol rolModerador = Rol.builder()
-                .denominacion("MODERADOR")
+                .denominacion(RolTipo.MODERADOR)
                 .estado(true)
                 .build();
 
@@ -49,8 +50,6 @@ public class BasicBuilder {
         rolService.crear(rolPsicologo);
         rolService.crear(rolModerador);
 
-
-        //Elementos base
         Usuario estudiante01 = Usuario.builder()
                 .correoInstitucional("william.raul@tecsup.edu.pe")
                 .contraseña("12345")
@@ -72,25 +71,24 @@ public class BasicBuilder {
         usuarioService.crearUsuario(estudiante01);
         usuarioService.crearUsuario(psicologa01);
         usuarioService.crearUsuario(moderador01);
-
     }
 
-
     private Integer idRandom(Integer can) {
-        Integer idRolRandom = ThreadLocalRandom.current().nextInt(1, can + 1);
-        return idRolRandom;
+        return ThreadLocalRandom.current().nextInt(1, can + 1);
     }
 
     @Test
     public void UsuariosFake() {
         Faker faker = new Faker();
-        Integer can =  rolRepository.findAll().size();
+        List<Rol> roles = rolRepository.findAll();
+        Integer can = roles.size();
 
         for (int i = 0; i < 10; i++) {
+            Rol rol = roles.get(ThreadLocalRandom.current().nextInt(can));
             Usuario usuario = Usuario.builder()
                     .correoInstitucional(faker.internet().emailAddress())
                     .contraseña(faker.internet().password())
-                    .rol(rolRepository.findById(idRandom(can)).orElse(null))
+                    .rol(rol)
                     .build();
             usuarioService.crearUsuario(usuario);
         }
@@ -104,19 +102,15 @@ public class BasicBuilder {
     @Test
     public void AiChatMemoryFake() {
         Faker faker = new Faker();
-        Integer can = userRepo.findAll().size();
+        List<Usuario> usuarios = userRepo.findAll();
+        int can = usuarios.size();
 
         for (int i = 0; i < 10; i++) {
-            AiChatMemory.Type tipo;
-            if(i%2==0){
-                tipo = AiChatMemory.Type.USER;
-            }else{
-                tipo = AiChatMemory.Type.ASSISTANT;
-            }
+            AiChatMemory.Type tipo = (i % 2 == 0) ? AiChatMemory.Type.USER : AiChatMemory.Type.ASSISTANT;
 
             AiChatMemory aiChatMemory = AiChatMemory.builder()
                     .sessionId(faker.code().ean8())
-                    .usuario(userRepo.getById(idRandom(can)))
+                    .usuario(usuarios.get(ThreadLocalRandom.current().nextInt(can)))
                     .content(faker.lorem().paragraph())
                     .type(tipo)
                     .timestamp(LocalDateTime.now())
@@ -125,41 +119,27 @@ public class BasicBuilder {
         }
     }
 
-
-    @Autowired
-    AiChatMemoryRepository aiChatMemoryRepository;
     @Test
     public void Borrador() {
         Faker faker = new Faker();
-        Integer can =  rolRepository.findAll().size();
-        Integer idAleatorio = idRandom(can);
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        Usuario usuarioRandom = usuarios.get(ThreadLocalRandom.current().nextInt(usuarios.size()));
 
         AiChatMemory aiChatMemory = AiChatMemory.builder()
                 .sessionId("adfasfas6456")
-                .usuario(usuarioRepository.getById(idAleatorio))
+                .usuario(usuarioRandom)
                 .content("asdfadsf")
                 .type(AiChatMemory.Type.USER)
                 .timestamp(LocalDateTime.now())
                 .build();
 
-        String valor1 = faker.name().firstName();
-        String valor2 = faker.name().lastName();
-        String valor3 = faker.name().fullName();
-        String valor4 = faker.name().username();
-        String valor5 = faker.lorem().paragraph();
-        String valor6 = faker.lorem().sentence();
-        String valor7 = String.valueOf(faker.lorem().paragraphs(2));
-        String valor8 = faker.code().ean8();
-        //Date valor9 = faker.date().between(LocalDate.now(), LocalDate.now().plusDays(1));
-
-        System.out.println(valor1);
-        System.out.println(valor2);
-        System.out.println(valor3);
-        System.out.println(valor4);
-        System.out.println(valor5);
-        System.out.println(valor6);
-        System.out.println(valor7);
-        System.out.println(valor8);
+        System.out.println(faker.name().firstName());
+        System.out.println(faker.name().lastName());
+        System.out.println(faker.name().fullName());
+        System.out.println(faker.name().username());
+        System.out.println(faker.lorem().paragraph());
+        System.out.println(faker.lorem().sentence());
+        System.out.println(String.join("\n", faker.lorem().paragraphs(2)));
+        System.out.println(faker.code().ean8());
     }
-
 }

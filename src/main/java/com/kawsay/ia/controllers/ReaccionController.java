@@ -1,5 +1,6 @@
 package com.kawsay.ia.controllers;
 
+import com.kawsay.ia.config.AuthUtils;
 import com.kawsay.ia.dto.ReaccionDTO;
 import com.kawsay.ia.entity.Reaccion;
 import com.kawsay.ia.entity.Usuario;
@@ -9,10 +10,12 @@ import com.kawsay.ia.repository.UsuarioRepository;
 import com.kawsay.ia.repository.PublicacionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("/api/reacciones")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -22,11 +25,13 @@ public class ReaccionController {
     private final ReaccionRepository reaccionRepository;
     private final UsuarioRepository usuarioRepository;
     private final PublicacionRepository publicacionRepository;
+    private final AuthUtils authUtils;
+
 
     @PostMapping
     public ResponseEntity<String> registrarReaccion(@RequestBody ReaccionDTO dto) {
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Usuario usuario = authUtils.getUsuarioAutenticado();
+
         Publicacion publicacion = publicacionRepository.findById(dto.publicacionId())
                 .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
@@ -40,6 +45,7 @@ public class ReaccionController {
 
         return ResponseEntity.ok("Reacción registrada con éxito.");
     }
+
 
     @GetMapping("/publicacion/{idPublicacion}")
     public List<ReaccionDTO> obtenerReaccionesPorPublicacion(@PathVariable Integer idPublicacion) {

@@ -18,6 +18,8 @@ public class Publicacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_publicacion")
     private Integer id;
+    @Column(name = "titulo", length = 150)
+    private String titulo;
 
     @Column(name = "contenido", columnDefinition = "TEXT")
     private String contenido;
@@ -45,8 +47,9 @@ public class Publicacion {
     private List<Reaccion> reacciones;
 
     @Builder
-    public Publicacion(Integer id, String contenido, LocalDateTime fechaPublicacion, Usuario autor, Grupo grupo) {
+    public Publicacion(Integer id, String titulo,String contenido, LocalDateTime fechaPublicacion, Usuario autor, Grupo grupo) {
         this.id = id;
+        this.titulo = titulo;
         this.contenido = contenido;
         this.fechaPublicacion = fechaPublicacion;
         this.autor = autor;

@@ -1,17 +1,15 @@
 package com.kawsay.ia.service;
 
+import com.kawsay.ia.config.AuthUtils;
 import com.kawsay.ia.dto.ComentarioDTO;
+import com.kawsay.ia.dto.PublicacionDTO;
 import com.kawsay.ia.dto.ReaccionDTO;
-import com.kawsay.ia.entity.Comentario;
-import com.kawsay.ia.entity.Publicacion;
-import com.kawsay.ia.entity.Reaccion;
-import com.kawsay.ia.entity.Usuario;
-import com.kawsay.ia.repository.ComentarioRepository;
-import com.kawsay.ia.repository.PublicacionRepository;
-import com.kawsay.ia.repository.ReaccionRepository;
-import com.kawsay.ia.repository.UsuarioRepository;
+import com.kawsay.ia.entity.*;
+import com.kawsay.ia.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +21,10 @@ public class PublicacionService {
     private final ComentarioRepository comentarioRepository;
     private final ReaccionRepository reaccionRepository;
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioGrupoRepository usuarioGrupoRepository;
+    private final GrupoRepository grupoRepository;
+    private final AuthUtils authUtils;
+
 
     /**
      * Agrega un comentario a la publicación cuyo id es publicacionId.
@@ -31,16 +33,46 @@ public class PublicacionService {
      */
 
 
+    @Transactional
+    public PublicacionDTO crearPublicacion(Integer idGrupo, PublicacionDTO dto) {
+        Usuario autor = authUtils.getUsuarioAutenticado();
+
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
+
+        // Verificar si el usuario pertenece al grupo
+        boolean esMiembro = usuarioGrupoRepository.existsByUsuarioAndGrupo(autor, grupo);
+        if (!esMiembro) {
+            throw new AccessDeniedException("No estás unido al grupo.");
+        }
+
+        Publicacion nueva = Publicacion.builder()
+                .titulo(dto.titulo())
+                .contenido(dto.contenido())
+                .fechaPublicacion(LocalDateTime.now())
+                .autor(autor)
+                .grupo(grupo)
+                .build();
+
+        publicacionRepository.save(nueva);
+
+        return new PublicacionDTO(
+                nueva.getId(),
+                nueva.getTitulo(),
+                nueva.getContenido(),
+                nueva.getFechaPublicacion(),
+                autor.getId(),
+                grupo.getId()
+        );
+    }
+
+
     public ComentarioDTO agregarComentario(Integer publicacionId, ComentarioDTO comentarioDTO) {
-        // Buscar la publicación
         Publicacion publicacion = publicacionRepository.findById(publicacionId)
                 .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
-        // Obtener el autor del comentario por su id
-        Usuario autor = usuarioRepository.findById(comentarioDTO.autorId())
-                .orElseThrow(() -> new RuntimeException("Autor del comentario no encontrado"));
+        Usuario autor = authUtils.getUsuarioAutenticado(); // ✅ desde el token
 
-        // Crear la entidad Comentario (asumiendo que tienes un builder en Comentario)
         Comentario comentario = Comentario.builder()
                 .contenido(comentarioDTO.contenido())
                 .autor(autor)
@@ -49,17 +81,15 @@ public class PublicacionService {
 
         Comentario comentarioGuardado = comentarioRepository.save(comentario);
 
-        // Retornar el DTO construido a partir del comentario guardado
         return new ComentarioDTO(
                 comentarioGuardado.getId(),
                 comentarioGuardado.getContenido(),
-                comentarioGuardado.getAutor().getId(),
-                comentarioGuardado.getPublicacion().getId(),
+                autor.getId(),
+                publicacion.getId(),
                 comentarioGuardado.getFechaComentario()
         );
-
-
     }
+
 
     /**
      * Agrega una reacción a la publicación cuyo id es publicacionId.
@@ -69,14 +99,12 @@ public class PublicacionService {
         Publicacion publicacion = publicacionRepository.findById(publicacionId)
                 .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
-        Usuario usuario = usuarioRepository.findById(reaccionDTO.usuarioId())
-                .orElseThrow(() -> new RuntimeException("Autor de la reacción no encontrado"));
+        Usuario usuario = authUtils.getUsuarioAutenticado(); // ✅ autenticado desde JWT
 
-        // ✅ Convertir string a enum de forma segura (en mayúsculas)
         Reaccion.Tipo tipoEnum = Reaccion.Tipo.valueOf(reaccionDTO.tipo().toUpperCase());
 
         Reaccion reaccion = Reaccion.builder()
-                .tipo(tipoEnum) // ← ya es enum, ahora sí lo acepta el builder
+                .tipo(tipoEnum)
                 .usuario(usuario)
                 .publicacion(publicacion)
                 .fechaReaccion(LocalDateTime.now())
@@ -86,12 +114,13 @@ public class PublicacionService {
 
         return new ReaccionDTO(
                 reaccionGuardada.getId(),
-                reaccionGuardada.getTipo().name(), // ← enum → string (para el DTO)
+                reaccionGuardada.getTipo().name(),
                 usuario.getId(),
                 publicacion.getId(),
                 reaccionGuardada.getFechaReaccion()
         );
     }
+
 
 
 }
