@@ -224,9 +224,17 @@ public class AiChatMemoryService {
         int id = (int) mensaje.getUsuario().getId();
         int cantidad = contar(mensaje.getUsuario());
         if (isEvento(cantidad)){
-            System.out.println("Procesar reporte");
+
+            new Thread(() -> {
+                System.out.println("---------------------------");
+                System.out.println("Procesar reporte");
+                System.out.println("---------------------------");
+            }).start();
+
         }
 
     }
+
+
 
 }
