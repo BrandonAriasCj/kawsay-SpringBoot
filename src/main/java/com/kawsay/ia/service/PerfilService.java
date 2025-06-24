@@ -31,7 +31,7 @@ public class PerfilService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
 
 
-        Perfil perfil = perfilRepository.findByUsuario_IdUsuario(usuario.getIdUsuario())
+        Perfil perfil = perfilRepository.findByUsuario_IdUsuario(Long.valueOf(usuario.getId()))
                 .orElseGet(() -> {
                     Perfil nuevoPerfil = new Perfil();
                     nuevoPerfil.setUsuario(usuario);
@@ -51,7 +51,7 @@ public class PerfilService {
         Usuario usuario = usuarioRepository.findByCorreoInstitucional(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        Perfil perfil = perfilRepository.findByUsuario_IdUsuario(usuario.getIdUsuario())
+        Perfil perfil = perfilRepository.findByUsuario_IdUsuario(Long.valueOf(usuario.getId()))
                 .orElseGet(() -> {
                     Perfil nuevoPerfil = new Perfil();
                     nuevoPerfil.setUsuario(usuario);
