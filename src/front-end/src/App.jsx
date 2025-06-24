@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import Chatbot from './pages/Chatbot';
 import Grupos from './pages/GruposAyuda';
 import Citas from './pages/Citas';
+import UserProfile from "./pages/UserProfile.jsx";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         {/* <Route path="/login" element={<Login />} /> */}
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/grupos" element={<Grupos />} />
           <Route path="/citas" element={<Citas />} />

@@ -1,67 +1,44 @@
-.navbar {
-  width: 100%; 
-  position: fixed; 
+/* src/styles/Navbar.css */
+
+.navbar, .main-header {
+  width: 100%;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; 
+  z-index: 1000;
 
-  background: rgba(94, 107, 194, 0.25);
-  padding: 0rem 2rem;
+  background: var(--glass-background);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 2px solid var(--glass-border-color);
+
+  padding: 0.8rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #ffffff;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 2px solid #ffe0f0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: var(--color-texto-principal);
   font-weight: bold;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-principal);
   transition: transform 0.3s ease;
-  z-index: 999;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .navbar .links a {
-  margin-left: 1rem;
-  color: #ffffff;
+  margin-left: 1.5rem;
+  color: var(--color-texto-principal);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .navbar .links a:hover {
   text-decoration: underline;
-}
-
-
-/* Estilod de header */
-.main-header {
-  background: rgba(94, 107, 194, 0.25);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #ffffff;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 2px solid #ffe0f0a3;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-weight: bold;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  color: white;
-  padding: 0rem 2rem;
-  transition: transform 0.3s ease;
-  z-index: 999;
+  color: var(--color-accion-secundario);
 }
 
 .show {
-  transform: translateY(0); /* Muestra el header */
+  transform: translateY(0);
 }
 
 .hide {
-  transform: translateY(-100%); /* Oculta el header hacia arriba */
+  transform: translateY(-100%);
 }
