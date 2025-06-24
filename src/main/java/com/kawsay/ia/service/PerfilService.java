@@ -38,7 +38,7 @@ public class PerfilService {
                     return nuevoPerfil;
                 });
 
-        List<String> preferencias = historialPreferenciasRepository.findByUsuario_IdUsuario(usuario.getIdUsuario())
+        List<String> preferencias = historialPreferenciasRepository.findByUsuario_Id(usuario.getId())
                 .stream()
                 .map(HistorialPreferencias::getContenido)
                 .collect(Collectors.toList());
@@ -66,7 +66,7 @@ public class PerfilService {
         Perfil perfilGuardado = perfilRepository.save(perfil);
 
 
-        List<String> preferencias = historialPreferenciasRepository.findByUsuario_IdUsuario(usuario.getIdUsuario())
+        List<String> preferencias = historialPreferenciasRepository.findByUsuario_Id(usuario.getId())
                 .stream()
                 .map(HistorialPreferencias::getContenido)
                 .collect(Collectors.toList());
