@@ -1,4 +1,5 @@
 package com.kawsay.ia.service;
+import com.kawsay.ia.entity.Reporte;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.mapper.AiChatMemoryMapper;
 import com.kawsay.ia.repository.AiChatMemoryRepository;
@@ -220,15 +221,34 @@ public class AiChatMemoryService {
         return cantidad;
     }
 
-
+    @Autowired
+    AuthUtils authUtils;
+    @Autowired
+    ReporteService ReporteService;
+    @Autowired
+    UsuarioRepository userRepository;
+    @Autowired
+    ReporteService reporteService;
     public void evaluar(AiChatMemory mensaje){
-        int id = (int) mensaje.getUsuario().getId();
+        int userId = authUtils.getUsuarioAutenticado().getId();
         int cantidad = contar(mensaje.getUsuario());
         if (isEvento(cantidad)){
 
             new Thread(() -> {
                 System.out.println("---------------------------");
                 System.out.println("Procesar reporte");
+                String reporte = reporteService.generarReporteUsuario(userId);
+
+
+                //Guardar reporte
+                Usuario usuario = usuarioRepository.findById(userId).get();
+                Reporte newReporte = new Reporte();
+                newReporte.setContenido(reporte);
+                newReporte.setTimestamp(LocalDateTime.now());
+                newReporte.setUsuario(usuario);
+                reporteService.insertarReporte(newReporte);
+
+
                 System.out.println("---------------------------");
             }).start();
 
