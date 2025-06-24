@@ -26,7 +26,7 @@ const LoggedInHandler = ({ user, signOut }) => {
 
         if (!user || !token) return console.warn("⚠️ Falta usuario o token");
 
-        await fetch('http://localhost:8082/api/usuarios/token', {
+        await fetch('http://localhost:8081/api/usuarios/token', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
