@@ -1,4 +1,5 @@
 package com.kawsay.ia.entity;
+import com.kawsay.ia.dto.RolTipo;
 import jakarta.persistence.*;
 import java.util.List.*;
 
@@ -19,14 +20,16 @@ public class Rol {
     @Column(name = "id_rol")
     private Integer id;
 
-    @Column(nullable = false, length = 50)
-    private String denominacion;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false,unique = true , length = 50)
+    private RolTipo denominacion;
+
 
     @Column(nullable = false)
     private boolean estado = true;
 
     @Builder
-    public Rol(String denominacion, boolean estado) {
+    public Rol(RolTipo denominacion, boolean estado) {
         this.denominacion = denominacion;
         this.estado = estado;
     }

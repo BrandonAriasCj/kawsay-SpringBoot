@@ -28,6 +28,10 @@ public class Grupo {
     @Column(name = "categoria", nullable = false, length = 100)
     private String categoria;
 
+    @Column(name = "es_privado")
+    private Boolean esPrivado;
+
+
 
     @CreationTimestamp
     @Column(name = "fecha_creacion", updatable = false)
@@ -51,10 +55,11 @@ public class Grupo {
 
 
     @Builder
-    public Grupo(String nombre, String descripcion, String categoria, Usuario creador, Usuario moderador) {
+    public Grupo(String nombre, String descripcion, String categoria,Boolean esPrivado, Usuario creador, Usuario moderador) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.categoria = categoria;
+        this.esPrivado = esPrivado;
         this.creador = creador;
         this.moderador = moderador;
     }

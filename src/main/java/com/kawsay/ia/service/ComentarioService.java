@@ -1,5 +1,6 @@
 package com.kawsay.ia.service;
 
+import com.kawsay.ia.config.AuthUtils;
 import com.kawsay.ia.dto.ComentarioDTO;
 import com.kawsay.ia.dto.ComentarioTreeConReaccionesDTO;
 import com.kawsay.ia.dto.ReaccionDTO;
@@ -14,7 +15,10 @@ import com.kawsay.ia.repository.ReaccionRepository;
 import com.kawsay.ia.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,13 +35,14 @@ public class ComentarioService {
     private final UsuarioRepository usuarioRepository;
     private final PublicacionRepository publicacionRepository;
     private final ReaccionRepository reaccionRepository;
+    private final AuthUtils authUtils;
+
 
     public ComentarioDTO agregarComentario(Integer publicacionId, ComentarioDTO dto) {
         Publicacion publicacion = publicacionRepository.findById(publicacionId)
                 .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
-        Usuario autor = usuarioRepository.findById(dto.autorId())
-                .orElseThrow(() -> new RuntimeException("Autor del comentario no encontrado"));
+        Usuario autor = authUtils.getUsuarioAutenticado(); // ✅ directamente desde el token
 
         Comentario comentario = new Comentario();
         comentario.setContenido(dto.contenido());
@@ -55,12 +60,14 @@ public class ComentarioService {
                 guardado.getFechaComentario()
         );
     }
+
+
+
     public ReaccionDTO reaccionar(Integer comentarioId, ReaccionDTO dto) {
         Comentario comentario = comentarioRepository.findById(comentarioId)
                 .orElseThrow(() -> new RuntimeException("Comentario no encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Usuario usuario = authUtils.getUsuarioAutenticado(); // ✅ desde el token
 
         Reaccion reaccion = new Reaccion();
         reaccion.setComentario(comentario);
@@ -74,7 +81,7 @@ public class ComentarioService {
                 guardada.getId(),
                 guardada.getTipo().name(),
                 usuario.getId(),
-                null,
+                null, // si quieres puedes añadir `comentarioId`
                 guardada.getFechaReaccion()
         );
     }
@@ -85,16 +92,13 @@ public class ComentarioService {
         Comentario padre = comentarioRepository.findById(comentarioPadreId)
                 .orElseThrow(() -> new RuntimeException("Comentario padre no encontrado"));
 
-        Usuario autor = usuarioRepository.findById(dto.autorId())
-                .orElseThrow(() -> new RuntimeException("Autor no encontrado"));
+        Usuario autor = authUtils.getUsuarioAutenticado(); // ✅ desde el token
 
         Comentario subcomentario = new Comentario();
         subcomentario.setContenido(dto.contenido());
         subcomentario.setAutor(autor);
         subcomentario.setFechaComentario(LocalDateTime.now());
         subcomentario.setComentarioPadre(padre);
-
-
         subcomentario.setPublicacion(padre.getPublicacion());
 
         Comentario guardado = comentarioRepository.save(subcomentario);
@@ -107,6 +111,24 @@ public class ComentarioService {
                 guardado.getFechaComentario()
         );
     }
+
+
+    @Transactional
+    public void editarComentario(Integer idComentario, ComentarioDTO dto) {
+        Comentario comentario = comentarioRepository.findById(idComentario)
+                .orElseThrow(() -> new RuntimeException("Comentario no encontrado"));
+
+        Usuario actual = authUtils.getUsuarioAutenticado();
+
+        if (!comentario.getAutor().getId().equals(actual.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No puedes editar un comentario que no escribiste.");
+        }
+
+        comentario.setContenido(dto.contenido());
+        comentario.setFechaComentario(LocalDateTime.now());
+        comentarioRepository.save(comentario);
+    }
+
 
 
     public List<ComentarioTreeConReaccionesDTO> obtenerComentariosAnidadosPorPublicacion(Integer publicacionId) {

@@ -63,4 +63,12 @@ public class Usuario {
         this.contraseña = contraseña;
         this.rol = rol;
     }
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Perfil perfil;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
+    private Long idUsuario;
 }
