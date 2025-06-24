@@ -51,7 +51,8 @@ public class UsuarioService {
 
 
 
-
+    @Autowired
+    RegistroUsuarioLock registroUsuarioLock;
     @Transactional
     public Usuario registrarSiNoExiste(String correoInstitucional) {
         Object lock = registroUsuarioLock.obtenerLock(correoInstitucional);
@@ -60,7 +61,7 @@ public class UsuarioService {
             try {
                 return usuarioRepository.findByCorreoInstitucional(correoInstitucional)
                         .orElseGet(() -> {
-                            Rol rol = rolRepository.findByDenominacion(RolTipo.ESTUDIANTE)
+                            Rol rol = roleRepository.findByDenominacion(RolTipo.ESTUDIANTE)
                                     .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
                             Usuario nuevo = Usuario.builder()
