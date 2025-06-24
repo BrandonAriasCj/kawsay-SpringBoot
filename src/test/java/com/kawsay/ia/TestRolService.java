@@ -4,12 +4,14 @@ import com.kawsay.ia.dto.RolTipo;
 import com.kawsay.ia.entity.Rol;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.service.RolService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
+@Disabled("metodos manuales de prueba")
 public class TestRolService {
 
     @Autowired

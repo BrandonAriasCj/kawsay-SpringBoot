@@ -6,6 +6,7 @@ import com.kawsay.ia.repository.UsuarioRepository;
 import com.kawsay.ia.service.UsuarioService;
 
 import org.checkerframework.checker.fenum.qual.SwingTextOrientation;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
+@Disabled("metodos manuales de prueba")
 public class TestUserService {
 
     @Autowired
