@@ -1,0 +1,46 @@
+/* src/styles/Login.css */
+
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    /* Esto asegura que el contenedor ocupe al menos todo el alto
+       de la ventana, MENOS la altura del navbar fijo. */
+    min-height: calc(100vh - var(--navbar-height));
+}
+
+/*
+  Sobrescribimos los estilos por defecto de Amplify Authenticator
+  usando las variables globales que definimos en index.css
+*/
+[data-amplify-authenticator] {
+    /* Usamos nuestras variables de color para el fondo, bordes y fuentes */
+    --amplify-colors-background-primary: var(--glass-background);
+    --amplify-colors-background-secondary: var(--glass-background);
+    --amplify-colors-border-primary: var(--glass-border-color);
+    --amplify-colors-border-secondary: var(--glass-border-color);
+    --amplify-colors-border-tertiary: var(--glass-border-color);
+    --amplify-colors-font-primary: var(--color-texto-principal);
+    --amplify-colors-font-secondary: var(--color-texto-secundario);
+    --amplify-colors-font-interactive: var(--color-accion-primario);
+
+    /* Personalizamos los botones y otros elementos interactivos */
+    --amplify-components-tabs-item-active-border-color: var(--color-accion-primario);
+    --amplify-components-button-primary-background-color: var(--color-accion-primario);
+    --amplify-components-button-primary-hover-background-color: var(--color-accion-secundario);
+
+    /* Estilos para los campos de input */
+    --amplify-components-field-border-color: var(--glass-border-color);
+    --amplify-components-field-focus-border-color: var(--color-accion-secundario);
+    --amplify-components-fieldcontrol-border-color: transparent;
+
+    /* Estilos para la tarjeta principal (glassmorphism) */
+    --amplify-components-card-background-color: var(--glass-background);
+    --amplify-components-card-box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+
+    border-radius: 24px;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+}

@@ -1,5 +1,10 @@
 /* src/styles/Navbar.css */
 
+/* Definimos la altura del navbar como una variable global */
+:root {
+  --navbar-height: 70px; /* Puedes ajustar este valor si cambias el padding/fuente */
+}
+
 .navbar, .main-header {
   width: 100%;
   position: fixed;
@@ -7,12 +12,14 @@
   left: 0;
   z-index: 1000;
 
+  height: var(--navbar-height); /* Aplicamos la altura */
+
   background: var(--glass-background);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border-bottom: 2px solid var(--glass-border-color);
 
-  padding: 0.8rem 2rem;
+  padding: 0 2rem; /* Ajustamos el padding ya que la altura es fija */
   display: flex;
   justify-content: space-between;
   align-items: center;

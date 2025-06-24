@@ -1,6 +1,7 @@
 // src/pages/Login.jsx
 import React, { useContext, useEffect } from 'react';
 import { getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
+import '../styles/Login.css';
 
 import { Amplify} from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -63,17 +64,18 @@ const LoggedInHandler = ({ user, signOut }) => {
 };
 
 
+
 const Login = () => {
   return (
-    <div className="App">
-      <div className="auth-wrapper">
+      <div className="login-page-container">
+        {}
         <Authenticator>
           {({ signOut, user }) => (
-            <LoggedInHandler user={user} signOut={signOut} />
+
+              <LoggedInHandler user={user} signOut={signOut} />
           )}
         </Authenticator>
       </div>
-    </div>
   );
 };
 

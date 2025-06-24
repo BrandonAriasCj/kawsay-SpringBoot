@@ -1,0 +1,6 @@
+.main-content-area {
+    /* Empujamos todo el contenido hacia abajo
+       exactamente la altura del navbar */
+    padding-top: var(--navbar-height);
+    width: 100%;
+}
