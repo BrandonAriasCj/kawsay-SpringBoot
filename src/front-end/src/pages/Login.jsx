@@ -10,48 +10,39 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 Amplify.configure(awsExports);
-
 const LoggedInHandler = ({ user, signOut }) => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const initialized = React.useRef(false);
 
-  console.log("🧍 Usuario autenticado:", user);
-  console.log("📧 Email:", user?.attributes?.email);
-useEffect(() => {
-  const obtenerToken = async () => {
-    try {
-      const currentUser = await getCurrentUser(); // ← esto asegura que hay sesión
-      const session = await fetchAuthSession();   // ← ahora sí, obtenemos los tokens
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
 
-      const token = session.tokens?.idToken?.toString();
-      const email = currentUser.signInDetails?.loginId;
+    (async () => {
+      try {
+        const user = await getCurrentUser();
+        const token = (await fetchAuthSession()).tokens?.idToken?.toString();
 
-      if (!token || !email) {
-        console.warn("⚠️ No se pudo extraer email o token.");
-        return;
+        if (!user || !token) return console.warn("⚠️ Falta usuario o token");
+
+        await fetch('http://localhost:8082/api/usuarios/token', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          
+        });
+    console.log("📦 JWT completo:", token);
+    console.log("🧾 Payload del JWT:", payload);
+        setUser(user);
+        navigate('/profile');
+      } catch (err) {
+        console.error("❌ Falló la sesión:", err);
       }
-
-      console.log("📧 Email:", email);
-      console.log("🔐 ID Token:", token);
-
-      await fetch('http://localhost:8081/api/usuario/registro-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      setUser(currentUser);
-      navigate('/profile');
-    } catch (err) {
-      console.error("❌ Error al obtener sesión:", err);
-    }
-  };
-
-  obtenerToken();
-}, [setUser, navigate]);
+    })();
+  }, [setUser, navigate]);
 
 
   return (
