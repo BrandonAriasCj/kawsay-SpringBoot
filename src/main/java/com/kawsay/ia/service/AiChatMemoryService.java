@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.kawsay.ia.entity.AiChatMemory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import com.kawsay.ia.config.AuthUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -215,7 +216,7 @@ public class AiChatMemoryService {
     AiChatMemoryRepository mensajeRepository;
     public int contar(Usuario usuario){
         int cantidad = (int) mensajeRepository.countByUsuario(usuario);
-        System.out.println(cantidad);
+        System.out.println("Conteo: "+cantidad);
         return cantidad;
     }
 

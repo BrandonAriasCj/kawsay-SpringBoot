@@ -35,8 +35,9 @@ const LoggedInHandler = ({ user, signOut }) => {
           },
           
         });
-    console.log("📦 JWT completo:", token);
-    console.log("🧾 Payload del JWT:", payload);
+        console.log("📦 JWT completo:", token);
+        localStorage.setItem('jwtToken', token);
+        console.log("🧾 Payload del JWT:", payload);
         setUser(user);
         navigate('/profile');
       } catch (err) {
