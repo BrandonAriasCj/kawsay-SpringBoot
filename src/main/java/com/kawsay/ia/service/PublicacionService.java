@@ -40,7 +40,7 @@ public class PublicacionService {
         Grupo grupo = grupoRepository.findById(idGrupo)
                 .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
 
-        // Verificar si el usuario pertenece al grupo
+
         boolean esMiembro = usuarioGrupoRepository.existsByUsuarioAndGrupo(autor, grupo);
         if (!esMiembro) {
             throw new AccessDeniedException("No estás unido al grupo.");
