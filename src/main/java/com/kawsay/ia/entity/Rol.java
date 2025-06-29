@@ -1,4 +1,5 @@
 package com.kawsay.ia.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kawsay.ia.dto.RolTipo;
 import jakarta.persistence.*;
 import java.util.List.*;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "rol")
 public class Rol {
 
