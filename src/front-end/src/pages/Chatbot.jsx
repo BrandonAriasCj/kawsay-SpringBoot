@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Chatbot.css';
 import kawsaiLogo from '../assets/kawsai-logo.png';
-import axios from 'axios';
+//import axios from 'axios';
 import axiosIns from '../services/axiosInstance';
 
 const Chatbot = () => {
