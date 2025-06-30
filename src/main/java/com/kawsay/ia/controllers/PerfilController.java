@@ -6,7 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @RestController
 @RequestMapping("/api/perfil")
@@ -29,4 +37,34 @@ public class PerfilController {
         PerfilDTO perfilActualizado = perfilService.updatePerfil(email, perfilDTO);
         return ResponseEntity.ok(perfilActualizado);
     }
+
+
+    @PostMapping("/foto/actualizar")
+    public ResponseEntity<String> subirYActualizarFoto(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestParam("file") MultipartFile file
+    ) {
+        try {
+            String email = jwt.getClaimAsString("email");
+
+            // Guardar imagen en servidor
+            String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+            String fileName = System.currentTimeMillis() + "_" + originalFilename;
+            Path dirPath = Paths.get("uploads");
+            if (!Files.exists(dirPath)) Files.createDirectories(dirPath);
+            Path filePath = dirPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Construir URL relativa
+            String url = "/uploads/" + fileName;
+
+            // Actualizar perfil en BD
+            perfilService.actualizarFotoPerfil(email, url);
+
+            return ResponseEntity.ok(url); // Devuelve URL para que el frontend la use
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Error al guardar la imagen");
+        }
+    }
+
 }

@@ -95,4 +95,8 @@ public class UsuarioService {
     }
 
 
+    public Usuario buscarPorCorreo(String correo) {
+        return usuarioRepository.findByCorreoInstitucional(correo).orElse(null);
+    }
+
 }

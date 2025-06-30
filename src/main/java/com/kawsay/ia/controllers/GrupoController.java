@@ -44,4 +44,11 @@ public class GrupoController {
         PublicacionDTO nuevaPublicacion = grupoService.crearPublicacionEnGrupo(id, publicacionDTO);
         return new ResponseEntity<>(nuevaPublicacion, HttpStatus.CREATED);
     }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<GrupoDTO>> obtenerGruposDelUsuario(@PathVariable Integer usuarioId) {
+        List<GrupoDTO> grupos = grupoService.obtenerGruposPorUsuario(usuarioId);
+        return ResponseEntity.ok(grupos);
+    }
+
 }

@@ -73,4 +73,22 @@ public class UsuarioController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioDTO> getUsuarioAutenticado(@AuthenticationPrincipal Jwt jwt) {
+        String correo = jwt.getClaimAsString("email");
+
+        if (correo == null || correo.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Usuario usuario = usuarioService.buscarPorCorreo(correo);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        UsuarioDTO dto = new UsuarioDTO(usuario.getId(), usuario.getCorreoInstitucional(), usuario.getRol().getId());
+        return ResponseEntity.ok(dto);
+    }
+
+
 }

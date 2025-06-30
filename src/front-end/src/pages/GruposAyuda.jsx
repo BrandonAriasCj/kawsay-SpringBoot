@@ -4,20 +4,28 @@ import GroupSidebar from '../components/GroupSidebar';
 import Feed from '../components/Feed';
 import Modal from '../components/Modal';
 import GruposWelcome from '../components/GruposWelcome';
-import { fetchGroups, fetchPostsByGroup, submitNewPost, submitNewGroup, joinGroup, fetchUserGroups } from '../services/api';
+import {
+    fetchGroups,
+    fetchUserGroups,
+    joinGroup,
+    fetchPostsByGroup,
+    submitNewGroup,
+    submitNewPost
+} from '../services/api';
+
 import '../styles/GruposAyuda.css';
 import '../styles/Modal.css';
-
-const CURRENT_USER_ID = 1;
+import { fetchCurrentUser } from '../utils/auth';
 
 const GruposAyuda = () => {
+    const [userId, setUserId] = useState(null);
     const [activeTab, setActiveTab] = useState('discover');
     const [allGroups, setAllGroups] = useState([]);
     const [userGroupIds, setUserGroupIds] = useState(new Set());
     const [posts, setPosts] = useState([]);
     const [selectedGroupId, setSelectedGroupId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState(''); // RE-AÑADIDO
+    const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmittingGroup, setIsSubmittingGroup] = useState(false);
     const [newGroupName, setNewGroupName] = useState('');
@@ -26,76 +34,107 @@ const GruposAyuda = () => {
     const [isSubmittingPost, setIsSubmittingPost] = useState(false);
 
     useEffect(() => {
-        const loadInitialData = async () => {
+        const init = async () => {
             try {
                 setIsLoading(true);
-                const [groupsData, userGroupsData] = await Promise.all([ fetchGroups(), fetchUserGroups(CURRENT_USER_ID) ]);
-                setAllGroups(groupsData);
-                setUserGroupIds(new Set(userGroupsData.map(g => g.id)));
-            } catch (error) { console.error("Error al cargar datos:", error); }
-            finally { setIsLoading(false); }
+                const user = await fetchCurrentUser();
+                if (!user) return;
+                setUserId(user.id);
+                const [groups, userGroups] = await Promise.all([
+                    fetchGroups(),
+                    fetchUserGroups(user.id)
+                ]);
+                setAllGroups(groups);
+                setUserGroupIds(new Set(userGroups.map(g => g.id)));
+            } catch (error) {
+                console.error("Error cargando datos:", error);
+            } finally {
+                setIsLoading(false);
+            }
         };
-        loadInitialData();
+        init();
     }, []);
 
     const classifiedAndFilteredGroups = useMemo(() => {
-        const lowerCaseSearch = searchTerm.toLowerCase();
-
-        // LÓGICA CORREGIDA
-        const created = allGroups.filter(g => g.creadorId === CURRENT_USER_ID && g.nombre.toLowerCase().includes(lowerCaseSearch));
-        const joined = allGroups.filter(g => userGroupIds.has(g.id) && g.nombre.toLowerCase().includes(lowerCaseSearch));
-
+        const term = searchTerm.toLowerCase();
+        const created = allGroups.filter(
+            g => g.creadorId === userId && g.nombre.toLowerCase().includes(term)
+        );
+        const joined = allGroups.filter(
+            g => userGroupIds.has(g.id) && g.nombre.toLowerCase().includes(term)
+        );
         const discover = allGroups.reduce((acc, group) => {
-            if (group.nombre.toLowerCase().includes(lowerCaseSearch)) {
+            if (group.nombre.toLowerCase().includes(term)) {
                 if (!acc[group.categoria]) acc[group.categoria] = [];
                 acc[group.categoria].push(group);
             }
             return acc;
         }, {});
-
         return { created, joined, discover };
-    }, [allGroups, userGroupIds, searchTerm]);
+    }, [allGroups, userGroupIds, searchTerm, userId]);
 
     const selectedGroupDetails = useMemo(() => {
-        return selectedGroupId ? allGroups.find(g => g.id === selectedGroupId) : null;
+        return selectedGroupId
+            ? allGroups.find(g => g.id === selectedGroupId)
+            : null;
     }, [selectedGroupId, allGroups]);
 
     useEffect(() => {
-        if (!selectedGroupId) { setPosts([]); return; }
+        if (!selectedGroupId) {
+            setPosts([]);
+            return;
+        }
         fetchPostsByGroup(selectedGroupId).then(setPosts).catch(console.error);
     }, [selectedGroupId]);
 
     const handleJoinGroup = async (groupId) => {
         try {
             await joinGroup(groupId);
-            alert(`Te has unido al grupo exitosamente.`);
+            alert('Te has unido al grupo exitosamente.');
             setUserGroupIds(prev => new Set(prev).add(groupId));
-        } catch (err) { alert("Error al unirse al grupo."); }
+        } catch (err) {
+            alert('Error al unirse al grupo.');
+        }
     };
 
     const handleCreateGroupSubmit = async (e) => {
         e.preventDefault();
         setIsSubmittingGroup(true);
         try {
-            const newGroupData = { name: newGroupName, description: newGroupDescription, category: newGroupCategory };
-            const newGroup = await submitNewGroup(newGroupData);
+            const newGroup = await submitNewGroup({
+                name: newGroupName,
+                description: newGroupDescription,
+                category: newGroupCategory
+            });
             setAllGroups(prev => [...prev, newGroup]);
-            setUserGroupIds(prev => new Set(prev).add(newGroup.id)); // IMPORTANTE: Asegurarse de que el creador es miembro
+            setUserGroupIds(prev => new Set(prev).add(newGroup.id));
             setSelectedGroupId(newGroup.id);
             setActiveTab('created');
             setIsModalOpen(false);
-            setNewGroupName(''); setNewGroupDescription(''); setNewGroupCategory('');
-        } catch (err) { alert("Error al crear el grupo."); }
-        finally { setIsSubmittingGroup(false); }
+            setNewGroupName('');
+            setNewGroupDescription('');
+            setNewGroupCategory('');
+        } catch (err) {
+            alert('Error al crear el grupo.');
+        } finally {
+            setIsSubmittingGroup(false);
+        }
     };
 
     const handleCreatePost = async ({ title, content }) => {
         setIsSubmittingPost(true);
         try {
-            const newPost = await submitNewPost({ groupId: selectedGroupId, title, content });
+            const newPost = await submitNewPost({
+                groupId: selectedGroupId,
+                title,
+                content
+            });
             setPosts(prev => [newPost, ...prev]);
-        } catch (err) { alert("Error al publicar."); }
-        finally { setIsSubmittingPost(false); }
+        } catch (err) {
+            alert('Error al publicar.');
+        } finally {
+            setIsSubmittingPost(false);
+        }
     };
 
     return (
@@ -104,7 +143,9 @@ const GruposAyuda = () => {
                 <div className="layout-container">
                     <aside className="sidebar-redefined">
                         <div className="sidebar-header">
-                            <button className="create-new-group-btn" onClick={() => setIsModalOpen(true)}>+ Crear Nuevo Grupo</button>
+                            <button className="create-new-group-btn" onClick={() => setIsModalOpen(true)}>
+                                + Crear Nuevo Grupo
+                            </button>
                         </div>
                         <Tabs activeTab={activeTab} onTabClick={setActiveTab} />
                         <GroupSidebar
@@ -126,7 +167,11 @@ const GruposAyuda = () => {
                                     <span className="group-category-badge">{selectedGroupDetails.categoria}</span>
                                     <p className="group-description">{selectedGroupDetails.descripcion}</p>
                                 </header>
-                                <Feed posts={posts} onCreatePost={handleCreatePost} isSubmittingPost={isSubmittingPost} />
+                                <Feed
+                                    posts={posts}
+                                    onCreatePost={handleCreatePost}
+                                    isSubmittingPost={isSubmittingPost}
+                                />
                             </>
                         ) : (
                             <GruposWelcome />
@@ -137,10 +182,21 @@ const GruposAyuda = () => {
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Crear un Nuevo Grupo">
                 <form className="create-group-form" onSubmit={handleCreateGroupSubmit}>
-                    <div className="form-group"><label htmlFor="groupName">Nombre del Grupo</label><input id="groupName" type="text" value={newGroupName} onChange={(e) => setNewGroupName(e.target.value)} required /></div>
-                    <div className="form-group"><label htmlFor="groupCategory">Categoría</label><input id="groupCategory" type="text" value={newGroupCategory} onChange={(e) => setNewGroupCategory(e.target.value)} required /></div>
-                    <div className="form-group"><label htmlFor="groupDescription">Descripción</label><textarea id="groupDescription" value={newGroupDescription} onChange={(e) => setNewGroupDescription(e.target.value)} required /></div>
-                    <button type="submit" disabled={isSubmittingGroup || !newGroupName.trim() || !newGroupDescription.trim()}>{isSubmittingGroup ? "Creando..." : "Crear Grupo"}</button>
+                    <div className="form-group">
+                        <label htmlFor="groupName">Nombre del Grupo</label>
+                        <input id="groupName" type="text" value={newGroupName} onChange={(e) => setNewGroupName(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="groupCategory">Categoría</label>
+                        <input id="groupCategory" type="text" value={newGroupCategory} onChange={(e) => setNewGroupCategory(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="groupDescription">Descripción</label>
+                        <textarea id="groupDescription" value={newGroupDescription} onChange={(e) => setNewGroupDescription(e.target.value)} required />
+                    </div>
+                    <button type="submit" disabled={isSubmittingGroup || !newGroupName.trim() || !newGroupDescription.trim()}>
+                        {isSubmittingGroup ? 'Creando...' : 'Crear Grupo'}
+                    </button>
                 </form>
             </Modal>
         </>

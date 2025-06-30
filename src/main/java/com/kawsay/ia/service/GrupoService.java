@@ -146,5 +146,24 @@ public class GrupoService {
         }
     }
 
+    public List<GrupoDTO> obtenerGruposPorUsuario(Integer usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<Grupo> grupos = grupoRepository.findByMiembros_Usuario(usuario);
+
+        return grupos.stream()
+                .map(grupo -> GrupoDTO.builder()
+                        .id(grupo.getId())
+                        .nombre(grupo.getNombre())
+                        .descripcion(grupo.getDescripcion())
+                        .categoria(grupo.getCategoria())
+                        .creadorId(grupo.getCreador().getId())
+                        .moderadorId(grupo.getModerador().getId())
+                        .fechaCreacion(grupo.getFechaCreacion())
+                        .build()
+                )
+                .toList();
+    }
 
 }

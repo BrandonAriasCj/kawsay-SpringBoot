@@ -84,4 +84,12 @@ public class PerfilService {
         dto.setHistorialPreferencias(preferencias);
         return dto;
     }
+
+    public void actualizarFotoPerfil(String email, String nuevaUrl) {
+        Perfil perfil = perfilRepository.findByUsuarioCorreoInstitucional(email)
+                .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
+        perfil.setUrlFotoPerfil(nuevaUrl);
+        perfilRepository.save(perfil);
+    }
+
 }
