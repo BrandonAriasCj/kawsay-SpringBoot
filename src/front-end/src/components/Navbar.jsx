@@ -6,30 +6,10 @@ import '../styles/Navbar.css';
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (e.clientY < 80) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-
-
 
 
   return (
-    <nav className={`main-header ${isVisible ? 'show' : 'hide'} navbar`}>
+    <nav className={`main-header navbar`}>
       <h1>KawzAi</h1>
       <div className="links">
         <Link to="/">Inicio</Link>
