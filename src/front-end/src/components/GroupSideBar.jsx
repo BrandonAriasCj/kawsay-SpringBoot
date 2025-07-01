@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const GroupSidebar = ({ activeTab, groupsData, onSelectGroup, onJoinGroup, selectedGroupId, searchTerm, onSearchChange, userGroupIds }) => {
+const GroupSidebar = ({ activeTab, groupsData, onSelectGroup, onJoinGroup, selectedGroupId, searchTerm, onSearchChange, userGroupIds,userId }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     // Reiniciar la categoría seleccionada al cambiar de pestaña
@@ -45,9 +45,21 @@ const GroupSidebar = ({ activeTab, groupsData, onSelectGroup, onJoinGroup, selec
                                     <p>{group.descripcion}</p>
                                     <div className="discover-card-footer">
                                         <button onClick={() => onSelectGroup(group.id)}>Ver Feed</button>
-                                        {!isMember && (
-                                            <button className="join-btn" onClick={() => onJoinGroup(group.id)}>Unirse</button>
+                                        {group.creadorId === userId ? (
+                                            <div className="group-badge badge-creator">
+                                                👑 Creador
+                                            </div>
+                                        ) : userGroupIds.has(group.id) ? (
+                                            <div className="group-badge badge-member">
+                                                ✅ Miembro
+                                            </div>
+                                        ) : (
+                                            <button className="join-btn modern-btn" onClick={() => onJoinGroup(group.id)}>
+                                                ➕ Unirse
+                                            </button>
                                         )}
+
+
                                     </div>
                                 </div>
                             );

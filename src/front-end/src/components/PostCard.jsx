@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { submitReaction, fetchReactionsForPost } from '../services/api';
 import CommentSection from './CommentSection';
+import { fetchCurrentUser } from '../utils/auth';
 
 const PostCard = ({ post }) => {
     const [votes, setVotes] = useState(0);
     const [hasVoted, setHasVoted] = useState(false);
     const [showComments, setShowComments] = useState(false);
 
+
     useEffect(() => {
-        // Cargar las reacciones iniciales de la publicación
-        fetchReactionsForPost(post.id).then(reactions => {
-            setVotes(reactions.length);
-            // Comprobar si el usuario actual ya ha votado (asumiendo ID=1)
-            if (reactions.some(r => r.usuarioId === 1)) {
-                setHasVoted(true);
+        const loadReactions = async () => {
+            try {
+                const [reactions, user] = await Promise.all([
+                    fetchReactionsForPost(post.id),
+                    fetchCurrentUser()
+                ]);
+                setVotes(reactions.length);
+                if (reactions.some(r => r.usuarioId === user.id)) {
+                    setHasVoted(true);
+                }
+            } catch (error) {
+                console.error("Error al cargar reacciones:", error);
             }
-        }).catch(console.error);
+        };
+        loadReactions();
     }, [post.id]);
+
 
     const handleVote = async () => {
         if (hasVoted) return;

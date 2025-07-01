@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCommentsForPost, submitComment } from '../services/api';
 import CommentCard from './CommentCard';
+import { fetchCurrentUser } from '../utils/auth';
 
 const CommentSection = ({ postId }) => {
     const [commentTree, setCommentTree] = useState([]);
@@ -26,10 +27,13 @@ const CommentSection = ({ postId }) => {
 
         setIsSubmitting(true);
         try {
-            // Este endpoint ya existe en tu backend para añadir un comentario a una publicación
-            await submitComment(postId, { contenido: newComment });
+            const user = await fetchCurrentUser();
+            await submitComment(postId, {
+                contenido: newComment,
+                autorId: user.id
+            });
             setNewComment('');
-            loadComments(); // Recargar todo el árbol para mostrar el nuevo comentario
+            loadComments();
         } catch (error) {
             console.error("Error al enviar comentario:", error);
             alert("No se pudo enviar el comentario.");

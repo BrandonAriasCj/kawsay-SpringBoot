@@ -89,22 +89,27 @@ const GruposAyuda = () => {
 
     const handleJoinGroup = async (groupId) => {
         try {
+            console.log("Intentando unirse al grupo con ID:", groupId);
             await joinGroup(groupId);
             alert('Te has unido al grupo exitosamente.');
             setUserGroupIds(prev => new Set(prev).add(groupId));
         } catch (err) {
+            console.error("Error al unirse al grupo:", err);
             alert('Error al unirse al grupo.');
         }
     };
+
 
     const handleCreateGroupSubmit = async (e) => {
         e.preventDefault();
         setIsSubmittingGroup(true);
         try {
+            const user = await fetchCurrentUser();
             const newGroup = await submitNewGroup({
                 name: newGroupName,
                 description: newGroupDescription,
-                category: newGroupCategory
+                category: newGroupCategory,
+                creadorId: user.id
             });
             setAllGroups(prev => [...prev, newGroup]);
             setUserGroupIds(prev => new Set(prev).add(newGroup.id));
@@ -121,13 +126,15 @@ const GruposAyuda = () => {
         }
     };
 
-    const handleCreatePost = async ({ title, content }) => {
+
+    const handleCreatePost = async ({ title, content, autorId }) => {
         setIsSubmittingPost(true);
         try {
             const newPost = await submitNewPost({
                 groupId: selectedGroupId,
                 title,
-                content
+                content,
+                autorId
             });
             setPosts(prev => [newPost, ...prev]);
         } catch (err) {
@@ -136,6 +143,7 @@ const GruposAyuda = () => {
             setIsSubmittingPost(false);
         }
     };
+
 
     return (
         <>
@@ -157,6 +165,7 @@ const GruposAyuda = () => {
                             searchTerm={searchTerm}
                             onSearchChange={setSearchTerm}
                             userGroupIds={userGroupIds}
+                            userId={userId}
                         />
                     </aside>
                     <main className="main-content">

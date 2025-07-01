@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
+import { fetchCurrentUser } from '../utils/auth';
 
 const CreatePostForm = ({ onSubmit, isSubmitting }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
-    const handleSubmit = (e) => {
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!title.trim() || !content.trim()) return;
-        onSubmit({ title, content });
-        setTitle('');
-        setContent('');
+
+        try {
+            const user = await fetchCurrentUser();
+            await onSubmit({ title, content, autorId: user.id });
+            setTitle('');
+            setContent('');
+        } catch (error) {
+            console.error("Error al publicar:", error);
+            alert("No se pudo publicar.");
+        }
     };
+
 
     return (
         <div className="create-post-container">

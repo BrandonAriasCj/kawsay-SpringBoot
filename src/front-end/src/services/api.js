@@ -23,12 +23,13 @@ export const submitNewGroup = async ({ name, description, category }) => {
 };
 
 export const joinGroup = async (groupId) => {
-    const user = await fetchCurrentUser();
-    const userId = user?.id;
-    const requestBody = { usuarioId: userId, grupoId };
-    const response = await apiClient.post('/api/grupos/unirse', requestBody);
+    const response = await apiClient.post('/api/grupos/unirse', {
+        grupoId: groupId
+    });
     return response.data;
 };
+
+
 
 // === PUBLICACIONES ===
 export const fetchPostsByGroup = async (groupId) => {

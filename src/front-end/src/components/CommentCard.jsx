@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { submitReplyToComment } from '../services/api';
+import { fetchCurrentUser } from '../utils/auth';
 
 const CommentCard = ({ comment, onCommentAdded }) => {
     const [showReplyForm, setShowReplyForm] = useState(false);
@@ -9,13 +10,17 @@ const CommentCard = ({ comment, onCommentAdded }) => {
     const handleReplySubmit = async (e) => {
         e.preventDefault();
         if (!replyContent.trim()) return;
+
         setIsSubmitting(true);
         try {
-            // Este endpoint ya existe para responder a un comentario específico
-            await submitReplyToComment(comment.id, { contenido: replyContent });
+            const user = await fetchCurrentUser();
+            await submitReplyToComment(comment.id, {
+                contenido: replyContent,
+                autorId: user.id
+            });
             setReplyContent('');
             setShowReplyForm(false);
-            onCommentAdded(); // Llama a la función para recargar todo el árbol de comentarios
+            onCommentAdded();
         } catch (error) {
             console.error("Error al enviar respuesta:", error);
             alert("No se pudo enviar la respuesta.");
@@ -23,6 +28,7 @@ const CommentCard = ({ comment, onCommentAdded }) => {
             setIsSubmitting(false);
         }
     };
+
 
     return (
         <div className="comment-card-container">
