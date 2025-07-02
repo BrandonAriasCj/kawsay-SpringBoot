@@ -1,80 +1,91 @@
-// src/pages/Login.jsx
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
-import '../styles/Login.css';
-
-import { Amplify} from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
-import awsExports from '../aws-exports';
 import '@aws-amplify/ui-react/styles.css';
+import awsExports from '../aws-exports';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import '../styles/Login.css';
 
 Amplify.configure(awsExports);
-const LoggedInHandler = ({ user, signOut }) => {
+
+const Login = () => {
   const { setUser } = useContext(AuthContext);
+  const [loggedUser, setLoggedUser] = useState(null);
+  const [signOutFunc, setSignOutFunc] = useState(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const navigate = useNavigate();
-  const initialized = React.useRef(false);
 
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
+    if (!loggedUser || isRedirecting) return;
 
-    (async () => {
+    const handleAuth = async () => {
       try {
-        const user = await getCurrentUser();
-        const token = (await fetchAuthSession()).tokens?.idToken?.toString();
+        setIsRedirecting(true);
+        const session = await fetchAuthSession();
+        const idToken = session.tokens?.idToken?.toString();
+        const accessToken = session.tokens?.accessToken?.toString();
 
-        if (!user || !token) return console.warn("⚠️ Falta usuario o token");
+        const payload = JSON.parse(atob(accessToken.split('.')[1]));
+        const grupos = payload['cognito:groups'] || [];
 
         await fetch('http://localhost:8081/api/usuarios/token', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${idToken}`,
             'Content-Type': 'application/json',
           },
-          
         });
-        console.log("📦 JWT completo:", token);
-        localStorage.setItem('jwtToken', token);
-        console.log("🧾 Payload del JWT:", payload);
-        setUser(user);
-        navigate('/profile');
+
+        localStorage.setItem('jwtToken', idToken);
+        setUser(loggedUser);
+
+        if (grupos.includes('PSICOLOGO')) {
+          // 1. Abrimos el panel del psicólogo en una nueva pestaña.
+          // Guardamos una referencia a esa nueva ventana.
+          const psychologistWindow = window.open('http://localhost:5174', '_blank');
+
+          // 2. Esperamos un momento para asegurarnos de que la nueva ventana haya cargado.
+          setTimeout(() => {
+            // 3. Enviamos el token de forma segura usando postMessage.
+            // El segundo argumento especifica el origen exacto al que se puede enviar el mensaje.
+            // Esto es una medida de seguridad crucial.
+            psychologistWindow.postMessage({
+              type: 'AUTH_TOKEN',
+              token: idToken
+            }, 'http://localhost:5174');
+
+            // Opcional: Redirigir la ventana actual a una página de "sesión iniciada" o de vuelta al inicio.
+            navigate('/');
+
+          }, 1000); // 1 segundo de espera suele ser suficiente.
+
+        } else {
+          // El flujo del estudiante no cambia.
+          localStorage.setItem('jwtToken', idToken);
+          setUser(loggedUser);
+          navigate('/');
+        }
       } catch (err) {
-        console.error("❌ Falló la sesión:", err);
+        console.error("❌ Error autenticando:", err);
       }
-    })();
-  }, [setUser, navigate]);
+    };
 
+    handleAuth();
+  }, [loggedUser, isRedirecting, navigate, setUser]);
 
-  return (
-    <div className="auth-container">
-      <header className="App-header">
-        <h1>Bienvenido, {user?.username || 'Usuario'}</h1>
-      </header>
-      <main>
-        <p>¡Sesión iniciada!</p>
-        <button onClick={signOut} className="sign-out-button">
-          Cerrar sesión
-        </button>
-      </main>
-    </div>
-  );
-
-
-};
-
-
-
-const Login = () => {
   return (
       <div className="login-page-container">
-        {}
         <Authenticator>
-          {({ signOut, user }) => (
+          {({ signOut, user }) => {
+            if (!loggedUser) {
+              setLoggedUser(user);
+              setSignOutFunc(() => signOut);
+            }
 
-              <LoggedInHandler user={user} signOut={signOut} />
-          )}
+            return null;
+          }}
         </Authenticator>
       </div>
   );

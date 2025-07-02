@@ -1,51 +1,163 @@
-/* src/styles/Navbar.css */
-
-/* Definimos la altura del navbar como una variable global */
 :root {
-  --navbar-height: 70px; /* Puedes ajustar este valor si cambias el padding/fuente */
+  --navbar-height: 70px;
+  --color-texto-principal: #ffffff;
+  --color-texto-secundario: rgba(255, 255, 255, 0.85);
+  --color-accion-primario: #ff6e7f;
+  --color-accion-secundario: #ffb347;
+  --glass-background: rgba(46, 23, 56, 0.25);
+  --glass-blur: 15px;
+  --glass-border-color: rgba(255, 110, 127, 0.5);
+  --font-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.navbar, .main-header {
+/* ----- ESTILOS GENERALES DEL NAVBAR ----- */
+.navbar,
+.main-header {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-
-  height: var(--navbar-height); /* Aplicamos la altura */
-
+  height: var(--navbar-height);
   background: var(--glass-background);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border-bottom: 2px solid var(--glass-border-color);
-
-  padding: 0 2rem; /* Ajustamos el padding ya que la altura es fija */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--color-texto-principal);
-  font-weight: bold;
+  padding: 0 2rem;
   font-family: var(--font-principal);
-  transition: transform 0.3s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.navbar .links a {
-  margin-left: 1.5rem;
+/* Logo / Nombre */
+.navbar h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--color-texto-principal);
+  margin: 0;
+  margin-right: 2rem;
+}
+
+/* Enlaces del lado izquierdo */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-left a {
+  font-size: 1.1rem;
+  font-weight: 500;
   color: var(--color-texto-principal);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.navbar .links a:hover {
-  text-decoration: underline;
+.nav-left a:hover {
   color: var(--color-accion-secundario);
+  text-decoration: underline;
 }
 
-.show {
-  transform: translateY(0);
+/* Sección derecha (perfil) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.hide {
-  transform: translateY(-100%);
+/* Avatar + nombre */
+.user-menu-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 0.8rem;
+  border-radius: 2rem;
+  transition: background 0.3s;
+}
+
+.user-info:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-accion-secundario);
+}
+
+/* Dropdown */
+.user-dropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  width: 150px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: #333;
+  background-color: white;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-item:hover {
+  background-color: #f9f9f9;
+}
+
+.logout-btn {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-left {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-left a {
+    font-size: 1rem;
+  }
+
+  .user-info {
+    padding: 0.3rem 0.6rem;
+  }
+
+  .user-name {
+    display: none;
+  }
 }
