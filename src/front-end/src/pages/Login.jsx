@@ -16,6 +16,16 @@ const Login = () => {
   const [signOutFunc, setSignOutFunc] = useState(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const navigate = useNavigate();
+  const [userFromAuthenticator, setUserFromAuthenticator] = useState(null);
+  const [signOutFuncTemp, setSignOutFuncTemp] = useState(null);
+
+
+  useEffect(() => {
+    if (userFromAuthenticator && !loggedUser) {
+      setLoggedUser(userFromAuthenticator);
+      setSignOutFunc(() => signOutFuncTemp);
+    }
+  }, [userFromAuthenticator, loggedUser, signOutFuncTemp]);
 
   useEffect(() => {
     if (!loggedUser || isRedirecting) return;
@@ -79,9 +89,11 @@ const Login = () => {
       <div className="login-page-container">
         <Authenticator>
           {({ signOut, user }) => {
-            if (!loggedUser) {
-              setLoggedUser(user);
-              setSignOutFunc(() => signOut);
+            if (!userFromAuthenticator && user) {
+              setTimeout(() => {
+                setUserFromAuthenticator(user);
+                setSignOutFuncTemp(() => signOut);
+              }, 0);
             }
 
             return null;
