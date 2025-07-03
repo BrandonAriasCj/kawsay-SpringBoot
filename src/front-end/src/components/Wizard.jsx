@@ -54,32 +54,41 @@ const Wizard = ({ userEmail, onComplete }) => {
 
   return ReactDOM.createPortal(
     <div className="kawzay-wizard-overlay">
-      <div className="kawzay-wizard-modal">
-        <h2 className="text-2xl font-bold text-center mb-6 text-purple-700">
-          🎉 ¡Bienvenido a Kawzay!
-        </h2>
-
-        {step === 1 && (
-          <FormularioPerfil
-            perfilData={perfilData}
-            onChange={handlePerfilChange}
-            onNext={handleNextStep}
+      <div className="kawzay-wizard-modal-responsive">
+        <div className="wizard-visual-area">
+          <img
+            src="imagenIA.gif" // ajusta el path o usa un componente animado
+            alt="Bienestar emocional"
+            className="wizard-image"
           />
-        )}
+        </div>
 
-        {step === 2 && (
-          loading
-            ? <p className="text-center">Cargando preferencias…</p>
-            : <FormularioPreferencias
-                catalogo={catalogo}
-                seleccionadas={seleccionadas}
-                setSeleccionadas={setSeleccionadas}
-                onBack={handleBack}
-                onSubmit={handleFinalSubmit}
-              />
-        )}
+        <div className="wizard-form-area">
+          <h2 className="wizard-title">🎉 ¡Bienvenido a Kawzay!</h2>
+          
+          {step === 1 && (
+            <FormularioPerfil
+              perfilData={perfilData}
+              onChange={handlePerfilChange}
+              onNext={handleNextStep}
+            />
+          )}
+
+          {step === 2 && (
+            loading
+              ? <p className="text-center">Cargando preferencias…</p>
+              : <FormularioPreferencias
+                  catalogo={catalogo}
+                  seleccionadas={seleccionadas}
+                  setSeleccionadas={setSeleccionadas}
+                  onBack={handleBack}
+                  onSubmit={handleFinalSubmit}
+                />
+          )}
+        </div>
       </div>
     </div>,
+
     document.body
   );
 };

@@ -1,6 +1,8 @@
 package com.kawsay.ia.service;
 import com.kawsay.ia.dto.PerfilDTO;
+import com.kawsay.ia.dto.PerfilInicialDTO;
 import com.kawsay.ia.entity.Perfil;
+import com.kawsay.ia.entity.Preferencia;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.entity.HistorialPreferencias;
 import com.kawsay.ia.repository.PerfilRepository;
@@ -25,6 +27,9 @@ public class PerfilService {
     @Autowired
     private HistorialPreferenciasRepository historialPreferenciasRepository;
 
+    @Autowired
+    private PreferenciaService preferenciaService;
+
     @Transactional(readOnly = true)
     public PerfilDTO getPerfilCompleto(String email) {
         Usuario usuario = usuarioRepository.findByCorreoInstitucional(email)
@@ -45,6 +50,34 @@ public class PerfilService {
 
         return mapToDTO(usuario, perfil, preferencias);
     }
+
+    @Transactional
+    public void configurarInicial(String email, PerfilInicialDTO dto) {
+        Usuario usuario = usuarioRepository.findByCorreoInstitucional(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Long idUsuario = Long.valueOf(usuario.getId());
+        Perfil perfil = perfilRepository.findByUsuario_Id(idUsuario)
+                .orElseGet(() -> {
+                    Perfil nuevo = new Perfil();
+                    nuevo.setUsuario(usuario);
+                    return nuevo;
+                });
+
+
+        perfil.setNombreCompleto(dto.getNombreCompleto());
+        perfil.setCarrera(dto.getCarrera());
+        perfil.setDescripcion(dto.getDescripcion());
+        perfil.setPerfilCompletado(true); // Marca el flag para no mostrar modal
+
+        List<Preferencia> preferencias = dto.getPreferencias().stream()
+                .map(preferenciaService::findOrCreate) // crea o busca según "valor"
+                .collect(Collectors.toList());
+
+        perfil.setPreferencias(preferencias);
+        perfilRepository.save(perfil);
+    }
+
 
     @Transactional
     public PerfilDTO updatePerfil(String email, PerfilDTO perfilDTO) {
@@ -81,7 +114,7 @@ public class PerfilService {
         dto.setCarrera(perfil.getCarrera());
         dto.setDescripcion(perfil.getDescripcion());
         dto.setUrlFotoPerfil(perfil.getUrlFotoPerfil());
-        dto.setHistorialPreferencias(preferencias);
+
         return dto;
     }
 
