@@ -1,6 +1,7 @@
 package com.kawsay.ia.controllers;
 
 import com.kawsay.ia.dto.PerfilDTO;
+import com.kawsay.ia.dto.PerfilInicialDTO;
 import com.kawsay.ia.service.PerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,16 @@ public class PerfilController {
 
     @Autowired
     private PerfilService perfilService;
+
+
+    @PostMapping("/inicial")
+    public ResponseEntity<Void> registroInicial(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody PerfilInicialDTO dto
+    ) {
+        perfilService.configurarInicial(jwt.getClaimAsString("email"), dto);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping
     public ResponseEntity<PerfilDTO> getMiPerfil(@AuthenticationPrincipal Jwt jwt) {

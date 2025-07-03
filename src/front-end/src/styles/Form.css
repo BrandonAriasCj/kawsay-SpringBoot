@@ -68,3 +68,62 @@
 .perfil-form-acciones button:hover {
   background-color: #5b21b6;
 }
+
+.kawzay-wizard-modal-responsive {
+  display: flex;
+  flex-direction: row;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+/* Área izquierda: imagen */
+.wizard-visual-area {
+  width: 50%;
+  background-color: #f3e8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Imagen o gif */
+.wizard-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* Área derecha: formulario */
+.wizard-form-area {
+  width: 50%;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Título del wizard */
+.wizard-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #6d28d9;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* RESPONSIVE: ocultar imagen en pantallas angostas */
+@media (max-width: 768px) {
+  .kawzay-wizard-modal-responsive {
+    flex-direction: column;
+  }
+
+  .wizard-visual-area {
+    display: none;
+  }
+
+  .wizard-form-area {
+    width: 100%;
+  }
+}
