@@ -3,6 +3,7 @@
     /* min-height: 100vh; */
     padding: 1rem;
     background: linear-gradient(to bottom, #4a148c, #6a1b9a, #ba68c8, #f06292);
+/*     background: linear-gradient(to bottom, #4a148c,#8435e6, #6a1b9a); */
     display: flex;
     justify-content: center;
     align-items: center;
