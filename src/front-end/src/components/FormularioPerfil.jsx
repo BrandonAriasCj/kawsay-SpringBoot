@@ -20,6 +20,9 @@ return (
           required
           placeholder="Ej. Axel Mendoza"
         />
+          {!perfilData.nombreCompleto.trim() && (
+    <p className="text-sm text-red-500 mt-1">* Este campo es obligatorio</p>
+  )}
       </div>
 
       <div className="perfil-form-grupo">
@@ -31,8 +34,11 @@ return (
           value={perfilData.carrera}
           onChange={onChange}
           required
-          placeholder="Ej. Ingeniería de Software"
+          placeholder="Ej. Ingeniería de Software" 
         />
+          {!perfilData.carrera.trim() && (
+    <p className="text-sm text-red-500 mt-1">* Este campo es obligatorio</p>
+  )}
       </div>
 
       <div className="perfil-form-grupo">
@@ -46,11 +52,20 @@ return (
           required
           placeholder="Cuéntanos brevemente sobre ti"
         />
+          {!perfilData.descripcion.trim() && (
+    <p className="text-sm text-red-500 mt-1">* Este campo es obligatorio</p>
+  )}
+      </div >
+      <div className="perfil-form-acciones">
+        <button
+            type="button"
+            onClick={onNext}
+            className="px-5 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-700"
+        >
+            Siguiente
+        </button>
       </div>
 
-      <div className="perfil-form-acciones">
-        <button type="button" onClick={onNext}>Siguiente</button>
-      </div>
     </form>
   );
 };
