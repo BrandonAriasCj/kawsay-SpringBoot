@@ -1,60 +1,57 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Form } from 'react-router';
-
+import '../styles/Form.css';
 const FormularioPerfil = ({ perfilData, onChange, onNext}) => {
 
-  return (
-  <div className="space-y-4">
-  <label className="block">
-    <span className="text-sm font-semibold">Nombre completo</span>
-    <input
-      type="text"
-      name="nombreCompleto"
-      value={perfilData.nombreCompleto}
-      onChange={onChange}
-      required
-      className="mt-1 w-full border p-2 rounded"
-      placeholder="Ej. Axel Mendoza"
-    />
-  </label>
+return (
+    <form className="perfil-form">
+      <h3 className="perfil-form-titulo">Información del perfil</h3>
+      <p className="perfil-form-descripcion">Completa tus datos para personalizar tu experiencia.</p>
 
-  <label className="block">
-    <span className="text-sm font-semibold">Carrera</span>
-    <input
-      type="text"
-      name="carrera"
-      value={perfilData.carrera}
-      onChange={onChange}
-      required
-      className="mt-1 w-full border p-2 rounded"
-      placeholder="Ej. Ingeniería de Software"
-    />
-  </label>
+      <div className="perfil-form-grupo">
+        <label htmlFor="nombreCompleto">Nombre completo</label>
+        <input
+          type="text"
+          id="nombreCompleto"
+          name="nombreCompleto"
+          value={perfilData.nombreCompleto}
+          onChange={onChange}
+          required
+          placeholder="Ej. Axel Mendoza"
+        />
+      </div>
 
-  <label className="block">
-    <span className="text-sm font-semibold">Descripción</span>
-    <textarea
-      name="descripcion"
-      value={perfilData.descripcion}
-      onChange={onChange}
-      rows={3}
-      required
-      className="mt-1 w-full border p-2 rounded"
-      placeholder="Cuéntanos brevemente sobre ti"
-    />
-  </label>
+      <div className="perfil-form-grupo">
+        <label htmlFor="carrera">Carrera</label>
+        <input
+          type="text"
+          id="carrera"
+          name="carrera"
+          value={perfilData.carrera}
+          onChange={onChange}
+          required
+          placeholder="Ej. Ingeniería de Software"
+        />
+      </div>
 
-  <div className="flex justify-end pt-4">
-    <button
-      type="button"
-      onClick={onNext} // esta función cambia al paso 2
-      className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-    >
-      Siguiente
-    </button>
-  </div>
-</div>
+      <div className="perfil-form-grupo">
+        <label htmlFor="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          name="descripcion"
+          value={perfilData.descripcion}
+          onChange={onChange}
+          rows={4}
+          required
+          placeholder="Cuéntanos brevemente sobre ti"
+        />
+      </div>
+
+      <div className="perfil-form-acciones">
+        <button type="button" onClick={onNext}>Siguiente</button>
+      </div>
+    </form>
   );
 };
 

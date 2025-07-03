@@ -1,0 +1,70 @@
+/* ----------- PERFIL FORMULARIO ----------- */
+.perfil-form {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.perfil-form-titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4c1d95; /* purple-900 */
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.perfil-form-descripcion {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+}
+
+.perfil-form-grupo {
+  display: flex;
+  flex-direction: column;
+}
+
+.perfil-form-grupo label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.perfil-form-grupo input,
+.perfil-form-grupo textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  resize: vertical;
+  transition: border 0.2s;
+}
+
+.perfil-form-grupo input:focus,
+.perfil-form-grupo textarea:focus {
+  border-color: #a78bfa;
+  outline: none;
+}
+
+.perfil-form-acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.perfil-form-acciones button {
+  background-color: #6d28d9;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.perfil-form-acciones button:hover {
+  background-color: #5b21b6;
+}
