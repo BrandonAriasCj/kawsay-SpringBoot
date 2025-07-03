@@ -1,7 +1,7 @@
 /* src/styles/GruposAyuda.css */
 
 .page-wrapper-grupos {
-    padding-top: 100px;
+    padding-top: 0px;
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -330,7 +330,7 @@
 
 
 /* --- Estructura Principal --- */
-.page-wrapper-grupos { padding-top: 100px; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; background: linear-gradient(to bottom, #6a1b9a, #ba68c8, #f06292); box-sizing: border-box; overflow: hidden; }
+.page-wrapper-grupos { padding-top: 0px; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; background: linear-gradient(to bottom, #6a1b9a, #ba68c8, #f06292); box-sizing: border-box; overflow: hidden; }
 .layout-container { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; width: 90%; max-width: 1400px; height: 95%; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25); padding: 1rem; overflow: hidden; }
 
 /* --- Barra Lateral --- */
@@ -388,7 +388,7 @@
 
 
 .page-wrapper-grupos {
-    padding-top: 100px; height: 100vh; width: 100vw; display: flex;
+    padding-top: 0px; height: 100vh; width: 100vw; display: flex;
     justify-content: center; align-items: center;
     background: linear-gradient(to bottom, #6a1b9a, #ba68c8, #f06292);
     box-sizing: border-box; overflow: hidden;
