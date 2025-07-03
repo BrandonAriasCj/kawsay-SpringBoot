@@ -1,16 +1,17 @@
 /* src/styles/Citas.css */
 .citas-wrapper {
-    min-height: 100vh;
-    padding: 30rem;
+    /* min-height: 100vh; */
+    padding: 1rem;
     background: linear-gradient(to bottom, #4a148c, #6a1b9a, #ba68c8, #f06292);
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    height: 100;
 }
 
 .citas-container {
-    width: 100%;
-    max-width: 700px;
+    width: 70%;
+    min-width: 1000px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
