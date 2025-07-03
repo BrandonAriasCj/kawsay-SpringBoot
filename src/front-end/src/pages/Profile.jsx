@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FirstLoginModal from '../components/FirstLoginModal';
+import FirstLoginModal from '../components/FormularioPerfil';
 import axios from 'axios';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 
@@ -35,9 +35,9 @@ const Profile = ({ user, signOut }) => {
 
   return (
     <div className="profile-container">
-      {userEmail && showModal && (
-        <FirstLoginModal userEmail={userEmail} onComplete={handleComplete} />
-      )}
+        {userEmail && showModal && (
+          <FirstLoginWizard userEmail={userEmail} onComplete={handleComplete} />
+        )}
 
       {!showModal && profileData ? (
         <div className="profile-content">
