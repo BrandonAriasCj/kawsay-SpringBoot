@@ -1,6 +1,6 @@
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -12,11 +12,14 @@ import GlobalLogout from './components/GlobalLogout';
 
 import './App.css';
 
-function App() {
+function AppContent() {
+    const location = useLocation();
+
     return (
-        <Router>
-            <Navbar />
+        <>
             {}
+            {location.pathname !== "/login" && <Navbar />}
+
             <main className="main-content-area">
                 <Routes>
                     <Route path="/global-logout" element={<GlobalLogout />} />
@@ -28,6 +31,14 @@ function App() {
                     <Route path="/citas" element={<Citas />} />
                 </Routes>
             </main>
+        </>
+    );
+}
+
+function App() {
+    return (
+        <Router>
+            <AppContent />
         </Router>
     );
 }

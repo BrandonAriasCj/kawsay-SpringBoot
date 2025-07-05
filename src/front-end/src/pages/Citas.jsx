@@ -1,33 +1,78 @@
 import React, { useState, useEffect } from 'react';
+import { FaRegCalendarCheck, FaTimesCircle } from 'react-icons/fa';
 import '../styles/Citas.css';
 import api from '../services/axiosInstance';
 
+// --- Componente interno para la tarjeta de cita ---
+const TarjetaCita = ({ cita }) => {
+    const formatDate = (dateString) => {
+        if (!dateString) return 'Fecha no disponible';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Fecha inválida';
+        return date.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    };
 
+    const formatTime = (timeString) => {
+        if (!timeString) return '--';
+        const [hour, minute] = timeString.split(':');
+        return `${hour}:${minute}`;
+    };
+
+    return (
+        <div className="tarjeta-cita">
+            <div className="tarjeta-cita-header">
+                <FaRegCalendarCheck className="me-2" />
+                <span>Cita Confirmada</span>
+            </div>
+            <div className="tarjeta-cita-body">
+                <p><strong>Profesional:</strong> {cita.psicologoNombre}</p>
+                <p><strong>Fecha:</strong> {formatDate(cita.fechaCita)}</p>
+                <p><strong>Hora:</strong> {formatTime(cita.horaInicio)}</p>
+                <p><strong>Modalidad:</strong> <span className="text-capitalize">{cita.modalidad ? cita.modalidad.toLowerCase() : 'N/A'}</span></p>
+            </div>
+            <div className="tarjeta-cita-footer">
+                <button className="btn-cancelar-cita">
+                    <FaTimesCircle className="me-2" />
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// --- Componente principal de la página de Citas ---
 const Citas = () => {
-
     const [psicologos, setPsicologos] = useState([]);
     const [horariosDisponibles, setHorariosDisponibles] = useState([]);
-
     const [psicologoSeleccionado, setPsicologoSeleccionado] = useState('');
     const [fechaSeleccionada, setFechaSeleccionada] = useState('');
     const [horarioSeleccionado, setHorarioSeleccionado] = useState(null);
-
     const [cargandoHorarios, setCargandoHorarios] = useState(false);
     const [mensaje, setMensaje] = useState({ texto: '', tipo: '' });
+    const [misCitas, setMisCitas] = useState([]);
+
+    const cargarMisCitas = async () => {
+        try {
+            const misCitasRes = await api.get('/api/horarios-citas/citas/mis-citas');
+            setMisCitas(misCitasRes.data);
+        } catch (error) {
+            console.error("Error al cargar mis citas:", error);
+        }
+    };
 
     useEffect(() => {
-        const cargarPsicologos = async () => {
+        const cargarDatosIniciales = async () => {
             try {
-                const response = await api.get('/api/horarios-citas/psicologos');
-                setPsicologos(response.data);
+                const psicologosRes = await api.get('/api/horarios-citas/psicologos');
+                setPsicologos(psicologosRes.data);
+                cargarMisCitas();
             } catch (error) {
                 console.error("Error al cargar psicólogos:", error);
                 setMensaje({ texto: 'No se pudo cargar la lista de profesionales.', tipo: 'error' });
             }
         };
-        cargarPsicologos();
+        cargarDatosIniciales();
     }, []);
-
 
     useEffect(() => {
         if (psicologoSeleccionado && fechaSeleccionada) {
@@ -49,7 +94,6 @@ const Citas = () => {
         }
     }, [psicologoSeleccionado, fechaSeleccionada]);
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!psicologoSeleccionado || !fechaSeleccionada || !horarioSeleccionado) {
@@ -66,7 +110,8 @@ const Citas = () => {
             await api.post('/api/horarios-citas/citas/agendar', datosCita);
             setMensaje({ texto: '¡Tu cita ha sido agendada con éxito!', tipo: 'exito' });
 
-            // Opcional: resetear el formulario
+            cargarMisCitas();
+
             setPsicologoSeleccionado('');
             setFechaSeleccionada('');
             setHorarioSeleccionado(null);
@@ -119,7 +164,7 @@ const Citas = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Horarios Disponibles para la Fecha Seleccionada</label>
+                        <label>Horarios Disponibles</label>
                         <div className="time-slots">
                             {cargandoHorarios ? (
                                 <p>Cargando horarios...</p>
@@ -131,11 +176,11 @@ const Citas = () => {
                                         className={`time-slot-btn ${horarioSeleccionado?.hora === horario.hora ? 'selected' : ''}`}
                                         onClick={() => setHorarioSeleccionado(horario)}
                                     >
-                                        {horario.hora} ({horario.modalidad.charAt(0)})
+                                        {horario.hora}
                                     </button>
                                 ))
                             ) : (
-                                fechaSeleccionada && <p>No hay horarios disponibles para esta fecha.</p>
+                                fechaSeleccionada && <p>No hay horarios disponibles.</p>
                             )}
                         </div>
                     </div>
@@ -150,6 +195,19 @@ const Citas = () => {
                         Confirmar Cita
                     </button>
                 </form>
+            </div>
+
+            <div className="citas-container mis-citas-seccion">
+                <header className="citas-header">
+                    <h2>Mis Próximas Citas</h2>
+                </header>
+                <div className="lista-citas-agendadas">
+                    {misCitas.length > 0 ? (
+                        misCitas.map(cita => <TarjetaCita key={cita.id} cita={cita} />)
+                    ) : (
+                        <p className="no-citas-mensaje">Aún no tienes citas programadas.</p>
+                    )}
+                </div>
             </div>
         </div>
     );

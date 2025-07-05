@@ -67,10 +67,17 @@ public class HorarioCitasController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // --- Endpoint Común ---
+
+    @DeleteMapping("/citas/{citaId}")
+    @PreAuthorize("hasAuthority('ESTUDIANTE')")
+    public ResponseEntity<Void> cancelarCita(@PathVariable Integer citaId) {
+        gestionHorarioService.cancelarCita(citaId);
+        // Una operación DELETE exitosa y sin contenido que devolver, responde con 204 No Content.
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/citas/mis-citas")
-    @PreAuthorize("hasAuthority('ESTUDIANTE') or hasAuthority('PSICOLOGO')")
+    //@PreAuthorize("hasAuthority('ESTUDIANTE') or hasAuthority('PSICOLOGO')")
     public ResponseEntity<List<CitaAgendadaDTO>> getMisCitas() {
         return ResponseEntity.ok(gestionHorarioService.obtenerMisCitas());
     }

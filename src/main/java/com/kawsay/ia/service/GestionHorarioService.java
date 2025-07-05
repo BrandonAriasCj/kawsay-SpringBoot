@@ -57,18 +57,24 @@ public class GestionHorarioService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Transactional(readOnly = true)
     public List<HorarioDisponibleDTO> obtenerHorariosDisponibles(Integer psicologoId, LocalDate fecha) {
         List<ReglaDisponibilidad> reglasActivas = reglaRepository.findByPsicologoId(psicologoId).stream()
                 .filter(r -> !fecha.isBefore(r.getFechaInicio()) && !fecha.isAfter(r.getFechaFin()))
                 .toList();
 
-        if (reglasActivas.isEmpty()) return Collections.emptyList();
+        if (reglasActivas.isEmpty()) {
+            return Collections.emptyList();
+        }
 
         Set<LocalTime> horasOcupadas = citaRepository.findByPsicologoIdAndFechaCita(psicologoId, fecha)
                 .stream().map(CitaAgendada::getHoraInicio).collect(Collectors.toSet());
 
-        List<HorarioDisponibleDTO> horariosDisponibles = new ArrayList<>();
+
+        Set<HorarioDisponibleDTO> horariosUnicos = new TreeSet<>(Comparator.comparing(HorarioDisponibleDTO::getHora));
+
         int diaSemanaNumero = fecha.getDayOfWeek().getValue();
 
         for (ReglaDisponibilidad regla : reglasActivas) {
@@ -80,15 +86,18 @@ public class GestionHorarioService {
                             HorarioDisponibleDTO dto = new HorarioDisponibleDTO();
                             dto.setHora(horaActual.format(DateTimeFormatter.ofPattern("HH:mm")));
                             dto.setModalidad(franja.getModalidad().toString());
-                            horariosDisponibles.add(dto);
+
+                            // 2. Añadimos al Set. Si ya existe un DTO igual, no hará nada.
+                            horariosUnicos.add(dto);
                         }
                         horaActual = horaActual.plusMinutes(regla.getDuracionCita());
                     }
                 }
             }
         }
-        horariosDisponibles.sort(Comparator.comparing(HorarioDisponibleDTO::getHora));
-        return horariosDisponibles;
+
+        // 3. Convertimos el Set (que ya está ordenado y sin duplicados) de vuelta a una Lista.
+        return new ArrayList<>(horariosUnicos);
     }
 
     @Transactional
@@ -120,10 +129,15 @@ public class GestionHorarioService {
         return citaRepository.save(nuevaCita);
     }
 
+    // En src/main/java/com/kawsay/ia/service/GestionHorarioService.java
+
     public List<CitaAgendadaDTO> obtenerMisCitas() {
         Usuario usuario = authUtils.getUsuarioAutenticado();
+
+        System.out.println("Buscando citas para el usuario ID: " + usuario.getId() + " con rol: " + usuario.getRol().getDenominacion());
+
         List<CitaAgendada> citas;
-        if(usuario.getRol().getDenominacion() == RolTipo.PSICOLOGO){
+        if (usuario.getRol().getDenominacion() == RolTipo.PSICOLOGO) {
             citas = citaRepository.findByPsicologoId(usuario.getId());
         } else {
             citas = citaRepository.findByEstudianteId(usuario.getId());
@@ -167,5 +181,20 @@ public class GestionHorarioService {
         dto.setHoraInicio(cita.getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")));
         dto.setModalidad(cita.getModalidad().name());
         return dto;
+    }
+
+    @Transactional
+    public void cancelarCita(Integer citaId) {
+        Usuario usuarioLogueado = authUtils.getUsuarioAutenticado();
+
+
+        CitaAgendada cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró una cita con el ID: " + citaId));
+
+        if (!cita.getEstudiante().getId().equals(usuarioLogueado.getId())) {
+            throw new IllegalStateException("No tienes permiso para cancelar esta cita.");
+        }
+
+        citaRepository.delete(cita);
     }
 }

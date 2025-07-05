@@ -1,13 +1,12 @@
 package com.kawsay.ia.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,18 +52,13 @@ public class SecurityConfig {
         return converter;
     }
 
-    // Esta clase busca 'cognito:groups' en el token
     private static class CognitoGroupConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
         @Override
         public Collection<GrantedAuthority> convert(Jwt jwt) {
-
             List<String> groups = (List<String>) jwt.getClaims().get("cognito:groups");
-
             if (groups == null) {
                 return List.of();
             }
-
-            // Convertimos cada string del grupo ("PSICOLOGO") en una 'authority' de Spring
             return groups.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
@@ -75,6 +69,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+        // Asegúrate de que DELETE esté en la lista de métodos permitidos.
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

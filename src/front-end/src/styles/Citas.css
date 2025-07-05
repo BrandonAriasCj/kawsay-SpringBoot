@@ -1,11 +1,15 @@
 /* src/styles/Citas.css */
+/* En src/styles/Citas.css */
+
 .citas-wrapper {
     min-height: 100vh;
-    padding: 30rem;
+    padding: 2rem; /* Un padding más razonable */
     background: linear-gradient(to bottom, #4a148c, #6a1b9a, #ba68c8, #f06292);
     display: flex;
+    flex-wrap: wrap; /* Permite que se apilen en pantallas muy pequeñas */
     justify-content: center;
-    align-items: flex-start;
+    align-items: flex-start; /* Alinea los contenedores en la parte superior */
+    gap: 2rem;
 }
 
 .citas-container {
@@ -140,4 +144,91 @@
     background-color: #ffebee;
     color: #c62828;
     border: 1px solid #ffcdd2;
+}
+
+/* ... (todo tu CSS existente va aquí arriba) ... */
+
+
+/* --- NUEVOS ESTILOS PARA LA SECCIÓN DE "MIS CITAS" --- */
+
+/* Contenedor para la nueva sección */
+.mis-citas-seccion {
+    margin-top: 3rem; /* Espacio entre el formulario y esta sección */
+}
+
+/* Contenedor de la lista de tarjetas de citas */
+.lista-citas-agendadas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Estilo para cada tarjeta de cita individual */
+.tarjeta-cita {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-cita:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.tarjeta-cita-header {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    font-weight: bold;
+    color: #4a148c;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tarjeta-cita-body {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.tarjeta-cita-body p {
+    margin: 0 0 0.8rem 0;
+    color: #333;
+}
+
+.tarjeta-cita-body p strong {
+    color: #555;
+    margin-right: 0.5rem;
+}
+
+.tarjeta-cita-footer {
+    padding: 1rem;
+    text-align: right;
+    background-color: #f9f9f9;
+}
+
+.btn-cancelar-cita {
+    background-color: #fbe9e7;
+    color: #d32f2f;
+    border: 1px solid #ffccbc;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancelar-cita:hover {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.no-citas-mensaje {
+    text-align: center;
+    color: #777;
+    padding: 2rem;
+    background-color: #fafafa;
+    border-radius: 8px;
 }
