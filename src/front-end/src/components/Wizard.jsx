@@ -1,0 +1,87 @@
+import { useState ,useEffect} from "react";
+import FormularioPerfil from "./FormularioPerfil";
+import FormularioPreferencias from "./FormularioPreferencias";
+import { mapWizardDataToPerfilInicialDTO } from "../utils/mapWizardDataToPerfilInicialDTO";
+import axios from "axios";
+import ReactDOM from 'react-dom';
+
+
+
+const Wizard = ({ userEmail, onComplete }) => {
+  const [step, setStep] = useState(1);
+  const [perfilData, setPerfilData] = useState({ nombreCompleto: "", carrera: "", descripcion: "" });
+  const [seleccionadas, setSeleccionadas] = useState([]);
+  const [catalogo, setCatalogo] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handlePerfilChange = e => {
+    const { name, value } = e.target;
+    setPerfilData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleNextStep = () => setStep(2);
+  const handleBack     = () => setStep(1);
+
+
+
+  const handleFinalSubmit = async () => {
+    const payload = {
+      ...perfilData,
+      preferencias: seleccionadas
+    };
+  const jwtToken = localStorage.getItem("jwtToken");
+  await axios.post(
+    "http://localhost:8081/api/perfil/inicial",
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`
+      }
+    }
+  );
+  localStorage.setItem("firstLoginCompleted", "true");
+  onComplete();
+};
+
+  return ReactDOM.createPortal(
+    <div className="kawzay-wizard-overlay">
+      <div className="kawzay-wizard-modal-responsive">
+        <div className="wizard-visual-area">
+          <img
+            src="imagenIA.gif" // ajusta el path o usa un componente animado
+            alt="Bienestar emocional"
+            className="wizard-image"
+          />
+        </div>
+
+        <div className="wizard-form-area">
+          <h2 className="wizard-title">🎉 ¡Bienvenido a Kawzay!</h2>
+          
+          {step === 1 && (
+            <FormularioPerfil
+              perfilData={perfilData}
+              onChange={handlePerfilChange}
+              onNext={handleNextStep}
+            />
+          )}
+
+          {step === 2 && (
+            loading
+              ? <p className="text-center">Cargando preferencias…</p>
+              : <FormularioPreferencias
+                  catalogo={catalogo}
+                  seleccionadas={seleccionadas}
+                  setSeleccionadas={setSeleccionadas}
+                  onBack={handleBack}
+                  onSubmit={handleFinalSubmit}
+                />
+          )}
+        </div>
+      </div>
+    </div>,
+
+    document.body
+  );
+};
+
+export default Wizard;

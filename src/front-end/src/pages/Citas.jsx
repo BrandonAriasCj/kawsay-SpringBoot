@@ -3,8 +3,8 @@ import { FaRegCalendarCheck, FaTimesCircle } from 'react-icons/fa';
 import '../styles/Citas.css';
 import api from '../services/axiosInstance';
 
-// --- Componente interno para la tarjeta de cita ---
-const TarjetaCita = ({ cita }) => {
+
+const TarjetaCita = ({ cita, onCancelar }) => {
     const formatDate = (dateString) => {
         if (!dateString) return 'Fecha no disponible';
         const date = new Date(dateString);
@@ -31,7 +31,7 @@ const TarjetaCita = ({ cita }) => {
                 <p><strong>Modalidad:</strong> <span className="text-capitalize">{cita.modalidad ? cita.modalidad.toLowerCase() : 'N/A'}</span></p>
             </div>
             <div className="tarjeta-cita-footer">
-                <button className="btn-cancelar-cita">
+                <button className="btn-cancelar-cita" onClick={() => onCancelar(cita.id)}>
                     <FaTimesCircle className="me-2" />
                     Cancelar
                 </button>
@@ -40,7 +40,7 @@ const TarjetaCita = ({ cita }) => {
     );
 };
 
-// --- Componente principal de la página de Citas ---
+
 const Citas = () => {
     const [psicologos, setPsicologos] = useState([]);
     const [horariosDisponibles, setHorariosDisponibles] = useState([]);
@@ -123,6 +123,21 @@ const Citas = () => {
         }
     };
 
+    const handleCancelarCita = async (citaId) => {
+        if (!window.confirm("¿Estás seguro de que deseas cancelar esta cita?")) {
+            return;
+        }
+
+        try {
+            await api.delete(`/api/horarios-citas/citas/${citaId}`);
+            setMisCitas(misCitas.filter(cita => cita.id !== citaId));
+            setMensaje({ texto: 'Cita cancelada correctamente.', tipo: 'exito' });
+        } catch (error) {
+            console.error("Error al cancelar la cita:", error);
+            setMensaje({ texto: 'No se pudo cancelar la cita. Inténtalo de nuevo.', tipo: 'error' });
+        }
+    };
+
     return (
         <div className="citas-wrapper">
             <div className="citas-container">
@@ -131,6 +146,7 @@ const Citas = () => {
                     <p>Da el primer paso hacia tu bienestar. Elige un profesional y un horario.</p>
                 </header>
 
+                {}
                 <form className="cita-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="profesional">Selecciona un Profesional</label>
@@ -203,7 +219,12 @@ const Citas = () => {
                 </header>
                 <div className="lista-citas-agendadas">
                     {misCitas.length > 0 ? (
-                        misCitas.map(cita => <TarjetaCita key={cita.id} cita={cita} />)
+                        misCitas.map(cita =>
+                            <TarjetaCita
+                                key={cita.id}
+                                cita={cita}
+                                onCancelar={handleCancelarCita}
+                            />)
                     ) : (
                         <p className="no-citas-mensaje">Aún no tienes citas programadas.</p>
                     )}

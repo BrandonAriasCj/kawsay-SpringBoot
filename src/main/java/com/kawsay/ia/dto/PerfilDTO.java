@@ -10,5 +10,5 @@ public class PerfilDTO {
     private String carrera;
     private String descripcion;
     private String urlFotoPerfil;
-    private List<String> historialPreferencias;
+    private boolean perfilCompletado;
 }

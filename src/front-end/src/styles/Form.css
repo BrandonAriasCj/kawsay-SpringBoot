@@ -1,0 +1,130 @@
+/* src/styles/Form.css  */
+.perfil-form {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.perfil-form-titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4c1d95; /* purple-900 */
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.perfil-form-descripcion {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+}
+
+.perfil-form-grupo {
+  display: flex;
+  flex-direction: column;
+}
+
+.perfil-form-grupo label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.perfil-form-grupo input,
+.perfil-form-grupo textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  resize: vertical;
+  transition: border 0.2s;
+}
+
+.perfil-form-grupo input:focus,
+.perfil-form-grupo textarea:focus {
+  border-color: #a78bfa;
+  outline: none;
+}
+
+.perfil-form-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.perfil-form-acciones button {
+  background-color: #6d28d9;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.perfil-form-acciones button:hover {
+  background-color: #5b21b6;
+}
+
+.kawzay-wizard-modal-responsive {
+  display: flex;
+  flex-direction: row;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+/* Área izquierda: imagen */
+.wizard-visual-area {
+  width: 50%;
+  background-color: #f3e8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Imagen o gif */
+.wizard-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* Área derecha: formulario */
+.wizard-form-area {
+  width: 50%;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Título del wizard */
+.wizard-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #6d28d9;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* RESPONSIVE: ocultar imagen en pantallas angostas */
+@media (max-width: 768px) {
+  .kawzay-wizard-modal-responsive {
+    flex-direction: column;
+  }
+
+  .wizard-visual-area {
+    display: none;
+  }
+
+  .wizard-form-area {
+    width: 100%;
+  }
+}
