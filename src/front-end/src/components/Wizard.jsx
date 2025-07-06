@@ -22,16 +22,7 @@ const Wizard = ({ userEmail, onComplete }) => {
   const handleNextStep = () => setStep(2);
   const handleBack     = () => setStep(1);
 
-  // Carga catálogo al entrar al paso 2
-  useEffect(() => {
-    if (step === 2 && !catalogo) {
-      setLoading(true);
-      axios.get("http://localhost:8081/api/preferencias")
-        .then(res => setCatalogo(res.data))
-        .catch(err => console.error(err))
-        .finally(() => setLoading(false));
-    }
-  }, [step, catalogo]);
+
 
   const handleFinalSubmit = async () => {
     const payload = {

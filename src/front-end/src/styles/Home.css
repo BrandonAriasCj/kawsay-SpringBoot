@@ -1,44 +1,162 @@
-/* src/styles/home.css */
+/* src/styles/Home.css */
 
-.home-container {
+.home-page-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+  min-height: calc(10vh - 70px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 2rem 2rem;
-  min-height: 100vh;
-  color: var(--color-texto-principal);
+  padding: 40px 0;
 }
-
-.home-container h1 {
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+.hero-section h1 {
+  font-size: 52px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.2;
 }
-
-.home-container p {
-  font-size: 1.4rem;
-  max-width: 800px;
-  margin: 0 auto 2rem;
-  color: var(--color-texto-secundario);
+.hero-section .subtitle {
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  opacity: 0.8;
 }
-
-.start-button {
-  background: var(--gradiente-atardecer);
-  border: 2px solid var(--glass-border-color);
-  color: var(--color-texto-principal);
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  margin-top: 1rem;
+.hero-section .hero-icon {
+  font-size: 100px;
+  opacity: 0.5;
+  margin-bottom: 30px;
+  color: var(--accent-orange);
 }
-
-.start-button:hover {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+.hero-section .btn {
+  font-size: 16px;
+  padding: 14px 32px;
 }
 
 
-.features { margin-top: 4rem; }
-.features h2 { font-size: 2rem; margin-bottom: 1.5rem; }
-.features ul { list-style: none; padding: 0; font-size: 1.3rem; line-height: 2rem; }
+
+.kawsay-meaning-section {
+  text-align: left;
+  max-width: 850px;
+  margin: 20px auto 80px;
+}
+.kawsay-card {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 50px;
+}
+.kawsay-icon-wrapper {
+  flex-shrink: 0;
+}
+.kawsay-logo-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+.kawsay-text h2 {
+  margin-bottom: 12px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+}
+.kawsay-text p {
+  font-size: 16px;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+.kawsay-text strong {
+  font-weight: 600;
+  color: var(--accent-orange);
+}
+
+/* --- Wellbeing & Features Sections --- */
+.wellbeing-section, .features-section {
+  padding: 60px 0;
+}
+.wellbeing-section h2, .features-section h2 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+.wellbeing-grid, .features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.wellbeing-card {
+  background: rgba(255,255,255,0.05);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s;
+}
+.wellbeing-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-orange);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+.wellbeing-icon-wrapper {
+  height: 60px;
+  width: 60px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--gradient-btn);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+}
+.wellbeing-card h4 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.wellbeing-card p {
+  opacity: 0.8;
+}
+
+.feature-card {
+  background: transparent;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+}
+.feature-card svg {
+  font-size: 36px;
+  color: var(--accent-orange);
+  margin-bottom: 16px;
+}
+.feature-card h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.feature-card p {
+  opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 40px;
+  }
+  .kawsay-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px;
+  }
+  .kawsay-text {
+    text-align: center;
+  }
+}

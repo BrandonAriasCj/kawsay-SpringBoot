@@ -1,12 +1,11 @@
-/* src/styles/UserProfile.css  */
-
-.profile-page-background {
-    min-height: 100vh;
-    padding: 8rem 2rem 4rem;
-    box-sizing: border-box;
+/* src/styles/UserProfile.css */
+.profile-view {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    min-height: calc(100vh - var(--navbar-height));
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .profile-container {
@@ -16,151 +15,127 @@
 }
 
 .profile-card {
-    width: 100%;
-    max-width: 600px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 24px;
-    overflow: hidden;
-    text-align: left;
-
-    background: var(--glass-background);
-    color: var(--color-texto-principal);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border-color);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    padding: 40px;
 }
 
 .profile-header {
-    padding: 2.5rem 2rem;
-    text-align: center;
-    border-bottom: 1px solid var(--glass-border-color);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .profile-pic {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 4px solid var(--color-texto-principal);
-    margin-bottom: 1rem;
     object-fit: cover;
-    background-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border: 4px solid var(--accent-orange);
+    margin: 0 auto 20px;
 }
 
-.profile-name { margin: 0; font-size: 2.2rem; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-.profile-email { margin: 0.25rem 0 0; font-size: 1rem; color: var(--color-texto-secundario); }
 
-.profile-body { padding: 1.5rem 2.5rem; }
+.profile-avatar-default {
+    width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    background: var(--purple-dark);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+    color: var(--accent-orange);
+    overflow: hidden;
+}
+
+.profile-name, .profile-name-input {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #fff;
+}
+.profile-email {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.profile-body {
+    text-align: left;
+}
 
 .profile-body h2 {
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--color-texto-secundario);
-    border-bottom: 2px solid var(--glass-border-color);
-    padding-bottom: 0.5rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+    margin-top: 24px;
+    margin-bottom: 4px;
 }
-
-.profile-body p, .profile-body li {
-    font-size: 1.1rem;
-    color: var(--color-texto-principal);
+.profile-body p {
+    font-size: 16px;
+    margin-bottom: 0;
     line-height: 1.6;
 }
 
-.preferences-list { list-style-type: '★'; padding-left: 20px; }
-.preferences-list li { padding-left: 10px; margin-bottom: 5px; }
-
 .profile-actions {
+    margin-top: 30px;
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
-    padding: 1.5rem 2.5rem;
-    background-color: rgba(0, 0, 0, 0.15);
+    gap: 10px;
+}
+.btn-edit, .btn-save, .btn-cancel {
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+.btn-edit { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
+.btn-save { background: var(--gradient-btn); color: white; }
+.btn-cancel { background: transparent; color: var(--text-light); }
+.btn-edit:hover, .btn-save:hover {
+    transform: translateY(-2px);
 }
 
 
 .profile-body label {
     display: block;
-    font-weight: bold;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
     text-transform: uppercase;
-    color: var(--color-texto-secundario);
+    margin-top: 24px;
 }
-
 .profile-body input[type="text"],
 .profile-body textarea,
 .profile-name-input {
     width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    color: var(--color-texto-principal);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--glass-border-color);
+    padding: 12px;
     border-radius: 8px;
-    box-sizing: border-box;
-    transition: background 0.2s, border-color 0.2s;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(0,0,0,0.2);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    margin-top: 8px;
 }
-
-.profile-body input[type="text"]:focus,
-.profile-body textarea:focus,
-.profile-name-input:focus {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: var(--color-accion-secundario);
-    outline: none;
-}
-
-.profile-body textarea { min-height: 100px; resize: vertical; }
-.profile-name-input { text-align: center; font-size: 2.2rem; font-weight: 600; }
-::placeholder { color: var(--color-texto-secundario); opacity: 1; }
-
+.profile-name-input { text-align: center; margin-top: 0; }
 .custom-file-upload {
-    display: inline-block;
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border: 1px solid var(--glass-border-color);
-    font-weight: bold;
-    margin-bottom: 1rem;
-    transition: all 0.2s;
-}
-.custom-file-upload:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
-}
-
-/* --- BOTONES CON VARIABLES --- */
-.btn-edit, .btn-save, .btn-cancel {
-    padding: 0.75rem 1.5rem;
-    border: none;
+    display: block;
+    margin: 1rem auto;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.1);
+    color: white;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease-in-out;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-.btn-edit, .btn-save {
-    background: var(--gradiente-atardecer);
-    color: var(--color-texto-principal);
-}
-.btn-edit:hover, .btn-save:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-cancel {
-    background-color: transparent;
-    color: var(--color-texto-secundario);
-    border: 2px solid var(--glass-border-color);
-}
-.btn-cancel:hover {
-    background-color: var(--glass-background);
-    color: var(--color-texto-principal);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.2);
 }

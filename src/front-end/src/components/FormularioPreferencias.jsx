@@ -61,14 +61,15 @@ useEffect(() => {
         </div>
       ))}
 
-      <div className="flex justify-between pt-6">
+      <div className="perfil-form-acciones">
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mr-2"
         >
           ← Volver
         </button>
+
         <button
           type="button"
           onClick={onSubmit}

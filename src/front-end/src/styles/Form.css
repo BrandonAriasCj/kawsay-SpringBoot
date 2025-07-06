@@ -1,4 +1,4 @@
-/* ----------- PERFIL FORMULARIO ----------- */
+/* src/styles/Form.css  */
 .perfil-form {
   max-width: 480px;
   margin: 0 auto;
@@ -53,6 +53,7 @@
 .perfil-form-acciones {
   display: flex;
   justify-content: flex-end;
+  gap: 0.75rem;
 }
 
 .perfil-form-acciones button {
