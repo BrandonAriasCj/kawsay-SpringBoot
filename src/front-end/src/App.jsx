@@ -11,8 +11,8 @@ import Citas from './pages/Citas';
 import GlobalLogout from './components/GlobalLogout';
 import Wizard from './components/Wizard';
 import { AuthContext } from './context/AuthContext';
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
+//import "bootstrap/dist/css/bootstrap.min.css";
+//import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
 import { useLocation } from 'react-router-dom';
 
