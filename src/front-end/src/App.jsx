@@ -49,13 +49,12 @@ function AppContent() {
         <>
             {}
             {location.pathname !== "/login" && <Navbar />}
-            <>
-                <article className="main-content-area relative">
+            
                 {showWizard && (
                     <Wizard userEmail={userEmail} onComplete={handleWizardComplete} />
                 )}
-                </article>
-            </>
+
+
 
 
             <main className="main-content-area">
