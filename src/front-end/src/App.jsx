@@ -14,43 +14,53 @@ import { AuthContext } from './context/AuthContext';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
+import { useLocation } from 'react-router-dom';
 
-function App() {
-    const { user } = useContext(AuthContext); // Usa el contexto
+function AppContent() {
+    const { user } = useContext(AuthContext);
     const userEmail = user?.username;
     const [showWizard, setShowWizard] = useState(false);
-      
-      useEffect(() => {
-            if (userEmail && !localStorage.getItem('firstLoginCompleted_${userEmail}')) {
-            setShowWizard(true);
-            } else {
-            setShowWizard(false);
-            }
-        }, [userEmail]);
+    const location = useLocation();
 
-        const handleWizardComplete = () => {
+    useEffect(() => {
+        if (userEmail && !localStorage.getItem(`firstLoginCompleted_${userEmail}`)) {
+            setShowWizard(true);
+        } else {
             setShowWizard(false);
-        };
+        }
+    }, [userEmail]);
+
+    const handleWizardComplete = () => {
+        setShowWizard(false);
+    };
+
     return (
-        <Router>
-            <Navbar />
+        <>
+            {location.pathname !== '/login' && <Navbar />}
 
             <main className="main-content-area relative">
-                            {/* 🔐 Mostrar el wizard si corresponde */}
-            {showWizard && (
-                <Wizard userEmail={userEmail} onComplete={handleWizardComplete} />
-            )}
+                {showWizard && (
+                    <Wizard userEmail={userEmail} onComplete={handleWizardComplete} />
+                )}
 
                 <Routes>
-                <Route path="/global-logout" element={<GlobalLogout />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<UserProfile />} />
-                <Route path="/chatbot" element={<Chatbot />} />
-                <Route path="/grupos" element={<Grupos />} />
-                <Route path="/citas" element={<Citas />} />
+                    <Route path="/global-logout" element={<GlobalLogout />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/profile" element={<UserProfile />} />
+                    <Route path="/chatbot" element={<Chatbot />} />
+                    <Route path="/grupos" element={<Grupos />} />
+                    <Route path="/citas" element={<Citas />} />
                 </Routes>
             </main>
+        </>
+    );
+}
+
+function App() {
+    return (
+        <Router>
+            <AppContent />
         </Router>
     );
 }
