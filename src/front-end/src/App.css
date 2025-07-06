@@ -1,7 +1,7 @@
 .main-content-area {
     /* Empujamos todo el contenido hacia abajo
        exactamente la altura del navbar */
-    padding-top: var(--navbar-height);
+    /* padding-top: var(--navbar-height); */
     width: 100%;
 }
 /* En tu archivo App.css o un CSS global */
