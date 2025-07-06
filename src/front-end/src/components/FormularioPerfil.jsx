@@ -18,7 +18,7 @@ return (
           value={perfilData.nombreCompleto}
           onChange={onChange}
           required
-          placeholder="Ej. Axel Mendoza"
+          placeholder="Ej. Carlos Miranda"
         />
           {!perfilData.nombreCompleto.trim() && (
     <p className="text-sm text-red-500 mt-1">* Este campo es obligatorio</p>
