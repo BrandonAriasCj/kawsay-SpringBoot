@@ -1,6 +1,6 @@
 // src/App.jsx
-import { useContext , useState,useEffect} from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -9,13 +9,13 @@ import Chatbot from './pages/Chatbot';
 import Grupos from './pages/GruposAyuda';
 import Citas from './pages/Citas';
 import GlobalLogout from './components/GlobalLogout';
-import Wizard from './components/Wizard';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './context/AuthContext';
-//import "bootstrap/dist/css/bootstrap.min.css";
-//import "bootstrap/dist/js/bootstrap.min.js";
+import Wizard from './components/Wizard';
 import './App.css';
 import { useLocation } from 'react-router-dom';
 
+import axios from 'axios';
 function AppContent() {
     const { user } = useContext(AuthContext);
     const userEmail = user?.username;
@@ -23,12 +23,24 @@ function AppContent() {
     const location = useLocation();
 
     useEffect(() => {
-        if (userEmail && !localStorage.getItem(`firstLoginCompleted_${userEmail}`)) {
-            setShowWizard(true);
-        } else {
-            setShowWizard(false);
+    if (!userEmail) return;
+
+    const jwtToken = localStorage.getItem("jwtToken");
+
+    axios.get("http://localhost:8081/api/perfil", {
+        headers: {
+        Authorization: `Bearer ${jwtToken}`
         }
+    })
+    .then(({ data }) => {
+        setShowWizard(!data.perfilCompletado);
+    })
+    .catch((err) => {
+        console.error("Error al obtener el perfil:", err);
+        setShowWizard(true); // fallback
+    });
     }, [userEmail]);
+
 
     const handleWizardComplete = () => {
         setShowWizard(false);
@@ -36,13 +48,17 @@ function AppContent() {
 
     return (
         <>
-            {location.pathname !== '/login' && <Navbar />}
+            {}
+            {location.pathname !== "/login" && <Navbar />}
 
-            <main className="main-content-area relative">
                 {showWizard && (
                     <Wizard userEmail={userEmail} onComplete={handleWizardComplete} />
                 )}
 
+
+
+
+            <main className="main-content-area">
                 <Routes>
                     <Route path="/global-logout" element={<GlobalLogout />} />
                     <Route path="/" element={<Home />} />
