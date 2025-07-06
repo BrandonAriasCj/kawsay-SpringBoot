@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum RolTipo {
     ESTUDIANTE,
-    MODERADOR,
-    PSICOLOGO;
+    PSICOLOGO,
+    MODERADOR;
 
     @JsonCreator
     public static RolTipo from(String value) {

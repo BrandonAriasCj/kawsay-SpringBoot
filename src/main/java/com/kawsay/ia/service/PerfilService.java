@@ -32,23 +32,38 @@ public class PerfilService {
 
     @Transactional(readOnly = true)
     public PerfilDTO getPerfilCompleto(String email) {
+        // Buscar al usuario por su correo institucional
         Usuario usuario = usuarioRepository.findByCorreoInstitucional(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
 
-
-        Perfil perfil = perfilRepository.findByUsuario_Id(Long.valueOf(usuario.getId()))
+        // Buscar el perfil asociado al usuario, o crear uno vacío si no existe
+        Perfil perfil = perfilRepository.findByUsuario_Id(usuario.getId().longValue())
                 .orElseGet(() -> {
                     Perfil nuevoPerfil = new Perfil();
                     nuevoPerfil.setUsuario(usuario);
+                    // perfilCompletado será false por defecto
                     return nuevoPerfil;
                 });
 
+        // Obtener historial de preferencias del usuario
         List<String> preferencias = historialPreferenciasRepository.findByUsuario_Id(usuario.getId())
                 .stream()
                 .map(HistorialPreferencias::getContenido)
                 .collect(Collectors.toList());
 
-        return mapToDTO(usuario, perfil, preferencias);
+        // Mapear manualmente a PerfilDTO
+        PerfilDTO dto = new PerfilDTO();
+        dto.setEmail(usuario.getCorreoInstitucional());
+        dto.setNombreCompleto(perfil.getNombreCompleto());
+        dto.setCarrera(perfil.getCarrera());
+        dto.setDescripcion(perfil.getDescripcion());
+        dto.setUrlFotoPerfil(perfil.getUrlFotoPerfil());
+        dto.setPerfilCompletado(perfil.isPerfilCompletado()); // ← mapeo clave
+
+        // Si decides incluir preferencias en el DTO, puedes agregarlas aquí también
+        // dto.setPreferencias(preferencias);
+
+        return dto;
     }
 
     @Transactional
