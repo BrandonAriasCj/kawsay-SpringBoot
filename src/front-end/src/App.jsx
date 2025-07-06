@@ -13,7 +13,6 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Wizard from './components/Wizard';
 import './App.css';
-import { useLocation } from 'react-router-dom';
 
 import axios from 'axios';
 function AppContent() {
