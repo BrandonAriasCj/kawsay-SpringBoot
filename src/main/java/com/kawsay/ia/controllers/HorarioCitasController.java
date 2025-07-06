@@ -3,6 +3,7 @@ package com.kawsay.ia.controllers;
 import com.kawsay.ia.dto.*;
 import com.kawsay.ia.service.GestionHorarioService;
 import com.kawsay.ia.service.UsuarioService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,6 @@ public class HorarioCitasController {
                     dto.setCorreo(p.getCorreoInstitucional());
                     String nombreCompleto = p.getPerfil() != null ? p.getPerfil().getNombreCompleto() : "Psicólogo";
                     dto.setNombreCompleto(nombreCompleto);
-
                     return dto;
                 }).collect(Collectors.toList());
         return ResponseEntity.ok(psicologos);
@@ -67,10 +67,21 @@ public class HorarioCitasController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // --- Endpoint Común ---
 
+    @DeleteMapping("/citas/{citaId}")
+    @PreAuthorize("hasAuthority('ESTUDIANTE')")
+    public ResponseEntity<Void> cancelarCita(@PathVariable Integer citaId) {
+        try {
+            gestionHorarioService.cancelarCita(citaId);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @GetMapping("/citas/mis-citas")
-    @PreAuthorize("hasAuthority('ESTUDIANTE') or hasAuthority('PSICOLOGO')")
+    //@PreAuthorize("hasAuthority('ESTUDIANTE') or hasAuthority('PSICOLOGO')")
     public ResponseEntity<List<CitaAgendadaDTO>> getMisCitas() {
         return ResponseEntity.ok(gestionHorarioService.obtenerMisCitas());
     }

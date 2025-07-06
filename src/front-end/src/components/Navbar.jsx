@@ -1,8 +1,13 @@
+// src/components/Navbar.jsx
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.jsx';
 import { signOut } from '@aws-amplify/auth';
 import '../styles/Navbar.css';
+
+// Importa tu logo y el ícono
+import kawsaiLogo from '../assets/kawsai-logo.png';
+import { FaUserCircle } from 'react-icons/fa';
 
 const Navbar = () => {
     const { user } = useContext(AuthContext);
@@ -12,6 +17,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const fetchPerfil = async () => {
+            if (!user) return;
             try {
                 const token = localStorage.getItem('jwtToken');
                 const response = await fetch('http://localhost:8081/api/perfil', {
@@ -27,8 +33,7 @@ const Navbar = () => {
                 console.error('Error al cargar perfil:', error);
             }
         };
-
-        if (user) fetchPerfil();
+        fetchPerfil();
     }, [user]);
 
     const handleLogout = async () => {
@@ -41,39 +46,50 @@ const Navbar = () => {
         }
     };
 
-    const toggleDropdown = () => {
-        setDropdownVisible(!dropdownVisible);
-    };
+    const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
+
+    // Función para obtener la clase activa para NavLink
+    const getNavLinkClass = ({ isActive }) => isActive ? 'nav-link active' : 'nav-link';
 
     return (
-        <nav className="main-header navbar">
-            <h1>KawsAi</h1>
+        <header className="main-header">
+            <Link to="/" className="logo">
+                <img src={kawsaiLogo} alt="KawsAi Logo" className="logo-img" />
+                <span>KawsAi</span>
+            </Link>
 
-            <div className="nav-left">
-                <Link to="/">Inicio</Link>
-                <Link to="/chatbot">Chatbot</Link>
-                <Link to="/grupos">Grupos de Apoyo</Link>
-                <Link to="/citas">Agendar Cita</Link>
-            </div>
+            <nav className="nav-left">
+                <NavLink to="/" className={getNavLinkClass}>Inicio</NavLink>
+                <NavLink to="/chatbot" className={getNavLinkClass}>Chatbot</NavLink>
+                <NavLink to="/grupos" className={getNavLinkClass}>Grupos de Apoyo</NavLink>
+                <NavLink to="/citas" className={getNavLinkClass}>Agendar Cita</NavLink>
+            </nav>
 
             <div className="nav-right">
-                {!user && <Link to="/login">Login / Registro</Link>}
+                {!user && <Link to="/login" className="nav-link">Login</Link>}
 
                 {user && perfil && (
                     <div className="user-menu-container" onClick={toggleDropdown}>
                         <div className="user-info">
                             <span className="user-name">{perfil.nombreCompleto}</span>
-                            <img
-                                src={`http://localhost:8081${perfil.urlFotoPerfil}`}
-                                alt="Perfil"
-                                className="user-avatar"
-                            />
+                            {/* muestra foto o ícono por defecto */}
+                            {perfil.urlFotoPerfil && perfil.urlFotoPerfil !== '/uploads/default.jpg' ? (
+                                <img
+                                    src={`http://localhost:8081${perfil.urlFotoPerfil}`}
+                                    alt="Perfil"
+                                    className="user-avatar"
+                                />
+                            ) : (
+                                <div className="user-avatar-icon-default">
+                                    <FaUserCircle />
+                                </div>
+                            )}
                         </div>
 
                         {dropdownVisible && (
                             <div className="user-dropdown">
                                 <Link to="/profile" className="dropdown-item">Perfil</Link>
-                                <button onClick={handleLogout} className="dropdown-item logout-btn">
+                                <button onClick={handleLogout} className="dropdown-item">
                                     Cerrar sesión
                                 </button>
                             </div>
@@ -81,7 +97,7 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
-        </nav>
+        </header>
     );
 };
 

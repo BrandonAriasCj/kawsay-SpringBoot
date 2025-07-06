@@ -148,7 +148,7 @@ const GruposAyuda = () => {
     return (
         <>
             <div className="page-wrapper-grupos">
-                <div className="layout-container">
+                <div className=" forum-card-container layout-container">
                     <aside className="sidebar-redefined">
                         <div className="sidebar-header">
                             <button className="create-new-group-btn" onClick={() => setIsModalOpen(true)}>

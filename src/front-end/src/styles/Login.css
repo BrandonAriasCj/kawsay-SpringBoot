@@ -1,46 +1,134 @@
 /* src/styles/Login.css */
 
-.login-page-container {
+.login-page-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
 
-    /* Esto asegura que el contenedor ocupe al menos todo el alto
-       de la ventana, MENOS la altura del navbar fijo. */
-    min-height: calc(100vh - var(--navbar-height));
+
+    background: var(--gradient-bg);
+    overflow: hidden;
 }
 
-/*
-  Sobrescribimos los estilos por defecto de Amplify Authenticator
-  usando las variables globales que definimos en index.css
-*/
-[data-amplify-authenticator] {
-    /* Usamos nuestras variables de color para el fondo, bordes y fuentes */
-    --amplify-colors-background-primary: var(--glass-background);
-    --amplify-colors-background-secondary: var(--glass-background);
-    --amplify-colors-border-primary: var(--glass-border-color);
-    --amplify-colors-border-secondary: var(--glass-border-color);
-    --amplify-colors-border-tertiary: var(--glass-border-color);
-    --amplify-colors-font-primary: var(--color-texto-principal);
-    --amplify-colors-font-secondary: var(--color-texto-secundario);
-    --amplify-colors-font-interactive: var(--color-accion-primario);
-
-    /* Personalizamos los botones y otros elementos interactivos */
-    --amplify-components-tabs-item-active-border-color: var(--color-accion-primario);
-    --amplify-components-button-primary-background-color: var(--color-accion-primario);
-    --amplify-components-button-primary-hover-background-color: var(--color-accion-secundario);
-
-    /* Estilos para los campos de input */
-    --amplify-components-field-border-color: var(--glass-border-color);
-    --amplify-components-field-focus-border-color: var(--color-accion-secundario);
-    --amplify-components-fieldcontrol-border-color: transparent;
-
-    /* Estilos para la tarjeta principal (glassmorphism) */
-    --amplify-components-card-background-color: var(--glass-background);
-    --amplify-components-card-box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+.login-split-container {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    width: 100%;
+    max-width: 1000px;
+    height: 650px;
+    max-height: 90vh;
 
     border-radius: 24px;
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.login-visual-side {
+    background: var(--purple-dark);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+}
+.visual-side-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1.5rem;
+}
+.visual-side-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+.visual-side-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    max-width: 300px;
+}
+
+
+.login-form-side {
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+
+.authenticator-container {
+    width: 100%;
+    max-width: 380px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.form-header h2 {
+    color: var(--purple-dark);
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+.form-header p {
+    color: #666;
+}
+
+/* --- Estilos para Amplify Authenticator --- */
+[data-amplify-authenticator] {
+
+    --amplify-components-card-background-color: transparent;
+    --amplify-components-card-box-shadow: none;
+    --amplify-components-card-padding: 0;
+    --amplify-components-card-border-width: 0;
+
+    /* Colores */
+    --amplify-colors-font-primary: var(--text-dark);
+    --amplify-colors-font-secondary: #555;
+    --amplify-colors-font-interactive: var(--purple-medium);
+
+    /* Pestañas */
+    --amplify-components-tabs-item-active-color: var(--purple-medium);
+    --amplify-components-tabs-item-active-border-color: var(--purple-medium);
+
+    /* Botón */
+    --amplify-components-button-primary-background-color: var(--purple-medium);
+    --amplify-components-button-primary-hover-background-color: var(--purple-dark);
+    --amplify-components-button-border-radius: 8px;
+    --amplify-components-button-padding-block-start: 14px;
+    --amplify-components-button-padding-block-end: 14px;
+
+    /* Inputs */
+    --amplify-components-fieldcontrol-border-radius: 8px;
+    --amplify-components-fieldcontrol-border-color: #ddd;
+    --amplify-components-fieldcontrol-focus-border-color: var(--purple-medium);
+    --amplify-components-fieldcontrol-focus-box-shadow: 0 0 0 2px rgba(78, 25, 143, 0.1);
+}
+
+/* Responsive: en pantallas pequeñas */
+@media (max-width: 900px) {
+    .login-page-wrapper {
+        position: static;
+        height: auto;
+        min-height: 100vh;
+    }
+    .login-split-container {
+        grid-template-columns: 1fr;
+        border-radius: 0;
+        min-height: 100vh;
+        height: auto;
+        max-height: none;
+    }
 }
