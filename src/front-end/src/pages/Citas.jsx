@@ -139,6 +139,7 @@ const Citas = () => {
     };
 
     return (
+        <>
         <div className="citas-wrapper">
             <div className="citas-container">
                 <header className="citas-header">
@@ -231,6 +232,8 @@ const Citas = () => {
                 </div>
             </div>
         </div>
+        </>
+
     );
 };
 
