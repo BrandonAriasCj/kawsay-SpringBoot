@@ -17,5 +17,6 @@ public class ReporteDTO {
     private String contenido;
     private LocalDateTime timestamp;
     private String usuario_id;
+    private String nombreAlumno;
 }
 
