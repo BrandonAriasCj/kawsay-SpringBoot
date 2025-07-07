@@ -5,7 +5,7 @@ import kawsaiLogo from '../assets/kawsai-logo.png';
 import axiosIns from '../services/axiosInstance';
 
 const Chatbot = () => {
-  
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const idUsuario = 3;
@@ -51,7 +51,7 @@ const Chatbot = () => {
     if (input.trim() === '') return;
 
     console.log("texto buscado: " + input)
-    const newMessages = [{ type: 'assistant', content: "✨✍️✨✍️" }, { type: 'user', content: input }, ...messages];
+      const newMessages = [...messages, { type: 'user', content: input }, { type: 'assistant', content: "✨✍️✨✍️" }];
     setMessages(newMessages);
 
     persistirAndTraer()
@@ -69,7 +69,7 @@ return (
     <div className="chatbot-container">
       <div className="chat-header">
         <img src={kawsaiLogo} alt="KawsAI Logo" className="chat-logo" />
-        KawsAI - Historias Interactivas
+        KawsAi Chatbot
       </div>
 
 
