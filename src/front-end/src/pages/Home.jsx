@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
-import kawsaiLogo from '../assets/kawsai-logo.png'; // Usando tu logo
+import kawsaiLogo from '@/assets/kawsai-logo.png'; // Usando tu logo
 import {
     FaSpa, FaBrain, FaBookOpen, FaWalking,
     FaComments, FaUsers, FaCalendarCheck
