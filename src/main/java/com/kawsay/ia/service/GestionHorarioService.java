@@ -96,7 +96,6 @@ public class GestionHorarioService {
             }
         }
 
-        // 3. Convertimos el Set (que ya está ordenado y sin duplicados) de vuelta a una Lista.
         return new ArrayList<>(horariosUnicos);
     }
 
@@ -172,11 +171,21 @@ public class GestionHorarioService {
         return dto;
     }
 
+
+    @Autowired
+    private PerfilPsicologoRepository perfilPsicologoRepository;
+
     private CitaAgendadaDTO convertirCitaADTO(CitaAgendada cita) {
         CitaAgendadaDTO dto = new CitaAgendadaDTO();
         dto.setId(cita.getId());
-        dto.setEstudianteNombre(cita.getEstudiante().getPerfil() != null ? cita.getEstudiante().getPerfil().getNombreCompleto() : "N/A");
-        dto.setPsicologoNombre(cita.getPsicologo().getPerfil() != null ? cita.getPsicologo().getPerfil().getNombreCompleto() : "N/A");
+
+        dto.setEstudianteNombre(cita.getEstudiante().getPerfil() != null ? cita.getEstudiante().getPerfil().getNombreCompleto() : "Estudiante sin perfil");
+
+        perfilPsicologoRepository.findByUsuarioId(cita.getPsicologo().getId())
+                .ifPresentOrElse(
+                        perfilPro -> dto.setPsicologoNombre(perfilPro.getNombreProfesional()),
+                        () -> dto.setPsicologoNombre("N/A")
+                );
         dto.setFechaCita(cita.getFechaCita().toString());
         dto.setHoraInicio(cita.getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")));
         dto.setModalidad(cita.getModalidad().name());

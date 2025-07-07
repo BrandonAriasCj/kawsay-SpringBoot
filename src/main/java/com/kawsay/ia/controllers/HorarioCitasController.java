@@ -1,6 +1,7 @@
 package com.kawsay.ia.controllers;
 
 import com.kawsay.ia.dto.*;
+import com.kawsay.ia.repository.PerfilPsicologoRepository;
 import com.kawsay.ia.service.GestionHorarioService;
 import com.kawsay.ia.service.UsuarioService;
 import jakarta.persistence.EntityNotFoundException;
@@ -40,6 +41,10 @@ public class HorarioCitasController {
 
     // --- Endpoints para Estudiantes ---
 
+
+    @Autowired
+    private PerfilPsicologoRepository perfilPsicologoRepository;
+
     @GetMapping("/psicologos")
     public ResponseEntity<List<PsicologoDTO>> obtenerPsicologos() {
         List<PsicologoDTO> psicologos = usuarioService.findAllPsicologos().stream()
@@ -47,8 +52,9 @@ public class HorarioCitasController {
                     PsicologoDTO dto = new PsicologoDTO();
                     dto.setId(p.getId());
                     dto.setCorreo(p.getCorreoInstitucional());
-                    String nombreCompleto = p.getPerfil() != null ? p.getPerfil().getNombreCompleto() : "Psicólogo";
-                    dto.setNombreCompleto(nombreCompleto);
+                    perfilPsicologoRepository.findByUsuarioId(p.getId()).ifPresent(perfil -> {
+                        dto.setNombreCompleto(perfil.getNombreProfesional());
+                    });
                     return dto;
                 }).collect(Collectors.toList());
         return ResponseEntity.ok(psicologos);
@@ -69,7 +75,7 @@ public class HorarioCitasController {
 
 
     @DeleteMapping("/citas/{citaId}")
-    @PreAuthorize("hasAuthority('ESTUDIANTE')")
+    //@PreAuthorize("hasAuthority('ESTUDIANTE')")
     public ResponseEntity<Void> cancelarCita(@PathVariable Integer citaId) {
         try {
             gestionHorarioService.cancelarCita(citaId);
@@ -80,6 +86,8 @@ public class HorarioCitasController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
     @GetMapping("/citas/mis-citas")
     //@PreAuthorize("hasAuthority('ESTUDIANTE') or hasAuthority('PSICOLOGO')")
     public ResponseEntity<List<CitaAgendadaDTO>> getMisCitas() {

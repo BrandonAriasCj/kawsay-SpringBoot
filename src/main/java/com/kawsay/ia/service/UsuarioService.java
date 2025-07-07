@@ -3,6 +3,7 @@ import com.kawsay.ia.dto.RolTipo;
 import com.kawsay.ia.entity.Rol;
 import com.kawsay.ia.entity.Usuario;
 import com.kawsay.ia.mapper.RegistroUsuarioLock;
+import com.kawsay.ia.repository.PerfilPsicologoRepository;
 import com.kawsay.ia.repository.RolRepository;
 import com.kawsay.ia.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -36,10 +38,15 @@ public class UsuarioService {
     RolRepository roleRepository;
     @Autowired
     UsuarioRepository userRepository;
+    @Autowired
+    private PerfilPsicologoRepository perfilPsicologoRepository;
+
     public List<Usuario> findAllPsicologos() {
-        Rol psicologoRol = roleRepository.getRolById((Integer) 2);
-        List<Usuario> psicologos = userRepository.findByRol(psicologoRol);
-        return psicologos;
+        Rol psicologoRol = roleRepository.getRolById(2);
+        List<Usuario> todosLosPsicologos = userRepository.findByRol(psicologoRol);
+        return todosLosPsicologos.stream()
+                .filter(p -> perfilPsicologoRepository.findByUsuarioId(p.getId()).isPresent())
+                .collect(Collectors.toList());
     }
 
     public List<Usuario> findAllAlumnos() {
@@ -98,5 +105,7 @@ public class UsuarioService {
     public Usuario buscarPorCorreo(String correo) {
         return usuarioRepository.findByCorreoInstitucional(correo).orElse(null);
     }
+
+
 
 }
