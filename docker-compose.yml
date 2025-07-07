@@ -25,6 +25,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://pgvector:5432/doc_store
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: secret123
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     restart: unless-stopped
 
   # FRONTEND USUARIO (React)
