@@ -1,5 +1,6 @@
 package com.kawsay.ia.controllers;
 
+import com.kawsay.ia.config.AuthUtils;
 import com.kawsay.ia.dto.PerfilDTO;
 import com.kawsay.ia.dto.PerfilInicialDTO;
 import com.kawsay.ia.service.PerfilService;
@@ -24,6 +25,8 @@ public class PerfilController {
 
     @Autowired
     private PerfilService perfilService;
+    @Autowired
+    private AuthUtils authUtils;
 
 
     @PostMapping("/inicial")
@@ -37,14 +40,16 @@ public class PerfilController {
 
     @GetMapping
     public ResponseEntity<PerfilDTO> getMiPerfil(@AuthenticationPrincipal Jwt jwt) {
-        String email = jwt.getClaimAsString("email");
+        String email = authUtils.getEmailAutenticado();
+
         PerfilDTO perfilDTO = perfilService.getPerfilCompleto(email);
         return ResponseEntity.ok(perfilDTO);
     }
 
     @PutMapping
     public ResponseEntity<PerfilDTO> updateMiPerfil(@AuthenticationPrincipal Jwt jwt, @RequestBody PerfilDTO perfilDTO) {
-        String email = jwt.getClaimAsString("email");
+        String email = authUtils.getEmailAutenticado();
+
         PerfilDTO perfilActualizado = perfilService.updatePerfil(email, perfilDTO);
         return ResponseEntity.ok(perfilActualizado);
     }
@@ -56,7 +61,8 @@ public class PerfilController {
             @RequestParam("file") MultipartFile file
     ) {
         try {
-            String email = jwt.getClaimAsString("email");
+            String email = authUtils.getEmailAutenticado();
+
 
             // Guardar imagen en servidor
             String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());

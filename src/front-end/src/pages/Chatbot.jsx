@@ -74,6 +74,7 @@ return (
 
 
       <div className="chat-window">
+        {/* console.log(messages) */}
         {messages.map((msg, idx) => (
           <div key={idx} className={`message ${msg.type.toLowerCase()}`}>
             {msg.content}

@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.stream;
 
 @RestController()
-@RequestMapping()
+@RequestMapping("/api/reportes")
 public class ReporteController {
     @Autowired
     private ReporteService reporteService;
     @Autowired
     private ReporteRepository reporteRepository;
 
-    @GetMapping("/reportes/all")
+    @GetMapping("/all")
     public List<ReporteDTO> findAllReporteService(){
         List<Reporte> reportes = reporteRepository.findAll();
 

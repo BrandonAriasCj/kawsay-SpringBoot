@@ -24,24 +24,23 @@ const Wizard = ({ userEmail, onComplete }) => {
 
 
 
-  const handleFinalSubmit = async () => {
-    const payload = {
-      ...perfilData,
-      preferencias: seleccionadas
-    };
+const handleFinalSubmit = async () => {
+  const payload = mapWizardDataToPerfilInicialDTO(perfilData, seleccionadas);
   const jwtToken = localStorage.getItem("jwtToken");
-  await axios.post(
-    "http://localhost:8081/api/perfil/inicial",
-    payload,
-    {
+
+  try {
+    await axios.post("http://localhost:8081/api/perfil/inicial", payload, {
       headers: {
         Authorization: `Bearer ${jwtToken}`
       }
-    }
-  );
-  localStorage.setItem("firstLoginCompleted", "true");
-  onComplete();
+    });
+
+    onComplete(); // Oculta el wizard
+  } catch (error) {
+    console.error("Error al guardar el perfil:", error);
+  }
 };
+
 
   return ReactDOM.createPortal(
     <div className="kawzay-wizard-overlay">
@@ -81,7 +80,8 @@ const Wizard = ({ userEmail, onComplete }) => {
     </div>,
 
     document.body
-  );
+  )
+
 };
 
 export default Wizard;

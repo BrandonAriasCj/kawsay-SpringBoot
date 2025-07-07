@@ -1,0 +1,131 @@
+/* FormPreferencias.css — estilos nativos y responsivos para el formulario de preferencias */
+
+:root {
+    --fp-color-bg: #5555aa;
+    --fp-color-bg-light: #292934;
+    --fp-color-primary: #b2a7ff;
+    --fp-color-primary-dark: #6b5ce6;
+    --fp-color-text: #f0f0f3;
+    --fp-color-text-light: #ffffff;
+    --fp-radius: 12px;
+    --fp-gap: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fp-color-bg: #5555aa;
+    --fp-color-bg-light: #292934;
+    --fp-color-primary: #b2a7ff;
+    --fp-color-primary-dark: #6b5ce6;
+    --fp-color-text: #f0f0f3;
+  }
+}
+
+/* ——  contenedor principal  —— */
+.form-wrapper {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--fp-color-bg);
+  border-radius: var(--fp-radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--fp-color-text);
+}
+
+/* ——  títulos  —— */
+.form-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.form-section {
+  margin-bottom: 1.75rem;
+}
+
+.form-section-title {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: var(--fp-color-primary);
+}
+
+/* ——  checkboxes  —— */
+.form-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fp-gap);
+}
+
+.form-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.9rem;
+}
+
+.form-checkbox-input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--fp-color-primary);
+  margin-right: 0.5rem;
+}
+
+/* ——  acciones  —— */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--fp-gap);
+  margin-top: 2rem;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--fp-radius);
+  padding: 0.65rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 80ms ease;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--fp-color-primary);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--fp-color-primary);
+  color: var(--fp-color-text-light);
+}
+
+.btn-primary:hover {
+  background-color: var(--fp-color-primary-dark);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-secondary {
+  background-color: var(--fp-color-bg-light);
+  color: var(--fp-color-text);
+}
+
+.btn-secondary:hover {
+  background-color: var(--fp-color-bg);
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+/* ——  estado de carga  —— */
+.form-loading {
+  text-align: center;
+  padding: 2rem;
+}

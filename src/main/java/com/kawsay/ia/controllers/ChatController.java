@@ -100,6 +100,9 @@ public class ChatController {
 
 
         String memoriaCorta = "Historial de conversacion:";
+
+        String objetivo = "Tu objetivo de conversacion es generar historias proyectivas para el usuario, como si fueras un psicologo en busqueda de rasgos psicologicos, adaptate a las preferenicas del usuario en base al historial de conversacion.";
+
         for (AiChatMemory elemento : elementos) {
             String message = elemento.getContent();
             String tipo = elemento.getType().toString();
@@ -112,7 +115,7 @@ public class ChatController {
 
         String respuesta = chatClient
                 .prompt(input)
-                .system(memoriaCorta)
+                .system(memoriaCorta + "\n\n Objetivo:" + objetivo)
                 .call()
                 .content();
 

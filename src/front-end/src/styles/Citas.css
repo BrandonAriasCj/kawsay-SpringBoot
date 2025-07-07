@@ -4,8 +4,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+<<<<<<< HEAD
+    height: 100%;
+=======
     justify-content: flex-start;
     gap: 60px;
+>>>>>>> 203f40de653889aa55ae1d16b8aa9b8b5e223378
 }
 
 .citas-container {
