@@ -10,6 +10,9 @@ RUN npm install && npm run build
 # Etapa 2: Servir con NGINX
 FROM nginx:alpine
 
+# Reemplaza la configuración por defecto de NGINX
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Limpia contenido por defecto de NGINX
 RUN rm -rf /usr/share/nginx/html/*
 

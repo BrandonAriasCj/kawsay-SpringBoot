@@ -1,4 +1,4 @@
-import "../styles/landing.css";
+import "../styles/Landing.css";
 import kawsaiLogo from "../assets/kawsai-logo.png";
 import { useEffect } from "react";
 import {
