@@ -4,12 +4,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-<<<<<<< HEAD
-    height: 100%;
-=======
+
     justify-content: flex-start;
     gap: 60px;
->>>>>>> 203f40de653889aa55ae1d16b8aa9b8b5e223378
 }
 
 .citas-container {
@@ -170,4 +167,25 @@
 .btn-cancelar-cita:hover {
     background: #c62828;
     color: white;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+  top: 100%;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
 }

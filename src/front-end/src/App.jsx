@@ -15,6 +15,7 @@ import Wizard from './components/Wizard';
 import './App.css';
 
 import axios from 'axios';
+import Landing from './pages/Landing';
 function AppContent() {
     const { user } = useContext(AuthContext);
     const userEmail = user?.username;
@@ -60,6 +61,7 @@ function AppContent() {
             <main className="main-content-area">
                 <Routes>
                     <Route path="/global-logout" element={<GlobalLogout />} />
+                    <Route path="/main" element={<Landing />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/profile" element={<UserProfile />} />
