@@ -96,7 +96,6 @@ public class GestionHorarioService {
             }
         }
 
-        // 3. Convertimos el Set (que ya está ordenado y sin duplicados) de vuelta a una Lista.
         return new ArrayList<>(horariosUnicos);
     }
 
@@ -172,11 +171,21 @@ public class GestionHorarioService {
         return dto;
     }
 
+
+    @Autowired
+    private PerfilPsicologoRepository perfilPsicologoRepository;
+
     private CitaAgendadaDTO convertirCitaADTO(CitaAgendada cita) {
         CitaAgendadaDTO dto = new CitaAgendadaDTO();
         dto.setId(cita.getId());
-        dto.setEstudianteNombre(cita.getEstudiante().getPerfil() != null ? cita.getEstudiante().getPerfil().getNombreCompleto() : "N/A");
-        dto.setPsicologoNombre(cita.getPsicologo().getPerfil() != null ? cita.getPsicologo().getPerfil().getNombreCompleto() : "N/A");
+
+        dto.setEstudianteNombre(cita.getEstudiante().getPerfil() != null ? cita.getEstudiante().getPerfil().getNombreCompleto() : "Estudiante sin perfil");
+
+        perfilPsicologoRepository.findByUsuarioId(cita.getPsicologo().getId())
+                .ifPresentOrElse(
+                        perfilPro -> dto.setPsicologoNombre(perfilPro.getNombreProfesional()),
+                        () -> dto.setPsicologoNombre("N/A")
+                );
         dto.setFechaCita(cita.getFechaCita().toString());
         dto.setHoraInicio(cita.getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")));
         dto.setModalidad(cita.getModalidad().name());
@@ -196,5 +205,54 @@ public class GestionHorarioService {
         }
 
         citaRepository.delete(cita);
+    }
+
+
+    @Transactional
+    public void eliminarRegla(Integer reglaId) {
+        Usuario usuario = authUtils.getUsuarioAutenticado();
+        ReglaDisponibilidad regla = reglaRepository.findById(reglaId)
+                .orElseThrow(() -> new EntityNotFoundException("Regla no encontrada"));
+
+        if (!regla.getPsicologo().getId().equals(usuario.getId())) {
+            throw new IllegalStateException("Acceso denegado para eliminar esta regla.");
+        }
+
+        reglaRepository.deleteById(reglaId);
+    }
+
+    @Transactional
+    public ReglaDisponibilidad actualizarRegla(Integer reglaId, ReglaDisponibilidadDTO dto) {
+        Usuario psicologo = authUtils.getUsuarioAutenticado();
+
+
+        ReglaDisponibilidad reglaExistente = reglaRepository.findById(reglaId)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró la regla con ID: " + reglaId));
+
+
+        if (!reglaExistente.getPsicologo().getId().equals(psicologo.getId())) {
+            throw new IllegalStateException("No tienes permiso para editar esta regla.");
+        }
+
+        reglaExistente.setFechaInicio(LocalDate.parse(dto.getStartDate()));
+        reglaExistente.setFechaFin(LocalDate.parse(dto.getEndDate()));
+        reglaExistente.setDuracionCita(dto.getAppointmentDuration());
+
+
+        reglaExistente.getFranjasHorarias().clear();
+
+        List<FranjaHoraria> nuevasFranjas = dto.getTimeSlots().stream().map(slotDto -> {
+            FranjaHoraria franja = new FranjaHoraria();
+            franja.setRegla(reglaExistente);
+            franja.setDiaSemana(slotDto.getDayOfWeek());
+            franja.setHoraInicio(LocalTime.parse(slotDto.getStartTime()));
+            franja.setHoraFin(LocalTime.parse(slotDto.getEndTime()));
+            franja.setModalidad(ModalidadCita.valueOf(slotDto.getModality().toUpperCase()));
+            return franja;
+        }).collect(Collectors.toList());
+
+        reglaExistente.getFranjasHorarias().addAll(nuevasFranjas);
+
+        return reglaRepository.save(reglaExistente);
     }
 }
