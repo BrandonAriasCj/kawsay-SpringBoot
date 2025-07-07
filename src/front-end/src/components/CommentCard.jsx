@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { submitReplyToComment } from '../services/api';
 import { fetchCurrentUser } from '../utils/auth';
+import { FaUserCircle } from 'react-icons/fa';
+import { getPerfilByUserId } from '../services/perfilApi';
+
+
 
 const CommentCard = ({ comment, onCommentAdded }) => {
     const [showReplyForm, setShowReplyForm] = useState(false);
     const [replyContent, setReplyContent] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [authorProfile, setAuthorProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      try {
+        const perfil = await getPerfilByUserId(comment.autorId);
+        setAuthorProfile(perfil);
+      } catch (err) {
+        console.error("Error cargando perfil del autor:", err);
+      }
+    };
+    fetchAuthor();
+  }, [comment.autorId]);
 
     const handleReplySubmit = async (e) => {
         e.preventDefault();
@@ -33,7 +50,18 @@ const CommentCard = ({ comment, onCommentAdded }) => {
     return (
         <div className="comment-card-container">
             <div className="comment-card">
-                <p className="comment-author">Usuario {comment.autorId}</p>
+                <div className="comment-header" style={{ display: 'flex', alignItems: 'center' }}>
+  {authorProfile?.urlFotoPerfil && authorProfile.urlFotoPerfil !== '/uploads/default.jpg' ? (
+    <img
+      src={`http://localhost:8081${authorProfile.urlFotoPerfil}`}
+      alt="Foto de perfil"
+      style={{ width: 28, height: 28, borderRadius: '50%', marginRight: 8 }}
+    />
+  ) : (
+    <FaUserCircle size={28} style={{ marginRight: 8 }} />
+  )}
+  <strong>{authorProfile?.nombreCompleto || `Usuario ${comment.autorId}`}</strong>
+</div>
                 <p className="comment-content">{comment.contenido}</p>
                 <div className="comment-actions">
                     <button onClick={() => setShowReplyForm(!showReplyForm)}>
@@ -45,7 +73,8 @@ const CommentCard = ({ comment, onCommentAdded }) => {
             {showReplyForm && (
                 <form onSubmit={handleReplySubmit} className="comment-reply-form">
                     <textarea
-                        placeholder={`Respondiendo a Usuario ${comment.autorId}...`}
+                        placeholder={`Respondiendo a ${authorProfile?.nombreCompleto || `Usuario ${comment.autorId}`}...`}
+
                         value={replyContent}
                         onChange={(e) => setReplyContent(e.target.value)}
                         disabled={isSubmitting}

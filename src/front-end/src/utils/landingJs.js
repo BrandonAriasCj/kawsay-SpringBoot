@@ -27,6 +27,7 @@ export function revealOnScroll() {
 
 export function handleHeaderScroll() {
   const header = document.getElementById('header');
+   if (!header) return;
   if (window.scrollY > 100) {
     header.classList.add('header-scrolled');
   } else {

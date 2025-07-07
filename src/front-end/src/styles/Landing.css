@@ -23,14 +23,13 @@
     .navbar-collapse {
     display: flex;
     justify-content: center;
-    gap: 4rem; /* Espacio entre enlaces */
     margin-right: 3rem; /* Ajusta según necesidad */
     }
 
     .nav-center {
   display: flex;
   justify-content: center;
-  gap: 10rem; /* Espacio entre enlaces */
+  gap: 2rem; /* Espacio entre enlaces */
 }
 
 

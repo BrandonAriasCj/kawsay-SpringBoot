@@ -13,14 +13,18 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Wizard from './components/Wizard';
 import './App.css';
-
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Landing from './pages/Landing';
+import ProtectedRoute from './context/ProtectedRoute';
+import NotFound from './pages/NotFound';
+
 function AppContent() {
     const { user } = useContext(AuthContext);
     const userEmail = user?.username;
     const [showWizard, setShowWizard] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
     if (!userEmail) return;
@@ -42,6 +46,13 @@ function AppContent() {
     }, [userEmail]);
 
 
+      useEffect(() => {
+    // Si el usuario está logeado y está en /main o /login, redirígelo a Home
+        if (user && (location.pathname === '/main' || location.pathname === '/login')) {
+        navigate('/');
+        }
+    }, [user, location.pathname, navigate]);
+
     const handleWizardComplete = () => {
         setShowWizard(false);
     };
@@ -49,7 +60,7 @@ function AppContent() {
     return (
         <>
             {}
-            {location.pathname !== "/login" && <Navbar />}
+            {user && location.pathname !== "/login" && <Navbar />}
 
                 {showWizard && (
                     <Wizard userEmail={userEmail} onComplete={handleWizardComplete} />
@@ -62,12 +73,13 @@ function AppContent() {
                 <Routes>
                     <Route path="/global-logout" element={<GlobalLogout />} />
                     <Route path="/main" element={<Landing />} />
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<ProtectedRoute><Home /> </ProtectedRoute>} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/profile" element={<UserProfile />} />
-                    <Route path="/chatbot" element={<Chatbot />} />
-                    <Route path="/grupos" element={<Grupos />} />
-                    <Route path="/citas" element={<Citas />} />
+                    <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+                    <Route path="/chatbot" element={<ProtectedRoute><Chatbot /></ProtectedRoute>} />
+                    <Route path="/grupos" element={<ProtectedRoute><Grupos /></ProtectedRoute>} />
+                    <Route path="/citas" element={<ProtectedRoute><Citas /></ProtectedRoute>} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
         </>
