@@ -6,6 +6,21 @@ export const getPerfil = async () => {
     return response.data;
 };
 
+export const getPerfilByEmail = async (email) => {
+  const response = await apiClient.get('/api/profile', {
+    params: { mail: email }
+  });
+  return response.data;
+};
+
+export const getPerfilByUserId = async (id) => {
+  const response = await apiClient.get('/api/perfil/por-id', {
+    params: { idUsuario: id }
+  });
+  return response.data;
+};
+
+
 // Actualizar perfil del usuario autenticado
 export const updatePerfil = async (perfilData) => {
     const response = await apiClient.put('/api/perfil', perfilData);

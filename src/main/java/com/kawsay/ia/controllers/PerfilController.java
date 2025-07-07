@@ -3,6 +3,8 @@ package com.kawsay.ia.controllers;
 import com.kawsay.ia.config.AuthUtils;
 import com.kawsay.ia.dto.PerfilDTO;
 import com.kawsay.ia.dto.PerfilInicialDTO;
+import com.kawsay.ia.entity.Perfil;
+import com.kawsay.ia.repository.PerfilRepository;
 import com.kawsay.ia.service.PerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ public class PerfilController {
     private PerfilService perfilService;
     @Autowired
     private AuthUtils authUtils;
+    @Autowired
+    private PerfilRepository perfilRepository;
 
 
     @PostMapping("/inicial")
@@ -83,5 +87,22 @@ public class PerfilController {
             return ResponseEntity.internalServerError().body("Error al guardar la imagen");
         }
     }
+
+    @GetMapping("/por-id")
+    public ResponseEntity<PerfilDTO> getPerfilPorId(@RequestParam Long idUsuario) {
+        Perfil perfil = perfilRepository.findByUsuario_Id(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Perfil no encontrado para el usuario con ID: " + idUsuario));
+
+        PerfilDTO dto = new PerfilDTO();
+        dto.setEmail(perfil.getUsuario().getCorreoInstitucional());
+        dto.setNombreCompleto(perfil.getNombreCompleto());
+        dto.setCarrera(perfil.getCarrera());
+        dto.setDescripcion(perfil.getDescripcion());
+        dto.setUrlFotoPerfil(perfil.getUrlFotoPerfil());
+        dto.setPerfilCompletado(perfil.isPerfilCompletado());
+
+        return ResponseEntity.ok(dto);
+    }
+
 
 }

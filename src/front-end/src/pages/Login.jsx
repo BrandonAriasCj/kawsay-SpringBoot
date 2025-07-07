@@ -8,7 +8,7 @@ import awsExports from '../aws-exports';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Login.css';
-
+import { NavLink } from 'react-router-dom';
 import kawsaiLogo from '../assets/kawsai-logo.png';
 
 Amplify.configure(awsExports);
@@ -75,10 +75,20 @@ const Login = () => {
   }, [loggedUser, isRedirecting, navigate, setUser]);
 
   return (
+    <>
+
+
       <div className="login-page-wrapper">
+
+                  <NavLink to="/main" className="back-to-landing-button">
+        ← Volver a la página principal
+      </NavLink>
+
         <div className="login-split-container">
-          {}
+          {}    
+
           <div className="login-visual-side">
+            
             <img src={kawsaiLogo} alt="Kawsai Logo" className="visual-side-logo" />
             <h1 className="visual-side-title">KawsAi</h1>
             <p className="visual-side-subtitle">Tu espacio de bienestar digital.</p>
@@ -86,7 +96,11 @@ const Login = () => {
 
           {}
           <div className="login-form-side">
+
+
+
             <Authenticator
+            
                 components={{
                   Header: FormHeader,
                 }}
@@ -101,6 +115,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      </>
   );
 };
 

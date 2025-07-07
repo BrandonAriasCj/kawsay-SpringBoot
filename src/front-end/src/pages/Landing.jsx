@@ -58,7 +58,7 @@ const Landing =() => {
                             <img src="felizzzz.gif" alt="Neural Network"/>
                         </div>
                         <div className="floating-icon parallax-slow">
-                            <img src="robotIA.gif" alt="AI Chat"/>
+                            <img src="baile.gif" alt="AI Chat"/>
                         </div>
                         <div className="floating-icon parallax-medium">
                             <img src="arc.gif" alt="Machine Learning"/>
@@ -75,8 +75,8 @@ const Landing =() => {
                             <a href="/main" className="logo">
                                KawsAi
                             </a>
-                            <nav clasdsName="collapse navbar-collapse nav-center">
-                                <a href="#inicio" className="nav-link" style={{ marginRight: '20px' }}>Inicio</a>
+                            <nav className="collapse navbar-collapse nav-center">
+                                <a href="#inicio" className="nav-link" >Inicio</a>
                                 <a href="#características" className="nav-link" style={{ marginRight: '20px' }}>Características</a>
                             </nav>
                         </nav>

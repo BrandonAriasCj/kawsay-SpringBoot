@@ -39,6 +39,30 @@
     padding: 2rem;
     text-align: center;
 }
+
+.back-to-landing-button {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 1000;
+
+  padding: 10px 16px;
+  background-color: #ffffff;
+  color: var(--purple-dark);
+  border: 2px solid var(--purple-dark);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.back-to-landing-button:hover {
+  background-color: var(--purple-dark);
+  color: #ffffff;
+}
+
+
 .visual-side-logo {
     width: 120px;
     height: auto;

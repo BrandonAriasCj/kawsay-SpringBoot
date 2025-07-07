@@ -2,7 +2,10 @@ package com.kawsay.ia.controllers;
 
 import com.kawsay.ia.dto.ComentarioDTO;
 import com.kawsay.ia.dto.ComentarioTreeConReaccionesDTO;
+import com.kawsay.ia.dto.PublicacionDTO;
 import com.kawsay.ia.dto.ReaccionDTO;
+import com.kawsay.ia.entity.Publicacion;
+import com.kawsay.ia.repository.PublicacionRepository;
 import com.kawsay.ia.service.ComentarioService;
 import com.kawsay.ia.service.PublicacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ public class PublicacionController {
     private PublicacionService publicacionService;
     @Autowired
     private ComentarioService comentarioService;
+    @Autowired
+    private PublicacionRepository publicacionRepository;
 
 
     @PostMapping("/{publicacionId}/comentarios")
@@ -38,10 +43,22 @@ public class PublicacionController {
     }
 
 
-    @GetMapping("/{publicacionId}/comentarios/tree")
-    public ResponseEntity<List<ComentarioTreeConReaccionesDTO>> obtenerComentariosTree(
-            @PathVariable ("publicacionId") Integer publicacionId) {
-        return ResponseEntity.ok(comentarioService.obtenerComentariosAnidadosPorPublicacion(publicacionId));
+    @GetMapping
+    public ResponseEntity<List<PublicacionDTO>> obtenerPublicaciones() {
+        List<Publicacion> publicaciones = publicacionRepository.findAll();
+
+        List<PublicacionDTO> dtos = publicaciones.stream()
+                .map(pub -> new PublicacionDTO(
+                        pub.getId(),
+                        pub.getTitulo(),
+                        pub.getContenido(),
+                        pub.getFechaPublicacion(),
+                        pub.getAutor().getId(), // ← este es el autorId
+                        pub.getGrupo().getId()
+                ))
+                .toList();
+
+        return ResponseEntity.ok(dtos);
     }
 
 
@@ -52,5 +69,11 @@ public class PublicacionController {
             @RequestBody ComentarioDTO dto) {
         ComentarioDTO respuesta = comentarioService.responderAComentario(comentarioId, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+    }
+
+    @GetMapping("/{publicacionId}/comentarios/tree")
+    public ResponseEntity<List<ComentarioTreeConReaccionesDTO>> obtenerComentariosTree(
+            @PathVariable ("publicacionId") Integer publicacionId) {
+        return ResponseEntity.ok(comentarioService.obtenerComentariosAnidadosPorPublicacion(publicacionId));
     }
 }

@@ -37,7 +37,7 @@ export const fetchPostsByGroup = async (groupId) => {
     return response.data.map(post => ({
         id: post.id,
         groupId: post.grupoId,
-        user: `Usuario ${post.autorId}`,
+        autorId: post.autorId,
         question: post.contenido.split('\n')[0],
         content: post.contenido.split('\n').slice(1).join('\n'),
         votes: 0,
