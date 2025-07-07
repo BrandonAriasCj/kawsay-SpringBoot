@@ -93,4 +93,31 @@ public class HorarioCitasController {
     public ResponseEntity<List<CitaAgendadaDTO>> getMisCitas() {
         return ResponseEntity.ok(gestionHorarioService.obtenerMisCitas());
     }
+
+
+    @DeleteMapping("/reglas/{reglaId}")
+    @PreAuthorize("hasAuthority('PSICOLOGO')")
+    public ResponseEntity<Void> eliminarRegla(@PathVariable Integer reglaId) {
+        try {
+            gestionHorarioService.eliminarRegla(reglaId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/reglas/{reglaId}")
+    @PreAuthorize("hasAuthority('PSICOLOGO')")
+    public ResponseEntity<Void> actualizarRegla(
+            @PathVariable Integer reglaId,
+            @RequestBody ReglaDisponibilidadDTO dto) {
+        try {
+            gestionHorarioService.actualizarRegla(reglaId, dto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
