@@ -43,7 +43,9 @@ const Login = () => {
         setIsRedirecting(true);
         const session = await fetchAuthSession();
         const idToken = session.tokens?.idToken?.toString();
+        console.log("token:", idToken)
         const accessToken = session.tokens?.accessToken?.toString();
+        console.log("accesToken ", idToken)
         const payload = JSON.parse(atob(accessToken.split('.')[1]));
         const grupos = payload['cognito:groups'] || [];
 

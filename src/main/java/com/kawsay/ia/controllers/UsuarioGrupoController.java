@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 @RequestMapping("/api/grupos")
 @RequiredArgsConstructor
 public class UsuarioGrupoController {

@@ -68,14 +68,39 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
-        // Asegúrate de que DELETE esté en la lista de métodos permitidos.
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
+
+        // Orígenes permitidos
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:3000",
+                "http://localhost:3001"
+        ));
+
+        // Métodos permitidos
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+
+        // Cabeceras permitidas: usa "*" solo si estás seguro; si no, lista explícitamente
+        config.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "X-Amz-Date",
+                "X-Api-Key",
+                "X-Amz-Security-Token"
+        ));
+
+        // Permitir envío de credenciales (cookies o Authorization headers)
         config.setAllowCredentials(true);
+
+        // IMPORTANTE: explícitamente permite que las cabeceras sean expuestas en la respuesta
+        config.setExposedHeaders(List.of("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }

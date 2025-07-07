@@ -20,7 +20,7 @@ import java.nio.file.StandardCopyOption;
 
 @RestController
 @RequestMapping("/api/perfil")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 public class PerfilController {
 
     @Autowired

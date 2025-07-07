@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Tabs from '../components/Tabs';
-import GroupSidebar from '../components/GroupSidebar';
+import GroupSidebar from '../components/GroupSideBar';
 import Feed from '../components/Feed';
 import Modal from '../components/Modal';
 import GruposWelcome from '../components/GruposWelcome';

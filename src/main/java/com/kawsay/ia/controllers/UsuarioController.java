@@ -20,7 +20,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(
+origins = {"http://localhost:5173", "http://localhost:3000"},
+allowedHeaders = "*",
+methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS}
+)
 @RequiredArgsConstructor
 public class UsuarioController {
 

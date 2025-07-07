@@ -18,7 +18,7 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("/api/reacciones")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 @RequiredArgsConstructor
 public class ReaccionController {
 
