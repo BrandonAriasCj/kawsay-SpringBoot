@@ -50,7 +50,7 @@ function AppContent() {
         <>
             {}
             {location.pathname !== "/login" && <Navbar />}
-            
+
                 {showWizard && (
                     <Wizard userEmail={userEmail} onComplete={handleWizardComplete} />
                 )}

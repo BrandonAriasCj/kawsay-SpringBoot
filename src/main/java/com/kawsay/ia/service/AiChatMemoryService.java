@@ -201,7 +201,7 @@ public class AiChatMemoryService {
      *  SALIDA: Boolean
      */
     public boolean isEvento(Integer id){
-        int cadaCuanto = 20;
+        int cadaCuanto = 10;
         if (id % cadaCuanto == 0){
             return true;
         } else

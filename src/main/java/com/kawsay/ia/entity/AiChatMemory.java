@@ -1,5 +1,6 @@
 package com.kawsay.ia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class AiChatMemory {
     private String sessionId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "usuario", nullable = false)
     private Usuario usuario;
 
