@@ -51,7 +51,7 @@ const Login = () => {
         const payload = JSON.parse(atob(accessToken.split('.')[1]));
         const grupos = payload['cognito:groups'] || [];
 
-        await fetch(`${urlBaseBack}/api/usuarios/token`, {
+        await fetch(`${urlBaseBack()}/api/usuarios/token`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
         });
