@@ -5,7 +5,8 @@
     const protocolo = import.meta.env.PROTOCOLO;
 
     export const urlBaseBack =  ()=>{
-        return `${protocolo}://${ip}:${puerto_back}`;
+        const rutaBase = `${protocolo}://${ip}:${puerto_back}`;
+        return rutaBase;
     };
 
     export const urlBaseFrontAdmin = ()=>{
