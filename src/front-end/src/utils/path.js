@@ -6,6 +6,7 @@
 
     export const urlBaseBack =  ()=>{
         const rutaBase = `${protocolo}://${ip}:${puerto_back}`;
+        console.log(rutaBase);
         return rutaBase;
     };
 
