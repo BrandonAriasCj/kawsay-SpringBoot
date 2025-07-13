@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/usuarios")
 @CrossOrigin(
-origins = {"http://localhost:5173", "http://localhost:3000", "http://18.118.119.68:3000", "http://18.118.119.68:3001"},
+origins = {"http://localhost:5173", "http://localhost:3000", "http://18.119.253.100:3000", "http://18.119.253.100:3001"},
 allowedHeaders = "*",
 methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS}
 )
