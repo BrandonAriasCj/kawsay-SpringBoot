@@ -1,8 +1,9 @@
-    const ip = import.meta.env.IP_PUBLICA;
-/*     const puerto_back = import.meta.env.PUERTO_BACK;
+    /*const ip = import.meta.env.IP_PUBLICA;
+    const puerto_back = import.meta.env.PUERTO_BACK;
     const puerto_admin = import .meta.env.PUERTO_FRONT_ADMIN;
     const puerto_user = import .meta.env.PUERTO_FRONT_USER;
     const protocolo = import.meta.env.PROTOCOLO; */
+    const ip = `18.118.119.68`;
     const puerto_back = 8081;
     const puerto_admin = 3001;
     const puerto_user = 3000;
