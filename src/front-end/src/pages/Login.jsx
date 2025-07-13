@@ -10,6 +10,8 @@ import { AuthContext } from '../context/AuthContext';
 import '../styles/Login.css';
 
 import kawsaiLogo from '../assets/kawsai-logo.png';
+import { urlBaseBack } from '../utils/path';
+import { urlBaseFrontAdmin } from '../utils/path';
 
 Amplify.configure(awsExports);
 
@@ -49,7 +51,7 @@ const Login = () => {
         const payload = JSON.parse(atob(accessToken.split('.')[1]));
         const grupos = payload['cognito:groups'] || [];
 
-        await fetch('http://localhost:8081/api/usuarios/token', {
+        await fetch(`${urlBaseBack}/api/usuarios/token`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
         });
@@ -58,9 +60,9 @@ const Login = () => {
         setUser(loggedUser);
 
         if (grupos.includes('PSICOLOGO')) {
-          const psychologistWindow = window.open('http://localhost:5174', '_blank');
+          const psychologistWindow = window.open( urlBaseFrontAdmin, '_blank');
           setTimeout(() => {
-            psychologistWindow.postMessage({ type: 'AUTH_TOKEN', token: idToken }, 'http://localhost:5174');
+            psychologistWindow.postMessage({ type: 'AUTH_TOKEN', token: idToken }, urlBaseFrontAdmin);
             navigate('/');
           }, 1000);
         } else {

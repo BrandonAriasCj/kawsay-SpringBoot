@@ -4,6 +4,7 @@ import FormularioPreferencias from "./FormularioPreferencias";
 import { mapWizardDataToPerfilInicialDTO } from "../utils/mapWizardDataToPerfilInicialDTO";
 import axios from "axios";
 import ReactDOM from 'react-dom';
+import { urlBaseBack } from "../utils/path";
 
 
 
@@ -29,7 +30,7 @@ const handleFinalSubmit = async () => {
   const jwtToken = localStorage.getItem("jwtToken");
 
   try {
-    await axios.post("http://localhost:8081/api/perfil/inicial", payload, {
+    await axios.post(`${urlBaseBack}/api/perfil/inicial`, payload, {
       headers: {
         Authorization: `Bearer ${jwtToken}`
       }

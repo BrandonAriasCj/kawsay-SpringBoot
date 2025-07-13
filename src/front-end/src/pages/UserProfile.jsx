@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { getPerfil, updatePerfil, uploadAndUpdateFotoPerfil } from '../services/perfilApi';
 import '../styles/UserProfile.css';
 import { FaUserCircle } from 'react-icons/fa';
+import { urlBaseBack } from '../utils/path';
 
 const UserProfile = () => {
     const [profileData, setProfileData] = useState(null);
@@ -72,7 +73,7 @@ const UserProfile = () => {
                             {/* Lógica para mostrar foto o ícono en modo edición */}
                             {formData.urlFotoPerfil && formData.urlFotoPerfil !== '/uploads/default.jpg' ? (
                                 <img
-                                    src={`http://localhost:8081${formData.urlFotoPerfil}`}
+                                    src={`${urlBaseBack}${formData.urlFotoPerfil}`}
                                     alt="Perfil"
                                     className="profile-pic"
                                 />
@@ -116,7 +117,7 @@ const UserProfile = () => {
                     <div className="profile-header">
                         {/* Lógica para mostrar foto o ícono */}
                         {profileData.urlFotoPerfil && profileData.urlFotoPerfil !== '/uploads/default.jpg' ? (
-                            <img src={`http://localhost:8081${profileData.urlFotoPerfil}`} alt="Perfil" className="profile-pic" />
+                            <img src={`${urlBaseBack}${profileData.urlFotoPerfil}`} alt="Perfil" className="profile-pic" />
                         ) : (
                             <div className="profile-avatar-default">
                                 <FaUserCircle />

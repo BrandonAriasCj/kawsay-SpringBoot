@@ -9,6 +9,8 @@ import '../styles/Navbar.css';
 import kawsaiLogo from '../assets/kawsai-logo.png';
 import { FaUserCircle } from 'react-icons/fa';
 
+import { urlBaseBack } from '../utils/path.js';
+
 const Navbar = () => {
     const { user } = useContext(AuthContext);
     const [perfil, setPerfil] = useState(null);
@@ -20,7 +22,7 @@ const Navbar = () => {
             if (!user) return;
             try {
                 const token = localStorage.getItem('jwtToken');
-                const response = await fetch('http://localhost:8081/api/perfil', {
+                const response = await fetch(`${urlBaseBack}/api/perfil`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -75,7 +77,7 @@ const Navbar = () => {
                             {/* muestra foto o ícono por defecto */}
                             {perfil.urlFotoPerfil && perfil.urlFotoPerfil !== '/uploads/default.jpg' ? (
                                 <img
-                                    src={`http://localhost:8081${perfil.urlFotoPerfil}`}
+                                    src={`${urlBaseBack}${perfil.urlFotoPerfil}`}
                                     alt="Perfil"
                                     className="user-avatar"
                                 />

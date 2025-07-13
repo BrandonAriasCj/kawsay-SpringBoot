@@ -16,6 +16,7 @@ import './App.css';
 
 import axios from 'axios';
 import Landing from './pages/Landing';
+import { urlBaseBack } from './utils/path';
 function AppContent() {
     const { user } = useContext(AuthContext);
     const userEmail = user?.username;
@@ -27,7 +28,7 @@ function AppContent() {
 
     const jwtToken = localStorage.getItem("jwtToken");
 
-    axios.get("http://localhost:8081/api/perfil", {
+    axios.get(`${urlBaseBack}/api/perfil`, {
         headers: {
         Authorization: `Bearer ${jwtToken}`
         }

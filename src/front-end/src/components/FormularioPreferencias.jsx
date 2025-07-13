@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/FormPreferences.css';   // ⬅️ importa los estilos
+import { urlBaseBack } from '../utils/path';
 
 const FormularioPreferencias = ({
   seleccionadas,
@@ -15,7 +16,7 @@ const FormularioPreferencias = ({
   useEffect(() => {
     const jwtToken = localStorage.getItem('jwtToken');
     axios
-      .get('http://localhost:8081/api/preferencias', {
+      .get(`${urlBaseBack}/api/preferencias`, {
         headers: { Authorization: `Bearer ${jwtToken}` },
       })
       .then((res) => setLocalCatalogo(res.data))
