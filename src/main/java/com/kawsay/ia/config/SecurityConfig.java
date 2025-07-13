@@ -75,8 +75,8 @@ public class SecurityConfig {
                 "http://localhost:5174",
                 "http://localhost:3000",
                 "http://localhost:3001",
-                "http://18.223.205.204:3000",
-                "http://18.223.205.204:3001"
+                "http://18.118.119.68:3000",
+                "http://18.118.119.68:3001"
         ));
 
         // Métodos permitidos
