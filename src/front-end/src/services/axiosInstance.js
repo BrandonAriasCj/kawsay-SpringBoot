@@ -4,7 +4,7 @@ import axios from 'axios';
 import { urlBaseBack } from '../utils/path';
 
 const instance = axios.create({
-  baseURL: `${urlBaseBack}/`,
+  baseURL: urlBaseBack,
   headers: {
     'Content-Type': 'application/json'
   }
