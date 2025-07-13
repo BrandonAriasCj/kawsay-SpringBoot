@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FirstLoginModal from '../components/FormularioPerfil';
 import axios from 'axios';
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import { urlBaseBack } from '../utils/path';
 
 const Profile = ({ user, signOut }) => {
   const userEmail = user?.attributes?.email;
@@ -15,7 +16,7 @@ const Profile = ({ user, signOut }) => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/profile/", {
+        const response = await axios.get(`${urlBaseBack}/api/profile/`, {
           params: { mail: userEmail }
         });
         setProfileData(response.data);

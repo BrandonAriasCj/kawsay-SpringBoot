@@ -1,9 +1,10 @@
 // axiosInstance.js
 
 import axios from 'axios';
+import { urlBaseBack } from '../utils/path';
 
 const instance = axios.create({
-  baseURL: 'http://18.223.205.204/:8081/',
+  baseURL: `${urlBaseBack}/`,
   headers: {
     'Content-Type': 'application/json'
   }
